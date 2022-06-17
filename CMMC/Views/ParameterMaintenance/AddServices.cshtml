@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "Add Services";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+ <script type="text/javascript">
+  $(document).ready(function () {
+   var model = [];
+   var hasRecord = false;
+
+
+   $.ajax({
+    cache: false,
+    type: "GET",
+    url: "@Url.Action("LoadCategory","ParameterMaintenance")",
+    contentType: "application/json",
+   success: function(data) {
+    $.each(data, function () {
+     $("#selCategory").append($("<option />").val(this.Category).text(this.Category))
+    })
+   },
+   error: function (response) {
+   }
+  });
+
+
+   $().DMSFormValidator('#frmAddBranches')
+   .on('success.form.fv', function (e) {
+    e.preventDefault();
+
+    eModal.confirm("Save new Service Type?", "Confirmation").then(function () {
+     //toastr.success("New Access Group has been saved.");
+     model = {
+      ServiceName: $('#txtServiceName').val(),
+      IsActive: $('#chkIsActive').prop('checked'),
+      ServiceCategory: $("#selCategory option:selected").val(),
+     }
+
+     $.ajax({
+      url: '@Url.Action("ServiceInsert", "ParameterMaintenance")',
+      data: JSON.stringify(model),
+      type: 'POST',
+      contentType: 'application/json',
+      traditional: true,
+      success: function (data) {
+       if (data.ResponseStatus != 1) {
+        toastr.error(data.Description, "Information");
+       }
+       else {
+        toastr.success(data.Description, "Information")
+       }
+      },
+      error: function (response) { }
+     });
+     window.location = '@Url.Action("Services", "ParameterMaintenance")';
+    }, null);
+   });
+  });
+ </script>
+}
+
+<h2 class="page-header">
+ New Investment Type
+ <small></small>
+</h2>
+<div class="col-md-5 col-md-offset-4">
+ <form id="frmAddBranches">
+  <div class="panel panel-primary">
+   <div class="panel-heading">Add New Service Type</div>
+   <div class="panel-body">
+    @Html.AntiForgeryToken()
+    <div class="row">
+     <div class="col-md-12">
+      @*<div class="form-group">
+       <label>Service Type Code: </label>
+       <input type="text" class="form-control TextRequiredField" id="txtInvestmentTypeCode" name="txtInvestmentTypeCode" autocomplete="off" maxlength="4" />
+      </div>*@
+      <div class="form-group">
+       <label>Service Type Name: </label>
+       <input type="text" class="form-control TextRequiredField" id="txtServiceName" name="txtServiceName" autocomplete="off" maxlength="50" />
+      </div>
+
+      <div class="form-group" id="categorytag">
+       <label>Service Category: </label>
+       <select class="form-control" id="selCategory" name="selCategory">
+        <option disabled selected value> -------- select a value --------</option>
+       </select>
+      </div>
+
+
+      <div class="form-group">
+       <label class="checkbox-inline">
+        <input type="checkbox" id="chkIsActive" name="chkIsActive" checked /> Is Active?
+       </label>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="panel-footer">
+    <div class="row">
+     <div class="col-md-12 text-right">
+      <button type="submit" id="btnSave" name="btnSave" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+      <button type="button" onclick="javascript: window.location='@Url.Action("Services", "ParameterMaintenance")'" id="btnSave" name="btnSave" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
+     </div>
+    </div>
+   </div>
+  </div>
+ </form>
+</div>

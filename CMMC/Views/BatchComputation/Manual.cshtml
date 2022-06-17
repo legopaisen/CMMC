@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Manual";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+ $(function () {
+  $('#scheduleDate').datetimepicker({
+   format: 'DD-MMMM-YYYY LT'
+  });
+  $('#manualDate').datetimepicker({
+   format: 'DD-MMMM-YYYY'
+  });
+  $('#generateDate').datetimepicker({
+   format: 'DD-MMMM-YYYY LT'
+  });
+ });
+</script>
+
+<div class="container">
+ <div class="row">
+  <div class="col-md-8">
+   <h2 class="page-header">
+    Manual Run
+    <small>Details</small>
+   </h2>
+   <img class="img-responsive" src="~/Images/Manual.jpg" alt="">
+   <hr>
+   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum officiis rerum.</p>
+   <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+  </div>
+  <div class="col-md-4">
+   <br />
+   <div class="well">
+    <h4>Manual Run</h4>
+    <hr />
+    <div class="input-group">
+     <div class="input-group-addon" id="date">Date</div>
+     <input type="text" class="form-control" id="manualDate" />
+    </div><br />
+    <div>
+     <button class="btn btn-primary" type="button"><i class="glyphicon glyphicon-collapse-up"></i> Run</button>
+    </div>
+   </div>
+   <div class="well">
+    <h4>History</h4>
+    <hr />
+    <h5>
+     Last Run:
+     <small id="manuallastrun">Date here</small><br />
+     Run By:
+     <small id="manualrunby">Name/AccountID here</small><br />
+     Next Run:
+     <small id="manualnextrun">Date here</small><br />
+    </h5>
+   </div>
+  </div>
+ </div>
+</div>

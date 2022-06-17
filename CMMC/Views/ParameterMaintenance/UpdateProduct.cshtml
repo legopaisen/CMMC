@@ -1,0 +1,126 @@
+﻿@using CMMC.Models
+
+@model ProductTypes.ProductDetails
+
+
+@{
+    ViewBag.Title = "Update Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+ <script type="text/javascript">
+  $(document).ready(function () {
+   var model = [];
+
+
+    $().DMSFormValidator('#frmGroupDetails')
+   .on('success.form.fv', function (e) {
+    e.preventDefault();
+
+    eModal.confirm("Save changes?", "Confirmation").then(function () {
+     //toastr.success("Changes has been saved.");
+     model = {
+      ProductCode: $('#txtProductCode').val(),
+      ProductDescription: $('#txtProductDesc').val(),
+      ProductCurrency: $('#txtCurrency').val(),
+      ProductCost: $('#txtCost').val(),
+      Type: $('#txtType').val(),
+      ProductType: $('#txtProductType').val(),
+      ProductGroup: $('#txtProductGroup').val()
+     }
+
+     $.ajax({
+      url: '@Url.Action("ProductSaveChanges", "ParameterMaintenance")',
+      data: JSON.stringify(model),
+      type: 'POST',
+      contentType: 'application/json',
+      traditional: true,
+      success: function (data) {
+       if (data.ResponseStatus != 1) {
+        toastr.error(data.Description, "Information");
+       }
+       else {
+        toastr.success(data.Description, "Information");
+       }
+      },
+      error: function (response) { }
+     });
+     window.location = '@Url.Action("ProductType", "ParameterMaintenance")';
+    }, null);
+   });
+
+  });
+ </script>
+}
+
+<h2 class="page-header">
+ Edit Product Type
+ <small></small>
+</h2>
+<div class="col-md-5 col-md-offset-4">
+ <form id="frmGroupDetails">
+  <div class="panel panel-primary">
+   <div class="panel-heading">Edit Product Type Details</div>
+   <div class="panel-body">
+    @Html.AntiForgeryToken()
+    <div class="row">
+     <div class="col-md-12">
+
+      <div class="form-group">
+       <label>Product Type Code: </label>
+       <input type="text" class="form-control" id="txtProductCode" value="@Model.ProductCode" name="txtProductCode" autocomplete="off" placeholder="Access Group Code" maxlength="4" />
+      </div>
+
+      <div class="form-group">
+       <label>Product Type Description: </label>
+       <input type="text" class="form-control TextRequiredField" id="txtProductDesc" value="@Model.ProductDescription" name="txtProductDesc" autocomplete="off" placeholder="Access Group Name" />
+      </div>
+
+      <div class="form-group">
+       <label>Product Type Currency: </label>
+       <input type="text" class="form-control TextRequiredField" id="txtCurrency" value="@Model.ProductCurrency" name="txtCurrency" autocomplete="off" placeholder="Access Group Name" />
+      </div>
+
+      <div class="form-group">
+       <label>Product Type Cost: </label>
+       <input type="text" class="form-control TextRequiredField" id="txtCost" value="@Model.ProductCost" name="txtCost" autocomplete="off" placeholder="Access Group Name" />
+      </div>
+
+      <div class="form-group">
+       <label>Type: </label>
+       <input type="text" class="form-control TextRequiredField" id="txtType" value="@Model.Type" name="txtType" autocomplete="off" placeholder="Access Group Name" />
+      </div>
+
+      <div class="form-group">
+       <label>Product Type: </label>
+       <input type="text" class="form-control" id="txtProductType" value="@Model.ProductType" data-fv-notempty="true" name="txtProductType" autocomplete="off" placeholder="Access Group Name" />
+      </div>
+
+      <div class="form-group">
+       <label>Product Group: </label>
+       <input type="text" class="form-control TextRequiredField" id="txtProductGroup" value="@Model.ProductGroup" name="txtProductGroup" autocomplete="off" placeholder="Access Group Name" />
+      </div>
+
+      @*<div class="form-group">
+       <label class="checkbox-inline">
+        <input type="checkbox" id="chkIsActive" name="chkIsActive" @(Model.IsActive ? "checked" : "") /> Is Active?
+       </label>
+      </div>*@
+
+     </div>
+    </div>
+
+   </div>
+   <div class="panel-footer">
+    <div class="row">
+     <div class="col-md-12 text-right">
+      <button type="submit" id="btnSave" name="btnSave" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+      <button type="button" onclick="javascript: window.location='@Url.Action("ProductType", "ParameterMaintenance")'" id="btnSave" name="btnSave" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
+     </div>
+    </div>
+   </div>
+  </div>
+ </form>
+</div>

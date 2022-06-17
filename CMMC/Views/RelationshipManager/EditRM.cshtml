@@ -1,0 +1,168 @@
+﻿@model CMMC.Models.RelationshipManagerModel
+@{
+ ViewBag.Title = "Edit Relationship Manager";
+ Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+ var RMDetails = JSON.parse('@Html.Raw(Json.Encode(Model))');
+ var branchlist = JSON.parse('@Html.Raw(Json.Encode(ViewBag.BrancheList))');
+ var hasRecord = false;
+
+ $(document).ready(function () {
+  $.each(branchlist, function (ndx, item) {
+   $("#branchList").append($('<option />').val(item.BranchCode).text(item.BranchName));
+   $("#branchList").val(@Model.BranchAssigned);
+  });
+
+  @*$("#btnSearch").on('click', function () {
+   $.ajax({
+    url: '@Url.Action("SearchEmployee", "Access")',
+    data: { pEmployeeID: $("#txtNetworkID").val() },
+    success: function (data) {
+     if (data.Username == null) {
+      hasRecord = false;
+      toastr.error("Invalid Employee ID", "Error");
+     }
+     else {
+      hasRecord = true;
+      userdata = data;
+      $("#txtFullName").val(userdata.FullName);
+      //$("#txtEmail").val(userdata.EmailAddress);
+     }
+    },
+    error: function () {
+     //alert(JSON.stringify(data));
+     toastr.error("Error in Employee ID Search ");
+    }
+   });
+  });*@
+
+  //$("#btnSave").on('click', function () {
+
+  //});
+
+  $('#rmDetails')
+.formValidation({
+ framework: 'bootstrap',
+ icon: {
+  valid: 'glyphicon glyphicon-ok',
+  invalid: 'glyphicon glyphicon-remove',
+  validating: 'glyphicon glyphicon-refresh'
+ },
+ fields: {
+  //networkid: {
+  // validators: {
+  //  notEmpty: {
+  //   message: 'The Network ID is required'
+  //  },
+  //  stringLength: {
+  //   min: 7,
+  //   max: 7,
+  //   message: 'The Network ID must be 7 characters long'
+  //  }
+  // }
+  //},
+  branchassigned: {
+   validators: {
+    notEmpty: {
+     message: 'The branch assigning is required'
+    }
+   }
+  },
+  fullname: {
+   validators: {
+    notEmpty: {
+     message: 'Fullname is required'
+    }
+   }
+  }
+ }
+})
+ .on('change', '[name="base"]', function () {
+  var thousandsSeparator = ',',
+   decimalSeparator = '.';
+  $('#CMSDetails')
+   .formValidation('updateOption', 'number', 'numeric', 'thousandsSeparator', thousandsSeparator)
+   .formValidation('updateOption', 'number', 'numeric', 'decimalSeparator', decimalSeparator)
+   // and revalidate the number
+   .formValidation('revalidateField', 'number')
+ })
+ .on('success.form.fv', function (e) {
+  e.preventDefault();
+  SaveUpdate();
+ });
+
+ });
+
+ function SaveUpdate() {
+  var model = {
+   'ID': '@Model.ID',
+   'RMFullName': $('#txtFullName').val(),
+   'ModifiedDate': null,
+   'ModifiedBy': '@Session["UserID"]',
+   'BranchAssigned': $('#branchList').val()
+  }
+
+  $.ajax({
+   cache: false,
+   data: model,
+   url: '@Url.Action("SaveUpdate", "RelationshipManager")',
+   type: 'POST',
+   success: function (data) {
+    if(data == 2){
+     Command: toastr["info"]("Information","RM branch assigned already exist. Process terminated!")
+    } else if (data = 1) {
+     window.location = '@Url.Action("Index","RelationshipManager")'
+    }
+   },
+   error: function (e) {
+   }
+  });
+
+ }
+ function caps(id) {
+  document.getElementById(id).value = document.getElementById(id).value.toUpperCase();
+ }
+</script>
+
+<h2 class="page-header">
+ EDIT Relationship Manager
+</h2>
+<form id="rmDetails">
+ <div class="panel panel-primary">
+  <div class="panel-heading">Relationship Manager Details</div>
+  <div class="panel-body">
+   <div class="col-lg-5">
+    @*<div class="form-group">
+     <div class="input-group">
+      <div class="input-group-addon">Network ID</div>
+      <input class="form-control" type="text" placeholder="NetworkID" id="txtNetworkID" disabled name="networkid" value="@Model.RMNetworkID" />    
+     </div>
+    </div>*@
+    <div class="form-group">
+     <div class="input-group">
+      <div class="input-group-addon">Fullname</div>
+      <input class="form-control" type="text" placeholder="FullName" id="txtFullName" name="fullname" value="@Model.RMFullName" onblur="caps(this.id)" />
+     </div>
+    </div>
+    <div class="form-group">
+     <div class="input-group">
+      <div class="input-group-addon">Branch Assigned</div>
+      <select class="form-control" id="branchList" name="branchassigned">
+       <option disabled selected value>-- select --</option>
+      </select>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="panel-footer">
+   <button class="btn btn-primary" type="submit" id="btnSave"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+   <button type="button" onclick="javascript: window.location='@Url.Action("Index", "RelationshipManager")'" id="btnSave" name="btnSave" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
+
+   @*<button class="btn btn-danger"><i class="glyphicon glyphicon-remove" ></i> Cancel</button>*@
+  </div>
+ </div>
+</form>
+
+
+

@@ -1,0 +1,137 @@
+﻿ 
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=8,IE=9, IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login to Document Monitoring System</title>
+    <script type="text/javascript" src="~/Assets/js/jquery-1.12.0.min.js"></script>
+    <link rel="stylesheet" href="~/Assets/bootstrap/css/bootstrap.min.css" type="text/css">
+    <link href="~/Assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Assets/toastr/toastr.min.css" type="text/css">
+    <link href="~/Assets/formValidation/css/formValidation.css" rel="stylesheet" />
+    <script src="~/Assets/formValidation/js/formValidation.js"></script>
+    <script src="~/Assets/formValidation/js/framework/bootstrap.js"></script>   
+    <script src="~/Assets/app/DMSFormValidator.js"></script>
+    <script src="~/Assets/app/aes.js"></script>
+
+  <script type="text/javascript">
+   $(document).ready(function () {
+    var response = JSON.parse('@Html.Raw(Json.Encode(ViewBag.Response))');
+    if(response != null)
+    {
+      if (response.ResponseStatus == 0) {
+       toastr.error(response.Description, "Information");
+     }
+    }
+
+    $().DMSFormValidator('#frmLogin')//;
+    .on('success.form.fv', function (e) {
+     var key = CryptoJS.enc.Utf8.parse($("#HashCode").val());
+     var iv = CryptoJS.enc.Utf8.parse($("#HashCode").val().substring(0, 16));
+     var encryptedlogin = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse($('#txtNetworkID').val()), key,
+     {
+      keySize: 256,
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+     });
+
+     var encryptedpassword = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse($('#txtPassword').val()), key,
+     {
+      keySize: 256,
+      iv: iv,
+      mode: CryptoJS.mode.CBC,
+      padding: CryptoJS.pad.Pkcs7
+     });
+
+     $("#hdnUserIDEncrypted").val(encryptedlogin);
+     $("#hdnPasswordEncrypted").val(encryptedpassword);
+
+     $("#txtNetworkID").val("");
+     $("#txtPassword").val("");
+
+     //e.preventDefault();
+      @*$.ajax({
+       url: '@Url.Action("SignOn", "User")',
+       data: { NetworkID: $("#txtNetworkID").val(), Password: $("#txtPassword").val()},
+       type: 'POST',
+       traditional: true,
+       success: function (data) {
+        alert(data);
+        if (data.ResponseStatus == 1)
+        {
+         toastr.success(data.Description, "Information");
+         window.location = '@Url.Action("Index", "Home")';
+        }
+        else if (data.ResponseStatus == 0 )
+        {
+         toastr.error(data.Description, "Information");
+        }
+       },
+       error: function (response) { }
+      });*@
+    });
+
+
+   }); //end of docu
+   
+
+  </script>
+</head>
+<body>
+ 
+
+ <div class="row" style="margin-top: 10%">
+  <form id="frmLogin" method="post" action="@Url.Action("SignOn", "User")">
+   @Html.AntiForgeryToken()
+   <input id="hdnUserIDEncrypted" name="hdnUserIDEncrypted" value="" type="hidden" />
+   <input id="hdnPasswordEncrypted" name="hdnPasswordEncrypted" value="" type="hidden" />
+   <input type="hidden" value="@ViewBag.CryptoHashCode" id="HashCode" name="HashCode" />
+
+   <div class="col-sm-3 col-sm-offset-5">    
+    <div class="panel panel-primary">
+     <div class="panel-heading">Login to Document Monitoring System</div>
+     <div class="panel-body">
+
+      <div class="form-group">
+       <label class="control-label">Network ID:</label>
+       <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+        <input type="text" maxlength="10" class="form-control" id="txtNetworkID" autocomplete="off" name="txtNetworkID" placeholder="Enter Network ID" required />
+       </div>
+      </div>
+      <div class="form-group">
+       <label class="control-label">Password:</label>
+       <div class="input-group">
+        <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
+        <input type="password" maxlength="20" class="form-control" id="txtPassword" name="txtPassword" placeholder="Enter Network Password" required />
+       </div>
+       </div>
+      </div>
+
+     <div class="panel-footer">
+      <center>
+       <div class="input-group">
+        <button type="submit" id="btnLogin" class="btn btn-primary"><i class="glyphicon glyphicon-ok"></i> Login</button>
+       </div>
+      </center>
+     </div>
+    </div>
+   </div>
+  </form>
+ </div>
+
+ <script type="text/javascript" src="~/Assets/IE8Compatibility/html5shiv.min.js"></script>
+ <script type="text/javascript" src="~/Assets/IE8Compatibility/respond.min.js"></script>
+ <script type="text/javascript" src="~/Assets/bootstrap/js/bootstrap.min.js"></script>
+ <script type="text/javascript" src="~/Assets/toastr/toastr.min.js"></script>
+ <script type="text/javascript" src="~/Assets/js/knockout-3.4.0.js"></script>
+
+</body>
+</html>

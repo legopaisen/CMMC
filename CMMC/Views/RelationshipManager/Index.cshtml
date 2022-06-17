@@ -1,0 +1,148 @@
+﻿@{
+ ViewBag.Title = "Relationship Manager Maintenance";
+ Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    var RMList = JSON.parse('@Html.Raw(Json.Encode(ViewBag.GetRMList))');
+    var branchlist = JSON.parse('@Html.Raw(Json.Encode(ViewBag.BranchesList))');
+
+ $(document).ready(function () {
+  $("#RMList").bootstrapTable('load', RMList);
+  $("#RMList").bootstrapTable('hideColumn', 'ID');
+
+  $("#btnRemove").click(function () {
+      var pID = $.map($("#RMList").bootstrapTable('getSelections'), function (row) {
+          return row.ID
+      });
+      bootbox.confirm("Are you sure you want to remove RM?", function(result){
+      if (result = true)
+      {
+          removeRM(pID);
+      }
+     })
+    });
+   });
+
+ if (localStorage.getItem("deleteRM") == "") {
+  command: toastr["Success"]("Success", "Successfully deleted in the list of Relationship Manager")
+ }
+ localStorage.clear();
+
+function removeRM(paramID){
+  var pID = paramID
+  $.ajax({
+   cache: false,
+   url: '@Url.Action("DeleteRM", "RelationshipManager")',
+   contentType: 'application/json',
+   data: JSON.stringify({
+    'pIDs': pID
+   }),
+   type: 'POST',
+   success: function (data) {
+    localStorage.setItem("deleteRM", "deleted")
+    $("#RMList").bootstrapTable('remove', {
+     field: 'ID',
+     values: pID
+    });
+    location.reload();
+   },
+   error: function () {
+       toastr.info("Select atleast one to remove!")
+   }
+  });
+ }
+
+ function actionFormatter(value, row, index) {
+  return [
+     '<a class="edit" href="#" title="Edit">',
+     '<i class="glyphicon glyphicon-edit"></i>',
+     '</a> ',
+     '<a class="remove" href="javascript:void(0)" id="remove" title="Remove">',
+     '<i class="glyphicon glyphicon-trash"></i>',
+     '</a> '
+  ].join('');
+ }
+
+ window.actionEvents = {
+  'click .remove': function (e, value, row, index) {
+    bootbox.confirm("Are you sure you want to delete RM and it's details?", function (result) {
+     if (result == true) {
+       removeRM(row.ID)
+     }
+     toastr.success("Successfully delete the RM!")
+    })
+  },
+  'click .edit': function (e, value, row, index) {
+   window.location = '@Url.Action("EditRM", "RelationshipManager", new { CMSCode = "token" }) '.replace("token", row.ID);
+        }
+    };
+
+    function branchFormatter(value, row, index) {
+        var branchname = "";
+        $.each(branchlist, function (ndx, item) {
+            if (item.BranchCode == value.toString()) {
+                branchname = item.BranchName;
+            }
+        });
+        return branchname
+    }
+
+    function dateFormatter(value) {
+        if (value.substring(0, 1) == '/') {
+            if (moment(value).format('DD-MMMM-YYYY') == "01-January-1753") {
+                return "Not Available";
+            } else {
+                return moment(value).format('DD-MMMM-YYYY');
+            }
+        }
+        else {
+            return value
+        }
+    }
+
+</script>
+<div class="container">
+ <div class="row">
+  <div class="col-md-12">
+   <h2 class="page-header"> Relationship Manager Maintenance
+    <small>Relationship Manager Details</small>
+   </h2>
+   <div class="panel panel-primary">
+    <div class="panel-heading">Relationship Manager Information</div>
+    <div class="panel-body">
+     <div id="toolbar">
+      <a id="btnAdd" href="@Url.Action("AddRM","RelationshipManager")" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> Add Relationship Manager</a>
+     </div>
+     <table id="RMList" class="" cellpadding="0" style="width:100%"
+            data-toggle="table"
+            data-pagination="true"
+            data-page-list="[5, 10, 20]"
+            data-toolbar="#toolbar"
+            data-classes="table table-hover table-bordered table-responsive"
+            data-row-style="rowStyle"
+            data-search="true"
+            data-show-columns="true"
+            data-show-pagination-switch="true"
+            data-show-toggle="true"
+            data-checkbox-header="false"
+            data-click-to-select="true"
+            data-unique-id="RequestCode">
+      <thead>
+       <tr>
+        <th data-checkbox="true"></th>
+        <th data-field="ID" data-sortable="true">ID</th>
+        <th data-field="RMFullName" data-sortable="true">Fullname</th>
+        <th data-field="AddedDate" data-formatter="dateFormatter" data-sortable="true">Date Added</th>
+        <th data-field="AddedBy">Added By</th>
+        <th data-field="ModifiedDate" data-formatter="dateFormatter">Date Modified</th>
+        <th data-field="ModifiedBy">Modified By</th>
+        <th data-field="BranchAssigned" data-formatter="branchFormatter">Branch Assigned</th>
+        <th data-field="Action" data-formatter="actionFormatter" data-events="actionEvents">Action</th>
+       </tr>
+      </thead>
+     </table>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>

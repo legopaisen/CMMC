@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Holidays";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Assets/datatable/bootstrap-table.css" type="text/css">
+<script type="text/javascript" src="~/Assets/datatable/bootstrap-table.js"></script>
+
+<script type="text/javascript">
+ $(document).ready(function () {
+  var data = @Html.Raw(Json.Encode(Model))
+  $("#tblAccessList").bootstrapTable('load', data);
+  });
+
+ function dateFormatter(value) {
+  if (value.substring(0, 1) == '/') {
+   if (value.substring(0, 7) == "/Date(-") {
+    return "N/A"
+   } else {
+    return moment(value).format('DD-MMMM-YYYY');
+   }
+  }
+  else { return value }
+ }
+ </script>
+
+ <h2 class="page-header">
+  Holidays
+  <small></small>
+ </h2>
+ <div id="toolbar">
+ </div>
+ <div class="panel panel-primary">
+  <div class="panel-heading">Holidays</div>
+  <div class="panel-body">
+   <table id='tblAccessList'
+ style="margin:0px;"
+ data-classes="table table-hover table-condensed table-striped"
+ data-row-style="rowStyle"
+ data-toggle="table"
+ data-search="true"
+ data-cache="false"
+ data-toolbar="#toolbar"
+ data-pagination="true"
+ data-page-list="[5, 10, 20]">
+<thead>
+<tr>
+ <th data-field="Date" data-sortable="true" data-formatter="dateFormatter"> Date </th>
+<th data-field="Type" data-sortable="true"> Type </th>
+<th data-field="Description"> Description </th>
+</tr>
+</thead>
+</table>
+</div>
+</div>

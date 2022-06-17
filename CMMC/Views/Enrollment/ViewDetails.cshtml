@@ -1,0 +1,381 @@
+﻿@model CMMC.Models.Enrollment.CmsCodeDetails
+
+@using System.Web.Helpers;
+@{
+ ViewBag.Title = "CMSCode Details";
+ Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+ var EnrollmentDetails = @Html.Raw(Json.Encode(Model))
+
+ function readCookie(name) {
+  var i, c, ca, nameEQ = name + "=";
+  ca = document.cookie.split(';');
+  for (i = 0; i < ca.length; i++) {
+   c = ca[i];
+   while (c.charAt(0) == ' ') {
+    c = c.substring(1, c.length);
+   }
+   if (c.indexOf(nameEQ) == 0) {
+    return c.substring(nameEQ.length, c.length);
+   }
+  }
+  return;
+ }
+ var TerminationList = @Html.Raw(Json.Encode(ViewBag.TerminationList))
+
+ 
+ Number.prototype.formatMoney = function (c, d, t) {
+  var n = this,
+      c = isNaN(c = Math.abs(c)) ? 2 : c,
+      d = d == undefined ? "." : d,
+      t = t == undefined ? "," : t,
+      s = n < 0 ? "-" : "",
+      i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
+      j = (j = i.length) > 3 ? j % 3 : 0;
+  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+ };
+
+ function statusFormatter(value) {
+  if (value == 1) { return "Pending"; }
+  else if (value == 2) { return "Approved"; }
+  else if (value == 3) { return "Disapproved"; }
+  else if (value == 4) { return "Cancelled"; }
+ }
+
+ var TerminationCMSCodeList = [];
+
+ function dateFormatter(value) {
+  if (value.substring(0, 1) == '/')
+  { return moment(value).format('DD-MMMM-YYYY'); }
+  else { return value }
+ }
+
+ function RMFormatter(value) {
+     return value.RMFullName;
+ }
+
+ function getCMSCode(pCMSCode) {
+  var pcmscode = {
+   'CMSCode': pCMSCode
+  }
+  window.location = '@Url.Action("EditCmsCode", "Enrollment", new { CMSCode = "token" }) '.replace("token", pcmscode.CMSCode);
+ }
+
+ function approveCMSCode(pCMSCode) {
+  var details = {
+   'CMSCode': pCMSCode,
+   'Status': 2,
+   'IsActive': true
+  }
+
+  $.ajax({
+   url: '@Url.Action("ApprovedCMSCode","Enrollment")',
+   method: 'GET',
+   data: details,
+   success: function (data) {
+    localStorage.setItem("Status", "approved")
+    window.location = '@Url.Action("Index","Enrollment")';
+       },
+   error: function (e) {
+    Command: toastr['error']('Error', e)
+   }
+  });
+ }
+
+ function deleteCMSCode(pCMSCode) {
+  var details = {
+   'CMSCode': pCMSCode,
+   'Status': 4,
+   'IsActive': false
+  }
+
+  $.ajax({
+   cache: false,
+   url: '@Url.Action("CancelandRemove","Enrollment")',
+   method: 'GET',
+   data: details,
+   success: function (data) {
+    localStorage.setItem("Status", "deleted")
+    window.location = '@Url.Action("Index","Enrollment")';
+   },
+   error: function (e) {
+     Command: toastr['error']('Error', e)
+
+   }
+  });
+ }
+
+ function removeCMSCode(pCMSCode) {
+  var details = {
+   'CMSCode': pCMSCode,
+   'Status': 5,
+   'IsActive': false
+  }
+
+  $.ajax({
+   cache: false,
+   url: '@Url.Action("CancelandRemove","Enrollment")',
+   method: 'GET',
+   data: details,
+   success: function (data) {
+    localStorage.setItem("Status", "remove")
+    window.location = '@Url.Action("Index","Enrollment")';
+   },
+   error: function (e) {
+    Command: toastr['error']('Error', e)
+   }
+  });
+ }
+
+ $(document).ready(function () {
+  for (var i = 0 ; i < TerminationList.length; i++) {
+   $.each(TerminationList[i].WhereValues, function (sndx, sitem) {
+    if (sitem.FieldName == "CMSCode") {
+     TerminationCMSCodeList.push(sitem.Value);
+    }
+   });
+  };
+
+  if ('@Model.GeneralDetails.IsAutoDebit' == "True") {
+   $("#PCharges").append('<li class="list-group-item" style="height: auto;" id="IsAutoDebit"><strong>Auto Debit:</strong> Yes</li>');
+  } else {
+   $("#PCharges").append('<li class="list-group-item" style="height: auto;" id="IsAutoDebit"><strong>Auto Debit:</strong> No</li>');
+  }
+
+
+  var AccountList = EnrollmentDetails.AccountInformationList,
+   AvailedList = EnrollmentDetails.AvailedDetailsList,
+   RelatedList = EnrollmentDetails.RelatedAccountList,
+   $AccountInfoTable = $("#AccountInformation"),
+   $AvailedServicesTable = $("#ServiceList"),
+   $RelatedAccountsTable = $("#RelatedAccountList");
+
+  
+  for (var i = 0; i < AvailedList.length; i++) {
+   AvailedList[i].MotherRequiredADB = Number(AvailedList[i].MotherRequiredADB).formatMoney(2, ".", ",")
+   AvailedList[i].SubRequiredADB = Number(AvailedList[i].SubRequiredADB).formatMoney(2,".",",")
+  }
+
+  $AccountInfoTable.bootstrapTable('load', AccountList);
+  $AvailedServicesTable.bootstrapTable('load', AvailedList);
+  $RelatedAccountsTable.bootstrapTable('load', RelatedList);
+  $AvailedServicesTable.bootstrapTable('hideColumn', 'ServiceID');
+  //var acc = [];
+
+  //for (i = 0; i < AccountList.length; i++) {
+  // acc.push('<li class="list-group-item">' + AccountList[i].AccountNumber + AccountList[i].AccountName + '</li>')
+  //}
+  //$('.list-group').append(acc.join(''));
+
+  var str = "Status: ";
+  if (JSON.stringify(@Model.GeneralDetails.Status) == 1) {
+   var status = str.bold() + "Pending"
+   document.getElementById("status").innerHTML = status;
+  }
+  else if (JSON.stringify(@Model.GeneralDetails.Status) == 2) {
+   var status = str.bold() + "Approved"
+   document.getElementById("status").innerHTML = status;
+  }
+  else if (JSON.stringify(@Model.GeneralDetails.Status) == 3) {
+   var status = str.bold() + "Cancelled"
+   document.getElementById("status").innerHTML = status;
+  }
+  else if (JSON.stringify(@Model.GeneralDetails.Status) == 4) {
+   var status = str.bold() + "Disapproved"
+   document.getElementById("status").innerHTML = status;
+  }
+
+  if ('@Session["UserType"]' != '1') {
+   if (JSON.stringify(@Model.GeneralDetails.Status) == 1) {
+    $("#edit").show();
+    $("#cancel").show();
+    $("#approve").hide();
+    $("#remove").hide();
+   }
+   else if (JSON.stringify(@Model.GeneralDetails.Status) == 2) {
+    $("#edit").show();
+    $("#cancel").hide();
+    $("#approve").hide();
+    $("#remove").hide();
+   }
+   else {
+    $("#edit").hide();
+    $("#cancel").hide();
+    $("#approve").hide();
+    $("#remove").hide();
+   }
+  }
+  else {
+   if (JSON.stringify(@Model.GeneralDetails.Status) == 1) {
+    $("#edit").hide();
+    $("#cancel").hide();
+    $("#approve").show();
+    $("#remove").show();
+   }
+   else {
+    $("#edit").hide();
+    $("#cancel").hide();
+    $("#approve").hide();
+    $("#remove").hide();
+   }
+  }
+
+  $("#edit").click(function () {
+   var IsExist = false;
+   $.each(TerminationCMSCodeList, function (ndx, item) {
+    if (item == EnrollmentDetails.GeneralDetails.CMSCode) {
+     IsExist = true;
+    } else { IsExist = IsExist ? true : false }
+   });
+   if (!IsExist) {
+    getCMSCode(@Model.GeneralDetails.CMSCode)
+   } else {
+    Command: toastr["info"]("Oopps!", "You cannot edit a CMSCode that is for termination!")
+   }
+  });
+  $("#approve").click(function () {
+   approveCMSCode(@Model.GeneralDetails.CMSCode)
+  });
+  $("#cancel").click(function () {
+   bootbox.confirm("Are you sure you want to delete CMSCode and it's details?", function (result) {
+    if (result == true) {
+     deleteCMSCode(@Model.GeneralDetails.CMSCode);
+    }
+   })
+  });
+  $("#remove").click(function () {
+   bootbox.confirm("Are you sure you want to remove CMSCode and it's details?", function (result) {
+    if (result == true) {
+     removeCMSCode(@Model.GeneralDetails.CMSCode);
+    }
+   })
+  });
+ });
+
+</script>
+
+
+<div class="container">
+ <div class="row">
+  <h2 class="page-header">
+  CMS Information
+   <small>CMS Details</small>
+  </h2>
+  <div class="panel panel-default">
+   <div class="panel-heading">
+    <div class="row" id="BasicCMSdetails">
+     <div class="col-lg-8">
+      <div class="col-sm-4">
+       <figure>
+        <img class="img-circle img-responsive" alt="" src="~/300-text.png">
+       </figure>
+      </div>
+      <div class="col-sm-8">
+       <header>
+        <div class="input-group">
+         <h2>
+          @Model.GeneralDetails.Description
+         </h2>
+          @if (Model.GeneralDetails.ModifiedBy != "N/A") { 
+         <small><i class="glyphicon glyphicon-time"></i> Last Updated on: <time>@Model.GeneralDetails.ModifiedOn</time>; by: @Model.GeneralDetails.ModifiedBy</small><br /><br />
+          }
+         <input type="button" class="btn btn-success btn-xs" value=" Edit " id="edit" />
+         <input type="button" class="btn btn-danger btn-xs" value=" Cancel " id="cancel" />
+         <input type="button" class="btn btn-info btn-xs" value=" Approve " id="approve" />
+         <input type="button" class="btn btn-danger btn-xs" value=" Remove " id="remove" />
+        </div>
+       </header>
+       <hr />
+       <ul class="list-group">
+        <li class="list-group-item"><strong>Created By: </strong> @Model.GeneralDetails.CreatedBy</li>
+        <li class="list-group-item"><strong>Created On: </strong>@Model.GeneralDetails.CreatedOn</li>
+        <li class="list-group-item" id="active"><script>$("#active").append("<strong>Is Active: </strong>" + ('@Model.GeneralDetails.IsActive' == "True" ? "Yes" : "No"))</script></li>
+        <li class="list-group-item" id="status"></li>
+        <li class="list-group-item"><strong>Tagging: </strong>@Model.GeneralDetails.Tagging</li>
+       </ul>
+      </div>
+     </div>
+    </div>   
+   </div> 
+    <div class="bs-callout bs-callout-danger">
+     <h4>Account Information</h4>
+        <table id="AccountInformation" class="table table-hover table-striped table-bordered" cellpadding="0" style="width:100%"
+               data-toggle="table"
+               data-pagination="true"
+               data-search="true"
+               data-detail-formatter="detailAccountInfo"
+               data-unique-id="AccountNumber"
+               data-row-style="rowStyle"
+               data-page-list="[5, 10, 20]">
+            <thead>
+                <tr>
+                    <th data-field="AccountNumber" data-sortable="true">Account No</th>
+                    <th data-field="AccountName" data-sortable="true">Account Name</th>
+                    <th data-field="BranchName" data-sortable="true">Branch Name</th> 
+                    <th data-field="DateEnrolled" data-sortable="true" data-formatter="dateFormatter">Date Enrolled</th>
+                    <th data-field="InvestmentDesc" data-sortable="true">Investment Type</th>
+                    <th data-field="Status">Status</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+
+   <div class="bs-callout bs-callout-danger">
+    <h4>Services Availed</h4>
+       <table id="ServiceList" class="table table-hover table-bordered" cellpadding="0" style="width:100%"
+              data-toggle="table"
+              data-pagination="true"
+              data-search="true"
+              data-detail-formatter="detailFormatter"
+              data-unique-id="ServiceName"
+              data-row-style="rowStyle"
+              data-page-list="[5, 10, 20]">
+           <thead>
+               <tr>
+                <th data-field="ServiceID" data-unique-id @*quirra*@ data-sortable="true">Service ID</th>
+                <th data-field="ServiceName" @*quirra*@ data-sortable="true">Availed Service</th>
+                <th data-field="MotherRequiredADB" data-align="right">Mother Required ADB</th>
+                <th data-field="SubRequiredADB" data-align="right">Sub-Account Required ADB</th>
+                <th data-field="MinNumberEmployee" data-align="right">Minimum Number of Employee</th>
+                <th data-field="RMID" data-formatter="RMFormatter">Relationship Manager</th>
+                <th data-field="EnrolledOn" data-formatter="dateFormatter" @*quirra*@ data-sortable="true">Date Enrolled</th>
+                <th data-field="EnrolledBy">Enrolled By</th>
+                <th data-field="ModifiedOn" data-formatter="dateFormatter" @*quirra*@ data-sortable="true">Date Modified</th>
+                <th data-field="ModifiedBy">Modified By</th>
+                <th data-field="Status" data-formatter="statusFormatter">Status</th>
+               </tr>
+           </thead>
+       </table>
+   </div>
+   <div class="bs-callout bs-callout-danger">
+    <h4>Penalty Charges</h4>
+    <ul class="list-group" id="PCharges" style="width: 30%;">
+     <li class="list-group-item" style="height: auto;"><strong>Base Penalty: </strong> Php @Model.GeneralDetails.BasePenalty</li>
+     <li class="list-group-item" style="height: auto;"><strong>Penalty Fee:</strong> Php @Model.GeneralDetails.PenaltyFee</li>     
+    </ul>
+   </div>
+   <div class="bs-callout bs-callout-danger">
+    <h4>Related Accounts</h4>
+    <table id="RelatedAccountList" class="table table-hover table-bordered" cellpadding="0" style="width:100%"
+           data-toggle="table"
+           data-pagination="true"
+           data-search="true"
+           data-detail-formatter="detailRelatedAccounts"
+           data-unique-id="AccountName"
+           data-row-style="rowStyle">
+     <thead>
+      <tr>
+       <th data-field="AccountID" @*quirra*@ data-sortable="true">Account ID</th>
+       <th data-field="AccountName" @*quirra*@ data-sortable="true">Account Name</th>
+       <th data-field="DateAdded" data-formatter="dateFormatter" @*quirra*@ data-sortable="true">Date Added</th>
+       <th data-field="AddedBy">Added By</th>
+       <th data-field="Status" data-formatter="statusFormatter">Status</th>
+      </tr>
+     </thead>
+    </table>
+   </div>
+  </div>
+ </div>
+</div>

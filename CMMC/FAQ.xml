@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+ <ArrayOfFAQModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <FAQModel>
+   <TagIndex>1</TagIndex>
+   <ItemIndex>1</ItemIndex> 
+   <Question>What to do if account is locked, expired or disabled? </Question> 
+   <Module>Log In</Module> 
+   <Answers>
+    <string> Inform the System Administrator that the User ID is either locked, expired or disabled thru email.</string> 
+   </Answers>
+  </FAQModel>
+
+  <FAQModel>
+   <TagIndex>1</TagIndex>
+   <ItemIndex>2</ItemIndex> 
+    <Question>What to do if User ID is not enrolled in the system? </Question> 
+    <Module>Log In</Module> 
+    <Answers>
+      <string> Inform the System Administrator that the User ID is not yet enrolled in the system thru email.</string> 
+    </Answers>
+  </FAQModel>
+
+  <!--<FAQModel>
+   <TagIndex>1</TagIndex>
+   <ItemIndex>3</ItemIndex> 
+    <Question>How to change access? </Question> 
+    <Module>Log In</Module> 
+    <Answers>
+      <string>Click User's Name on the upper right corner of the CMMC site.</string> 
+      <string>On the Dropdown menu, click which access on the list to use.</string> 
+      <string>Click OK on the dialog box.</string> 
+    </Answers>
+  </FAQModel>-->
+  
+  <!--System Settings-->
+  <FAQModel>
+   <TagIndex>2</TagIndex>
+   <ItemIndex>1</ItemIndex> 
+    <Question>How to change value of System Settings? </Question> 
+    <Module>System Settings</Module> 
+    <Answers>
+      <string> In Navigation Bar, Click the Settings > System Settings.</string> 
+      <string> In each form, click the Edit Button to edit the values.</string>
+      <string>Click the Save button.</string> 
+      <string>*System will automatically test if the inputted values are valid or not.</string>
+     <string> NOTE: Only the 	ITG Applications and Database Management will access the page.</string>
+    </Answers>
+  </FAQModel>
+
+  <!--Home-->
+  <FAQModel>
+   <TagIndex>3</TagIndex>
+   <ItemIndex>1</ItemIndex> 
+    <Question>How to Approve the CMS Code Request? </Question> 
+    <Module>Home</Module> 
+    <Answers>
+      <string>In navigation bar, click the Home to view all the CMS Code request.  </string> 
+      <string>Click the Approve button in the Action column or check the checkbox of the Request then click the Approve button. </string>
+      <string>NOTE:The E-Channels Supervisor has an access to approve the pending requests. </string>
+       </Answers>
+  </FAQModel>
+  
+  <FAQModel>
+   <TagIndex>3</TagIndex>
+   <ItemIndex>2</ItemIndex> 
+    <Question>How to Reject the CMS Code Request? </Question> 
+    <Module>Home</Module> 
+    <Answers>
+      <string>In navigation bar, click the Home to view all the CMS Code request.  </string> 
+      <string>Click the Reject button in the Action column or check the checkbox of the Request then click the Reject button. </string>
+      <string>NOTE:The E-Channels Supervisor has an access to reject the pending requests. </string>
+       </Answers>
+  </FAQModel>
+  
+  <FAQModel>
+   <TagIndex>3</TagIndex>
+   <ItemIndex>3</ItemIndex> 
+    <Question>It is possible to approve and reject more than one request? </Question> 
+    <Module>Home</Module> 
+    <Answers>
+      <string>Yes  </string> 
+      <string>Check the checkbox of the requests then click the approve and reject button. </string>
+      <string>NOTE:The E-Channels Supervisor has an access to approve and reject the pending requests. </string>
+       </Answers>
+  </FAQModel>
+  
+  <FAQModel>
+   <TagIndex>3</TagIndex>
+   <ItemIndex>4</ItemIndex> 
+    <Question>How to Edit the CMS Code request? </Question> 
+    <Module>Home</Module> 
+    <Answers>
+      <string>In the home page, click the Edit button in the Action column.  </string> 
+      <string>In the Edit Request page, edit the fields that need to update.  </string>
+      <string>Click the Save button.  </string>
+      <string>NOTE:The E-Channels Maker has an access to edit requests. </string>
+       </Answers>
+  </FAQModel>
+  
+  <FAQModel>
+   <TagIndex>3</TagIndex>
+   <ItemIndex>5</ItemIndex> 
+    <Question>It is possible to Add services in request CMS Code? </Question> 
+    <Module>Home</Module> 
+    <Answers>
+     <string>Yes. </string>
+      <string>In the home page, click the Edit button in the Action column.  </string> 
+      <string>In the Edit Request page, click the Add button in Services Availed then input the required details for the specific services, then click the Save Button. </string>
+      <string>Click the Save button. </string>
+      <string>NOTE:The E-Channels Maker has an access to edit requests. </string>
+       </Answers>
+  </FAQModel>
+ 
+  <FAQModel>
+   <TagIndex>3</TagIndex>
+   <ItemIndex>6</ItemIndex> 
+    <Question>How to View the details of CMS Code Request? </Question> 
+    <Module>Home</Module> 
+    <Answers>
+      <string>In navigation bar, click the Home to view all the CMS Code request.  </string> 
+      <string>Click the View button beside of the Request description. </string>
+       </Answers>
+  </FAQModel>
+  
+  <!--CMS Code Maintenance-->
+  <FAQModel>
+    <TagIndex>5</TagIndex>
+    <ItemIndex>1</ItemIndex>
+    <Question>How to create CMS Code? </Question>
+    <Module>Customer Profile Management</Module>
+    <Answers>
+      <string>In navigation bar, click the Customer Profile Management > CMS Code Maintenance. </string>
+      <string>In CMS Code Maintenance page, click the New CMS Code button. </string>
+      <string>In Create CMS Code page, input the required values.</string>
+      <string>Click the Save button.</string>
+     <string>NOTE: The E-Channels - Maker has an access to create CMS Code.</string>
+    </Answers>
+  </FAQModel>   
+  
+   <FAQModel>
+    <TagIndex>5</TagIndex>
+    <ItemIndex>2</ItemIndex>
+    <Question>How to edit CMS Code Request? </Question>
+    <Module>Customer Profile Management</Module>
+    <Answers>
+      <string>In CMS Code Maintenance page, click the Edit button in Action column. </string>
+      <string>In Edit CMS Code page, edit the values that need to be update.</string>
+      <string>Click Save button.</string>
+    </Answers>
+  </FAQModel>   
+ 
+  <FAQModel>
+    <TagIndex>5</TagIndex>
+    <ItemIndex>3</ItemIndex>
+    <Question>How to view CMS Code Information? </Question>
+    <Module>Customer Profile Management</Module>
+    <Answers>
+      <string>In CMS Code Maintenance page, click the View button in Action column. </string>
+    </Answers>
+  </FAQModel>  
+  
+   <FAQModel>
+    <TagIndex>5</TagIndex>
+    <ItemIndex>4</ItemIndex>
+    <Question>How to view CMS Code Information? </Question>
+    <Module>Customer Profile Management</Module>
+    <Answers>
+      <string>In CMS Code Maintenance page, click the View button in Action column. </string>
+    </Answers>
+  </FAQModel>  
+  
+   <FAQModel>
+    <TagIndex>5</TagIndex>
+    <ItemIndex>5</ItemIndex>
+    <Question>How to terminate or delete CMS Code? </Question>
+    <Module>Customer Profile Management</Module>
+    <Answers>
+      <string>In CMS Code Maintenance page, click the Terminate button in Action column. </string>
+      <string>Confirmation box will apppear, click OK button to request the CMS Code to terminate. </string>
+    </Answers>
+  </FAQModel>  
+   
+   <!--Relationship Manager Maintenance-->
+  <FAQModel>
+   <TagIndex>6</TagIndex>
+   <ItemIndex>1</ItemIndex>
+   <Question>How to Add Relationship Manager?</Question>
+   <Module>Relationship Manager Maintenance</Module>
+   <Answers>
+    <string>In Customer Profile Management navigation, click the Relationship Manager Maintenance.</string>
+    <string>In Relationship Manager page, click the Add Relationship Manager button.</string>
+    <string>Input the required values.</string>
+    <string>Click the Save button.</string>
+   </Answers>
+  </FAQModel>
+  
+   <FAQModel>
+   <TagIndex>6</TagIndex>
+   <ItemIndex>2</ItemIndex>
+   <Question>How to Edit Relationship Manager?</Question>
+   <Module>Relationship Manager Maintenance</Module>
+   <Answers>
+    <string>In Relationship Manager page, click the Edit button in Action column.</string>
+    <string>Input the required values that need to update.</string>
+    <string>Click the Save button.</string>
+   </Answers>
+  </FAQModel>
+  
+  <FAQModel>
+   <TagIndex>6</TagIndex>
+   <ItemIndex>3</ItemIndex>
+   <Question>How to Delete Relationship Manager?</Question>
+   <Module>Relationship Manager Maintenance</Module>
+   <Answers>
+    <string>In Relationship Manager page, click the Delete button in Action column.</string>
+    <string>Confirmation box will appear, then click OK to delete the Relationship Manager.</string>
+   </Answers>
+  </FAQModel>
+   
+   <!--System Parameter-->
+  <FAQModel>
+   <TagIndex>7</TagIndex>
+   <ItemIndex>1</ItemIndex>
+   <Question>How to Add a Parameter?</Question>
+   <Module>Parameter Maintenance</Module>
+   <Answers>
+    <string>In navigation bar, click the Parameter Maintenance and choose in the catagery of parameter. </string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+   </Answers>
+  </FAQModel>
+   
+  <FAQModel>
+   <TagIndex>7</TagIndex>
+   <ItemIndex>2</ItemIndex>
+   <Question>How to Add a Branch of CTBC?</Question>
+   <Module>Parameter Maintenance</Module>
+   <Answers>
+    <string>In navigation bar, click the Parameter Maintenance > CTBC Branches. </string>
+    <string>In CTBC Branches page, click the Add Branch button. </string>
+    <string>In Add Branch page, input a required values. </string>
+    <string>Click the Save Button. </string>
+    <string>*System will check if the Branch Code is already exist.</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+   </Answers>
+  </FAQModel>
+  
+  <FAQModel>
+   <TagIndex>7</TagIndex>
+   <ItemIndex>3</ItemIndex>
+   <Question>How to Edit a Branch details of CTBC?</Question>
+   <Module>Parameter Maintenance</Module>
+   <Answers>
+    <string>In CTBC Branches page, click the Edit Branch button. </string>
+    <string>In Edit Branch page, input a required values that need to update. </string>
+    <string>Click the Save Button. </string>
+    <string>*System will check if the Branch Code is already exist.</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+   </Answers>
+  </FAQModel>
+  
+  <FAQModel>
+   <TagIndex>7</TagIndex>
+   <ItemIndex>4</ItemIndex>
+   <Question>How to Activate and Deactivate a Branch of CTBC?</Question>
+   <Module>Parameter Maintenance</Module>
+   <Answers>
+    <string>Select Branch to Activate or Deactivate by Ticking the Checkbox beside the Branch Code. </string>
+    <string>Click the Activate or Deactivate button above the CTBC Branch table. </string>
+    <string>Click the OK button. </string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+   </Answers>
+  </FAQModel>
+ 
+  <FAQModel>
+   <TagIndex>7</TagIndex>
+   <ItemIndex>5</ItemIndex>
+   <Question>How to Add a Service Type of CTBC?</Question>
+   <Module>Parameter Maintenance</Module>
+   <Answers>
+    <string>In navigation bar, click the Parameter Maintenance > Service Types. </string>
+    <string>In Service Type page, click the Add Service button. </string>
+    <string>In Add Service page, input a required values. </string>
+    <string>Click the Save Button. </string>
+    <string>*System will check if the Service Name is already exist.</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+   </Answers>
+  </FAQModel>
+   
+     <FAQModel>
+   <TagIndex>7</TagIndex>
+   <ItemIndex>6</ItemIndex>
+   <Question>How to Edit a Service details?</Question>
+   <Module>Parameter Maintenance</Module>
+   <Answers>
+    <string>In Service Type page, click the Edit Services button. </string>
+    <string>In Edit Services page, input a required values that need to update. </string>
+    <string>Click the Save Button. </string>
+    <string>*System will check if the Branch Code is already exist.</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+   </Answers>
+  </FAQModel>
+    
+  <FAQModel>
+   <TagIndex>7</TagIndex>
+   <ItemIndex>7</ItemIndex>
+   <Question>How to Activate and Deactivate a Service Type?</Question>
+   <Module>Parameter Maintenance</Module>
+   <Answers>
+    <string>Select Service to Activate or Deactivate by Ticking the Checkbox beside the Service ID. </string>
+    <string>Click the Activate or Deactivate button above the Service Type table. </string>
+    <string>Click the OK button.</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+   </Answers>
+  </FAQModel>
+   
+  <FAQModel>
+   <TagIndex>7</TagIndex>
+   <ItemIndex>8</ItemIndex>
+   <Question>How to Add Investment Type of CTBC?</Question>
+   <Module>Parameter Maintenance</Module>
+   <Answers>
+    <string>In navigation bar, click the Parameter Maintenance > Investment Types. </string>
+    <string>In Investment Type page, click the Add Investment button. </string>
+    <string>In Add Investment page, input a required values. </string>
+    <string>Click the Save Button. </string>
+    <string>*System will check if the Investment Code is already exist.</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+   </Answers>
+  </FAQModel>
+   
+  <FAQModel>
+   <TagIndex>7</TagIndex>
+   <ItemIndex>9</ItemIndex>
+   <Question>How to Edit a Investment details?</Question>
+   <Module>Parameter Maintenance</Module>
+   <Answers>
+    <string>In Investment Type page, click the Edit Investment button. </string>
+    <string>In Edit Investment page, input a required values that need to update. </string>
+    <string>Click the Save Button. </string>
+    <string>*System will check if the Branch Code is already exist.</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+   </Answers>
+  </FAQModel>
+    
+  <FAQModel>
+   <TagIndex>7</TagIndex>
+   <ItemIndex>10</ItemIndex>
+   <Question>How to Activate and Deactivate a Investment Type?</Question>
+   <Module>Parameter Maintenance</Module>
+   <Answers>
+    <string>Select Investment Type to Activate or Deactivate by Ticking the Checkbox beside the Investment Code. </string>
+    <string>Click the Activate or Deactivate button above the Investment Type table. </string>
+    <string>Click the OK button.</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+   </Answers>
+  </FAQModel>
+  
+  <!--Group Maintenance-->
+  <FAQModel>
+    <TagIndex>8</TagIndex>
+    <ItemIndex>1</ItemIndex>
+    <Question>How to add Access Group? </Question>
+    <Module>User Maintenance</Module>
+    <Answers>
+      <string>In Settings, click User Settings > Group Maintenance. </string>
+     <string> Group Maintenance page, click Add Group button (green plus icon on upper left corner of the page). </string>
+      <string>Input required values. </string>
+      <string>Click the Save button. </string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+    </Answers>
+  </FAQModel>
+
+  <FAQModel>
+    <TagIndex>8</TagIndex>
+    <ItemIndex>2</ItemIndex>
+    <Question>How to Activate or Deactivate Access Group? </Question>
+    <Module>User Maintenance</Module>
+    <Answers>
+      <string>Select Access to Activate or Deactivate by Ticking the Checkbox beside the Access Code. </string>
+      <string>Click the Activate or Deactivate button above the Access Group Table. </string>
+      <string>Click the OK button</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+    </Answers>
+  </FAQModel>
+
+  <FAQModel>
+    <TagIndex>8</TagIndex>
+    <ItemIndex>3</ItemIndex>
+    <Question>How to Edit Access Group? </Question>
+    <Module>User Maintenance</Module>
+    <Answers>
+      <string>In Access Group Table, Click Edit button in Actions Column </string>
+      <string>In Edit Access Group Details page, edit the Access Group Values.</string>
+      <string>Click the Save button.</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+    </Answers>
+  </FAQModel>
+  
+  <!--Access Maintenance-->
+  <FAQModel>
+    <TagIndex>8</TagIndex>
+    <ItemIndex>4</ItemIndex>
+    <Question>How to add Access Role? </Question>
+    <Module>User Maintenance</Module>
+    <Answers>
+     <string>In Settings > click User Settings > Access Maintenance. </string>
+     <string> Access Maintenance page, click Add Access button (green plus icon on upper left corner of the page). </string>
+      <string>Input required values. </string>
+      <string>Click the Save button. </string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+    </Answers>
+  </FAQModel>
+
+  <FAQModel>
+    <TagIndex>8</TagIndex>
+    <ItemIndex>5</ItemIndex>
+    <Question>How to Activate or Deactivate Access Role? </Question>
+    <Module>User Maintenance</Module>
+    <Answers>
+      <string>Select Access Role to Activate or Deactivate by ticking the checkbox beside the Access Code </string>
+      <string>Click Activate or Deactivate button above the Access Maintenance Table. </string>
+      <string>Click the OK button.</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+    </Answers>
+  </FAQModel>
+
+  <FAQModel>
+    <TagIndex>8</TagIndex>
+    <ItemIndex>6</ItemIndex>
+    <Question>How to Edit Access Role? </Question>
+    <Module>User Maintenance</Module>
+    <Answers>
+      <string>In Access Role Table, click Edit button in Actions Column </string>
+      <string>In Edit Access Role page, Edit Access Role Values. </string>
+      <string>Click the Save button.</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+    </Answers>
+  </FAQModel>
+
+  <!--User Maintenance-->
+  <FAQModel>
+    <TagIndex>8</TagIndex>
+    <ItemIndex>7</ItemIndex>
+    <Question>How to Add Access User? </Question>
+    <Module>User Maintenance</Module>
+    <Answers>
+     <string>In Settings, click User Settings > User Maintenance. </string>
+     <string> User Maintenance page, click Add User button (green plus icon on upper left corner of the page). </string>
+      <string>Input required values. </string>
+      <string>Click the Save button. </string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+    </Answers>
+  </FAQModel>
+
+  <FAQModel>
+    <TagIndex>8</TagIndex>
+    <ItemIndex>8</ItemIndex>
+    <Question>How to Activate or Deactivate Access User? </Question>
+    <Module>User Maintenance</Module>
+    <Answers>
+      <string>Select Access User to Activate or Deactivate by ticking the checkbox beside the User ID. </string>
+      <string>Click Activate or Deactivate button above the Access User Role table. </string>
+      <string>Click the OK button.</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+    </Answers>
+  </FAQModel>
+
+  <FAQModel>
+    <TagIndex>8</TagIndex>
+    <ItemIndex>9</ItemIndex>
+    <Question>How to Edit Access User? </Question>
+    <Module>User Maintenance</Module>
+    <Answers>
+      <string>Click Edit button on Actions Column. </string>
+      <string>In Edit Access User page, Edit values. </string>
+      <string>Click the Save button.</string>
+    <string>NOTE: This page is accessible by ITG Access and Quality Management.</string>
+    </Answers>
+  </FAQModel>
+
+ 
+</ArrayOfFAQModel>

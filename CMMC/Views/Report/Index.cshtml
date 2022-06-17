@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var modules = JSON.parse('@Html.Raw(Json.Encode(ViewBag.ModuleList))');
+
+        $(function () {
+            $("#txtStartDate").datepicker({ format: 'M dd, yyyy', autoclose: true }).css("background-color", "aliceblue").css("cursor", "pointer");
+            $("#txtEndDate").datepicker({ format: 'M dd, yyyy', autoclose: true }).css("background-color", "aliceblue").css("cursor", "pointer");
+        });
+
+        $.each(modules, function (index, value) {
+            $("#cmbModule").append("<option value='" + value.Module_Code + "'>" + value.ModuleName + "</option>");
+        });
+
+        //$("#cmbModule").multiselect(
+        // {
+        //     includeSelectAllOption: true,
+        //     buttonWidth: '150px',
+        //     selectAllNumber: false
+        // });
+
+        $("#btnFilter").on('click', function () {
+            // $(this).prop("disabled", "disabled");
+            //alert($("#txtStartDate").val());
+            var strURL = "@Url.Content("~/Reports/ReportViewer.aspx")?ReportName=AuditTrail&UserID=" + $("#txtUserID").val()
+              + "&Module=" + $("#cmbModule").val()
+              + "&StartDate=" + $("#txtStartDate").val()
+              + "&EndDate=" + $("#txtEndDate").val();
+            ;
+            window.open(strURL, "_blank");
+
+            @*$("#ifrmAuditTrail").css("height", "0px").attr("src", "@Url.Content("~/Reports/ReportViewer.aspx")?ReportName=AuditTrail&UserID=" + $("#txtUserID").val()
+     + "&Module=" + $("#cmbModule").val()
+     + "&StartDate=" + $("#txtStartDate").val()
+     + "&EndDate=" + $("#txtEndDate").val()
+     + "&IPAddress=" + $("#txtIPAddress").val() + "");*@
+
+        });
+
+
+
+        // $("#ifrmAuditTrail").on('load', function () {
+        //  $(this).css("height", document.getElementById('ifrmAuditTrail').contentWindow.document.body.scrollHeight);
+        //  $(this).css("width", "100%");
+        //  $(this).css("background-color", "white");
+        //  $(this).css("visibility", "visible");
+        //  $("#btnFilter").prop("disabled", "");
+        // });
+    });
+
+
+
+</script>
+
+
+
+<style>
+    .filter .input-group-addon {
+        min-width: 100px;
+        text-align: left;
+    }
+
+    .filter .row {
+        margin-bottom: 10px;
+    }
+</style>
+}
+<div class="container">
+  <div class="row" id="reports">
+    <h2 class="page-header">
+       Audit Report
+    </h2>
+     <div class="col-md-12">
+      <div class="panel panel-primary">
+       <div class="panel-heading">Filter</div>
+        <div class="panel-body" style="padding-top: 1px; padding-left: 1px; padding-right: 1px; padding-bottom: 5px">
+         <div class="filter">
+          <div class="form-group">
+
+           <div class="col-md-6">
+            <div class="row">
+             <div class="col-md-8">
+              <div class="input-group">
+               <span class="input-group-addon">Module</span>
+                <select id="cmbModule" class="form-control" disabled ><option value="LogIn">Log-in/Log-out</option> </select>
+              </div>
+             </div>
+            </div>
+           </div>
+
+          <div class="col-md-6">
+           <div class="row">
+            <div class="col-md-7">
+             <div class="input-group">
+              <span class="input-group-addon">Start Date</span>
+               <input type="text" class="form-control datepicker-months" id="txtStartDate" placeholder="Choose start date" />  
+                </div>
+            </div>
+           </div>
+            <div class="row">
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <span class="input-group-addon">End Date</span>
+                        <input type="text" class="form-control datepicker-months" id="txtEndDate" placeholder="Choose end date" />
+                       
+                    </div>
+                </div>
+            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer">
+           <div class="row">
+               <div class="col-md-12">
+                   <div class="form-inline pull-right">
+                       <div class="form-group">
+                           <div class="input-group">
+                               <button type="button" class="btn btn-primary" id="btnFilter"><i class="glyphicon glyphicon-search"></i> Filter</button>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+
+           </div>
+          </div>
+</div>
+</div>
+</div>

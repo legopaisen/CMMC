@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Access Denied";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+ $("#background").click(function () {
+  window.location('@Url.Action("Index","Home")');
+ });
+</script>
+
+<h3 style="text-align: center;">You are not authorized to access this page</h3>
+@*<div id="background"></div>
+<style type="text/css">
+ #background {
+  height: 500px;
+  width: 800px;
+  background-image: url('/Ghost-Default-Error-Screen.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;  
+ }
+ #background img.center {
+  display: block;
+  margin: 0 auto;
+ }*@
+</style>

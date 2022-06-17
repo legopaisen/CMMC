@@ -1,0 +1,681 @@
+﻿@{
+  ViewBag.Title = "Schedule";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/Scripts/app/aes.js"></script>
+
+<script type="text/javascript">
+
+  //VALIDATION
+  $(document).ready(function () {
+    //VALIDATION
+    $("#frmScheduleRun").formValidation({
+      framework: "bootstrap",
+      icon: {
+        valid: "glyphicon glyphicon-ok",
+        invalid: "glyphicon glyphicon-remove",
+        validating: "glyphicon glyphicon-refresh"
+      },
+      fields: {
+        txtProcessDate: {
+          validators: {
+            notEmpty: {
+              message: "This field is required"
+            },
+            callback: {
+              callback: function (value, validator, $field) {
+                var processDate = new Date(value);
+                var currentDate = new Date();
+                var currentDate = new Date((currentDate.getMonth() + 1).toString() + "/" + currentDate.getDate().toString() + "/" + currentDate.getFullYear().toString());
+                if (processDate > currentDate) {
+                  return {
+                    valid: false,
+                    message: "Cannot be future date"
+                  };
+                }
+                else {
+                  return true;
+                }
+              }
+            }
+          }
+        },
+        txtStartTime: {
+          validators: {
+            notEmpty: {
+              message: "This field is required"
+            },
+            callback: {
+              callback: function (value, validator, $field) {
+                var startDate = new Date(moment(new Date()).format("MM/DD/YYYY ") + value);
+                if (startDate > new Date()) {
+                  return true;
+                }
+                else {
+                  return {
+                    valid: false,
+                    message: "Start Time must be at a later time of the day"
+                  };
+                }
+              }
+            }
+          }
+        },
+        txtRemarks: {
+          validators: {
+            stringLength: {
+              max: 200,
+              message: "Cannot be more than 200 characters"
+            }
+          }
+        },
+        loginid: {
+          validators: {
+            notEmpty: {
+              message: "This field is required."
+            }
+          }
+        },
+        password: {
+          validators: {
+            notEmpty: {
+              message: "This field is required."
+            }
+          }
+        }        
+      }
+    }).on("success.form.fv", function (e) {
+      e.preventDefault();
+
+      bootbox.confirm("Save new batch run schedule?", function (result) {
+        if (result == true) {
+
+          var ids = $.map($("#tblProcesses").bootstrapTable('getSelections'), function (row, index) {
+            var id = '';
+            $.each(row, function (index, value) {
+              if (index == 'ProcessCode') {
+                id = value;
+                return;
+              }
+            });
+            return id;
+          });
+
+          var processes = new Array(ids.length);
+          for (var i = 0; i < ids.length; i++) {
+            processes[i] = { ProcessCode: ids[i] };
+          }
+          var model = {
+            Processes: processes,
+            StartTime: $("#txtStartTime").val(),
+            ProcessDate: $("#txtProcessDate").val(),
+            Remarks: $("#txtRemarks").val(),
+            CreatedBy: $("#hdnUserIDEncrypted").val() + " " + $("#hdnPasswordEncrypted").val() + " " + $("#HashCode").val()
+          };
+
+          $.ajax({
+            url: '@Url.Action("Insert", "BatchComputation")',
+            type: 'POST',
+            data: JSON.stringify(model),
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            traditional: true,
+            success: function (data) {
+              if (data.ResponseStatus == 1) {
+                Command: toastr["success"]("Success", "Schedule time of " + $("#txtStartTime").val() + " was successfully saved. ");
+                $("#tblSchedules").bootstrapTable("refresh");
+                $("#txtStartTime").val(""),
+                $("#txtProcessDate").val(moment(new Date).format("MM/DD/YYYY")),
+                $("#txtRemarks").val("")
+              }
+              else {
+                Command: toastr["error"]("Failed", data.Description);
+              }
+            },
+            error: function (response) { Command: toastr["error"]("Error code", e); }
+          });
+        }
+      });
+
+
+    });
+
+  });
+
+  $(function () {
+
+    $("#txtProcessDate").datetimepicker({
+      format: 'MM/DD/YYYY'
+    });
+
+    $("#txtStartTime").datetimepicker({
+      format: 'LT'
+    });
+
+    $("#txtProcessDate, #txtStartTime").blur(function () {
+      $("#frmScheduleRun").formValidation("revalidateField", "txtStartTime");
+      $("#frmScheduleRun").formValidation("revalidateField", "txtProcessDate");
+    });
+
+    $('#scheduleDate').datetimepicker({
+
+    });
+    $('#manualDate').datetimepicker({
+      format: 'DD-MMMM-YYYY LT'
+    });
+    $('#generateDate').datetimepicker({
+      format: 'DD-MMMM-YYYY LT'
+    });
+
+    //$('#table').on('event-name.bs.table', function (e, arg1, arg2, ...) {
+    //  // ...
+    //});
+
+    //CHECK
+    $("#tblProcesses").bootstrapTable().on("check.bs.table", function (row, $element) {
+
+      if ($element.ProcessCode == 1 || $element.ProcessCode == 2) {
+
+        var pProcessCode = $element.ProcessCode;
+        var isRestricted = false;
+
+        $.map($("#tblProcesses").bootstrapTable('getSelections'), function (row, index) {
+          if (pProcessCode == 1 && row.ProcessCode == 2 || pProcessCode == 2 && row.ProcessCode == 1) {
+
+            isRestricted = true;
+            //$('#tblProcesses').bootstrapTable('uncheck', pProcessCode);
+            //Command: toastr["error"]("Failed", "Cannot select both processes for reloading of accounts. Select only one.");
+          }
+        });
+        
+        if (isRestricted) {
+          $('#tblProcesses').bootstrapTable('uncheck', pProcessCode - 1);
+          Command: toastr["error"]("Failed", "Cannot select both processes for reloading of accounts. Select only one.");
+        }
+      }
+
+      if ($element.ProcessCode == 3 || $element.ProcessCode == 8) {
+
+        var pProcessCode = $element.ProcessCode;
+        var isRestricted = false;
+
+        $.map($("#tblProcesses").bootstrapTable('getSelections'), function (row, index) {
+          if (pProcessCode == 3 && row.ProcessCode == 8 || pProcessCode == 8 && row.ProcessCode == 3) {
+
+            isRestricted = true;
+            //$('#tblProcesses').bootstrapTable('uncheck', pProcessCode);
+            //Command: toastr["error"]("Failed", "Cannot select both processes for reloading of accounts. Select only one.");
+          }
+        });
+
+        if (isRestricted) {
+          $('#tblProcesses').bootstrapTable('uncheck', (pProcessCode == 8 ? 3 : 2));// pProcessCode - 1);
+          Command: toastr["error"]("Failed", "Cannot select both processes for withdrawals. Select only one.");
+        }
+      }
+
+      var hasChargingFile = false;
+      if ($element.ProcessCode == 6) {
+        $.map($("#tblProcesses").bootstrapTable('getSelections'), function (row, index) {
+          if (row.ProcessCode == 5) {
+            hasChargingFile = true;
+          }
+        });
+
+        if (!hasChargingFile) {
+          $('#tblProcesses').bootstrapTable('uncheck', 6);
+          Command: toastr["error"]("Failed", "This can only be selected if 'Regenerate Charging File' is also selected.");
+        }
+      }
+
+      if ($element.ProcessCode == 3 || $element.ProcessCode == 8) {
+        $('#tblProcesses').bootstrapTable('check', 5);//$element.ProcessCode + 1);
+        $('#tblProcesses').bootstrapTable('check', 7);
+      }
+      
+    });
+
+    $("#tblProcesses").bootstrapTable().on("uncheck.bs.table", function (row, $element) {
+      if ($element.ProcessCode == 5 || $element.ProcessCode == 7) {
+        $.map($("#tblProcesses").bootstrapTable('getSelections'), function (row, index) {
+          if (row.ProcessCode == 3 || row.ProcessCode == 8) {
+            $('#tblProcesses').bootstrapTable('check', 5);
+            $('#tblProcesses').bootstrapTable('check', 7);
+            Command: toastr["error"]("Failed", "Cannot uncheck this process if [Reprocess/Process Withdrawals] is checked.");
+          }
+        });
+      }
+
+      if ($element.ProcessCode == 5) {
+        
+        var isIncluded = false;
+        $.map($("#tblProcesses").bootstrapTable('getSelections'), function (row, index) {
+          if (row.ProcessCode == 3 || row.ProcessCode == 8) {
+            isIncluded = true;
+          }
+        });
+
+        if (!isIncluded) {
+          $('#tblProcesses').bootstrapTable('uncheck', 5);
+        }
+      }
+    });
+
+    
+
+    //VIEW DETAILS
+    $(document).on("click", ".ViewDetails", function () {
+      var schedID = $(this).parents("tr").children(".ID").text();
+
+      $("#divDetails").empty();
+      $("#divDetails").load('@Url.Action("Details", "BatchComputation")', { id: schedID }, function () {
+        $("#divScheduleDetails").modal("show");
+      });
+    });
+
+
+    //DELETE SCHEDULE
+    $(document).on("click", ".Delete", function () {
+      var schedID = $(this).parents("tr").children(".ID").text();
+
+      bootbox.confirm("Delete selected schedule?", function (result) {
+        if (result) {
+          $.ajax({
+            url: '@Url.Action("Delete", "BatchComputation")',
+            type: 'GET',
+            data: { ID: schedID },
+            traditional: true,
+            success: function (data) {
+              Command: toastr["success"]("Success", "Schedule successfully deleted.");
+              $("#tblSchedules").bootstrapTable("refresh");
+            },
+            error: function (response) { Command: toastr["error"]("Error code", e); }
+          });
+        }
+      });
+    });
+
+    $("#btnSubmit").click(function () {
+      if ($("#tblProcesses").bootstrapTable("getSelections").length) {
+        $("#frmScheduleRun").submit();
+      }
+      else {
+        Command: toastr["error"]("Error", "Please select process(es) to run.")
+      }
+    });
+
+    $("#selRunType").change(function () {
+      $("#tblSchedules").bootstrapTable("refresh");
+    });
+  });
+
+  //FORMATTERS
+  function DateFormatter(pVal) {
+    return moment(pVal).format("MM/DD/YYYY");
+  }
+
+  function DateTimeFormatter(pVal) {
+    return moment(pVal).format("MM/DD/YYYY hh:mm A");
+  }
+
+  function StatusFormatter(pVal) {
+    if (pVal == "0") {
+      return "Pending";
+    }
+    else if (pVal == "1") {
+      return "Success";
+    }
+    else if (pVal == "2") {
+      return "Failed"
+    }
+
+  }
+
+  function PaddedIDFormatter(pID) {
+
+    var length;
+    var padChar = "0";
+    var strReturn = pID;
+
+    if (pID.toString().length < 8) {
+      length = 8 - pID.toString().length;
+
+      for (i = 1; i <= length; i++) {
+        strReturn = padChar + strReturn.toString();
+      }
+
+      return strReturn;
+
+    }
+    else {
+      return pID;
+    }
+  }
+
+  function IDFormatter(pVal) {
+    return pVal;
+  }
+
+  function RunTypeFormatter(pVal) {
+
+    if (pVal == "0") {
+      return "Regular";
+    }
+    else if (pVal == "1") {
+      return "Scheduled";
+    }
+    else if (pVal == "2") {
+      return "Manual"
+    }
+  }
+
+  function DescriptionFormatter(pVal, row) {
+    var str = "";
+    str = "<h4>" + row.ProcessCode + " - " + row.ProcessName + "</h4>" +
+          "<p>" + row.Description.toString().split("\n").join("<br/>") + "</p>";
+
+    return str;
+  }
+
+  function ActionFormatter(pVal, row) {
+    //return "<a href='javascript:void(0)' class='ViewDetails'><span class='glyphicon glyphicon-info-sign'></span></a>&nbsp;&nbsp;" +
+    //       "<a href='javascript:void(0)' class='Delete'><span class='glyphicon glyphicon-trash'></span></a>";
+
+    var str = "<a href='javascript:void(0)' class='ViewDetails'><span class='glyphicon glyphicon-info-sign'></span></a>&nbsp;&nbsp;";
+    if (row.Status == '0') {
+      var str = str + "<a href='javascript:void(0)' class='Delete'><span class='glyphicon glyphicon-trash'></span></a>";
+    }
+
+    return str;
+  }
+  /////////////////////////
+
+  function cancelSched() {
+    $("#scheduleDate").val("");
+    $("#autoRun").attr("checked", false);
+    Command: toastr["info"]("Note", "Transaction was cancelled!");
+  }
+
+  function saveSchedule() {
+    if ($("#scheduleDate").val() == "") {
+      Command: toastr["error"]("Error", "Date schedule value is empty!")
+    }
+    else if ($("#tblProcesses").bootstrapTable('getSelections').length == 0) {
+        Command: toastr["error"]("Error", "Please select process(es) to run.")
+    }
+    else {
+
+    }
+
+
+  }
+
+</script>
+<div class="container">
+  <div id="divDetails">
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <h2 class="page-header">
+        Schedule Run
+        <small>Process List</small>
+      </h2>
+
+      <table id="tblProcesses" class="" cellpadding="0" style="width:100%"
+             data-toggle="table"
+             data-url="@Url.Action("GetProcessList", "BatchComputation")"
+             data-classes="table table-hover table-bordered table-striped"
+             data-row-style="rowStyle"
+             data-checkbox-header="false"
+             data-click-to-select="true">
+        <thead>
+          <tr>
+            <th data-field="state" data-checkbox="true"></th>
+            <th data-field="ProcessName" data-formatter="DescriptionFormatter">Process</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="col-md-4">
+      <br />
+      <div class="well">
+        <form id="frmScheduleRun">
+          <h4>Schedule Run</h4>
+          <hr />
+          <div class="form-group">
+            @*<div class="input-group-addon" id="time">From</div>*@
+            <label>Date to Process</label>
+            <div>
+              <input type="text" class="form-control" id="txtProcessDate" name="txtProcessDate" placeholder="Process Date" value="@DateTime.Now" />
+            </div>
+          </div>
+          <div class="form-group">
+            @*<div class="input-group-addon" id="time">Start Time</div>*@
+            <label>Start Time</label>
+            <div>
+              <input type="text" class="form-control" id="txtStartTime" name="txtStartTime" placeholder="Start Time" />
+            </div>
+          </div>
+          <div class="form-group">
+            @*<div class="input-group-addon" id="time">Start Time</div>*@
+            <label>Remarks</label>
+            <div>
+              <textarea id="txtRemarks" name="txtRemarks" class="form-control" rows="3" cols="3"></textarea>
+            </div>
+          </div>
+          <hr/>
+          <input id="hdnUserIDEncrypted" name="hdnUserIDEncrypted" value="" type="hidden" />
+          <input id="hdnPasswordEncrypted" name="hdnPasswordEncrypted" value="" type="hidden" />
+          <input type="hidden" value="@ViewBag.CryptoHashCode" id="HashCode" name="HashCode" />
+          <div class="form-group">
+            <label>ID Number</label>
+            <div>
+              <input type="text" class="form-control" id="loginid" name="loginid" placeholder="ID Number" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <div>
+              <input type="password" class="form-control" id="password" name="password" placeholder="Password" />
+            </div>
+          </div>
+          <div>
+            <button id="btnSubmit" class="btn btn-primary" type="button"><i class="glyphicon glyphicon-floppy-save"></i>&nbsp;Save</button>
+          </div>
+        </form>
+      </div>
+      <div class="well">
+        <h4>
+          Previous Run
+          <small><a href="@Url.Action("Schedule")#divRunHistory">View Run History</a></small>
+        </h4>
+        <hr />
+
+        <h5>
+          @if (ViewBag.HasPreviousRun == 1)
+          {
+            <text>
+              Last Run:
+              <small id="scheduledlastrun">@ViewBag.LastRun</small><br />
+              Run By:
+              <small id="scheduledrunby">@ViewBag.RunBy</small><br />
+              Status:
+              @if (ViewBag.Status == 1)
+              {
+                <span class="label label-success">Success</span><br />
+              }
+              else
+              {
+                <span class="label label-danger">Failed</span><br />
+              }
+              Run Type:
+              <small id="scheduledrunby">@ViewBag.RunType</small><br />
+              Remarks:
+              <small id="scheduledrunremarks">@ViewBag.Remarks</small><br />
+            </text>
+          }
+          else
+          {
+            <text>
+              None
+              <br />
+            </text>
+          }
+
+          Next Run:
+          @if (ViewBag.HasNextRun == 1)
+          {
+            <small id="schedulednextrun">@ViewBag.NextRun</small><br />
+          }
+          else
+          {
+            <text>
+              <small id="schedulednextrun">No Pending Schedule</small><br />
+            </text>
+          }
+        </h5>
+      </div>
+    </div>
+  </div>
+  <div id="divRunHistory" class="row">
+   <div class="col-md-12">
+    <h2 class="page-header">
+     Run History
+     <small></small>
+    </h2>
+
+    <script type="text/javascript">
+     function queryParam(params) {
+      var query = {
+       limit: params.limit,
+       offset: params.offset,
+       search: params.search == 'undefined' ? '' : params.search,
+       runType: $("#selRunType").val()
+      }
+      return query;
+     }
+    </script>
+
+    <div class="panel panel-primary">
+     <div class="panel-heading">Run History </div>
+     <div class="panel-body">
+      <div id="toolbar">
+       <div class="form-inline" role="form">
+        <div class="form-group">
+         <span>Run Type: </span>
+         <select id="selRunType" class="form-control">
+          <option value="3">--All--</option>
+          <option value="2">Manual</option>
+          <option value="0">Regular</option>
+          <option value="1" selected>Scheduled</option>
+         </select>
+        </div>
+       </div>
+      </div>
+
+      <table id="tblSchedules" class="" cellpadding="0" style="width:100%"
+             data-toggle="table"
+             data-url="@Url.Action("Display", "BatchComputation")"
+             data-toolbar="#toolbar"
+             data-search="true"
+             data-query-params="queryParam"
+             data-side-pagination="server"
+             data-page-list="[5, 10, 20]"
+             data-pagination="true"
+             data-cache="false"
+             data-search-text=""
+             data-classes="table table-hover table-condensed"
+             @*data-toggle="table"
+             data-pagination="true"
+             data-page-list="[5, 10, 20]"
+             data-toolbar="#toolbarCreate"
+             data-classes="table table-hover table-bordered"
+             data-row-style="rowStyle"
+             data-search="true"
+             data-show-columns="true"
+             data-show-pagination-switch="true"
+             data-show-toggle="true"
+             data-detail-formatter="formatCmsCodeDate"
+             data-url="@Url.Action("Display", "BatchComputation")"
+             data-query-params="queryParam"
+             data-unique-id="CmsCode"*@>
+       <thead>
+        <tr>
+         <th class="ID" data-field="ID" data-formatter="PaddedIDFormatter" data-sortable="true">Schedule Code</th>
+         <th data-field="StartTime" data-formatter="DateTimeFormatter" data-sortable="true">Start Time</th>
+         <th data-field="ProcessDate" data-formatter="DateFormatter" data-sortable="true">From</th>
+         <th data-field="RunType" data-formatter="RunTypeFormatter">Run Type</th>
+         <th data-field="Status" data-formatter="StatusFormatter">Status</th>
+         <th data-field="CreatedBy">Created By</th>
+         <th data-field="CreatedOn" data-formatter="DateTimeFormatter" data-sortable="true">Created On</th>
+         <th data-field="Action" data-formatter="ActionFormatter" data-events="actionEvents">Action</th>
+        </tr>
+       </thead>
+      </table>
+      <br />
+     </div>
+    </div>
+   </div>
+
+
+
+<script type="text/javascript">
+
+    function caps(id) {
+        document.getElementById(id).value = document.getElementById(id).value.toUpperCase();
+    }
+
+ function writeCookie(name, value, days) {
+  var date, expires;
+  if (days) {
+   date = new Date();
+   date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+   expires = "; expires=" + date.toGMTString();
+  } else {
+   expires = "";
+  }
+  document.cookie = name + "=" + value + expires + "; path=/";
+ }
+
+ $(document).ready(function () {
+  @*var response = JSON.parse('@Html.Raw(Json.Encode(ViewBag.Response))');
+  if (response != null) {
+   if (response.ResponseStatus == 0) {
+    toastr.error(response.Description, "Information");
+   }
+  }*@
+
+  $("#HashCode").val("@ViewBag.CryptoHashCode");
+  $("#loginid").val("");
+  $("#password").val("");
+
+  $("form").submit(function () {
+   var key = CryptoJS.enc.Utf8.parse($("#HashCode").val());
+   var iv = CryptoJS.enc.Utf8.parse($("#HashCode").val().substring(0, 16));
+   var encryptedlogin = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse($("#loginid").val()), key,
+   {
+    keySize: 256,
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+   });
+
+   var encryptedpassword = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse($("#password").val()), key,
+   {
+    keySize: 256,
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+   });
+
+
+   $("#hdnUserIDEncrypted").val(encryptedlogin);
+   $("#hdnPasswordEncrypted").val(encryptedpassword);
+   var sId = $("#loginid").val()
+   writeCookie("loginid", sId, 10);
+   $("#loginid").val("");
+   $("#password").val("");
+  });
+ });
+</script>

@@ -1,0 +1,466 @@
+﻿@model IEnumerable<CMMC.Models.Batch_Computation.BatchRunHistoryModel>
+
+@{
+  ViewBag.Title = "Batch Run History";
+  Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<script type="text/javascript">
+
+  $(document).ready(function () {
+
+    $("#frmManualRun").formValidation({
+      framework: "bootstrap",
+      icon: {
+        valid: "glyphicon glyphicon-ok",
+        invalid: "glyphicon glyphicon-remove",
+        validating: "glyphicon glyphicon-refresh"
+      },
+      fields: {
+        txtProcessDate: {
+          validators: {
+            notEmpty: {
+              message: "This field is required"
+            },
+            callback: {
+              callback: function (value, validator, $field) {
+                var processDate = new Date(value);
+                var currentDate = new Date();
+                var currentDate = new Date((currentDate.getMonth() + 1).toString() + "/" + currentDate.getDate().toString() + "/" + currentDate.getFullYear().toString());
+                if (processDate > currentDate) {
+                  return {
+                    valid: false,
+                    message: "Cannot be future date"
+                  };
+                }
+                else {
+                  return true;
+                }
+              }
+            }
+          }
+        }
+      }
+    }).on("success.form.fv", function (e) {
+      e.preventDefault();
+
+
+      bootbox.confirm("Run CMMC batch processing manually?", function (result) {
+        if (result == true) {
+          //var model = {
+          //  Processes: processes,
+          //  StartTime: $("#txtStartTime").val(),
+          //  ProcessDate: $("#txtProcessDate").val(),
+          //  Remarks: $("#txtRemarks").val()
+          //};
+          $("#divMissingFiles").empty();
+
+          $.ajax({
+            url: '@Url.Action("Run", "RegularBatchRun")',
+            type: 'POST',
+            data: { id: $("#txtProcessDate").val() }, //JSON.stringify(model),
+            //contentType: 'application/json; charset=utf-8',
+            //dataType: 'json',
+            //traditional: true,
+            success: function (data) {
+
+              if (data.ResponseStatus == 1) {
+                Command: toastr["success"]("Success", data.Description);
+                $("#txtProcessDate").val(moment(new Date).format("MM/DD/YYYY"));
+
+                Refresh(true);
+                $("#btnSubmit").prop("disabled", true);
+                //$("#tblRuns").bootstrapTable("refresh");
+              }
+              else {
+                if (data.Description.toString().indexOf("Cannot schedule run due missing ") > -1) {
+                  Command: toastr["error"]("Failed", "Cannot start batch due to missing files");
+
+                  $("#divMissingFiles").append("<strong style='color: Red'>Missing files/paths</strong><br/>");
+                  $("#divMissingFiles").append(data.Description.toString().replace("\n", "<br/>"));
+                }
+                else {
+                  Command: toastr["error"]("Failed", data.Description);
+                }
+              }
+            },
+            error: function (response) { Command: toastr["error"]("Error code", e); }
+          });
+        }
+      });
+
+
+    });
+
+    LoadCurrentProcess();
+
+    $("#txtProcessDate").datetimepicker({
+      format: 'MM/DD/YYYY'
+    });
+
+    $("#selRunType").change(function () {
+      Refresh(true);
+      //$("#tblRuns").bootstrapTable("refresh");
+    });
+
+    $(document).on("click", ".lnkRerun", function () {
+      //alert($(this).siblings(".hdnRunGroupID").val());
+
+      var groupID = $(this).siblings(".hdnRunGroupID").val();
+
+      $.ajax({
+        url: '@Url.Action("ContinueRun", "RegularBatchRun")',
+        type: 'POST',
+        data: { RunGroupID: groupID }, //JSON.stringify(model),
+        //contentType: 'application/json; charset=utf-8',
+        //dataType: 'json',
+        //traditional: true,
+        success: function (data) {
+
+          if (data.ResponseStatus == 1) {
+            Command: toastr["success"]("Success", data.Description);
+            Refresh(true);
+            $("#btnSubmit").prop("disabled", true);
+            //$(".lnkRerun").css({ display: none });
+            //$("#tblRuns").bootstrapTable("refresh");
+          }
+          else {
+              Command: toastr["error"]("Failed", data.Description);
+          }
+        },
+        error: function (response) { Command: toastr["error"]("Error code", e); }
+      });
+
+    });
+  });
+
+  setInterval(LoadCurrentProcess, 10000);
+
+  function LoadCurrentProcess() {
+    $.ajax({
+      url: '@Url.Action("GetCurrentRun", "RegularBatchRun")',
+      type: 'POST',
+      contentType: 'application/json; charset=utf-8',
+      dataType: 'json',
+      traditional: true,
+      success: function (data) {
+
+        Refresh(true);
+        //$("#tblRuns").bootstrapTable("refresh");
+
+        if (data == 0) {
+          $("#divCurrentProcess").hide();
+          $("#divNoProcess").fadeIn(2000);
+
+          $("#btnSubmit").prop("disabled", false);
+        }
+        else {
+
+          $("#btnSubmit").prop("disabled", true);
+
+          $("#spRunID").text(data.ID);
+          $("#spProcessName").text(data.Task.ProcessName);
+          $("#spDateProcessed").text(moment(data.DateProcessed).format("MMM DD, YYYY"));
+          $("#spRunDate").text(moment(data.RunDate).format("MMM DD, YYYY hh:mm:ss A"));
+          $("#spRunBy").text(data.RunBy);
+          if (data.RunType == "R") {
+            $("#spRunType").text("Regular");
+          }
+          else if (data.RunType == "S") {
+            $("#spRunType").text("Scheduled");
+          }
+          else if (data.RunType == "M") {
+            $("#spRunType").text("Manual");
+          }
+
+          $("#divNoProcess").hide();
+          $("#divCurrentProcess").fadeIn(2000);
+        }
+      },
+      error: function (response) {
+        $("#btnSubmit").prop("disabled", false);
+        $("#btnSubmit").removeClass(false);
+      }
+    });
+  }
+
+  //FORMATTERS
+  function ProcessFormatter(pVal, row) {
+    return row.Task.ProcessName;
+  }
+
+  function TaskIDFormatter(pVal, row) {
+    return row.Task.ProcessCode;
+  }
+
+  function DateFormatter(pVal) {
+
+    if (pVal == null) {
+      return "";
+    }
+    else {
+      return moment(pVal).format("YYYY-MM-DD");
+    }
+
+
+  }
+
+  function DateTimeFormatter(pVal) {
+
+    if (pVal == null) {
+      return "";
+    }
+    else {
+      return moment(pVal).format("MM/DD/YYYY hh:mm:ss A");
+    }
+
+
+  }
+
+  function RunTypeFormatter(pVal) {
+
+    if (pVal == "R") {
+      return "Regular";
+    }
+    else if (pVal == "M") {
+      return "Manual";
+    }
+    else {
+      return "Scheduled";
+    }
+
+    //return (pVal == "R" ? "Regular" : "Scheduled");
+  }
+
+  function StatusFormatter(pVal) {
+    if (pVal == "2") {
+      return "On-Going";
+    }
+    else if (pVal == "1") {
+      return "Failed";
+    }
+    else if (pVal == "0") {
+      return "Success";
+    }
+    else if (pVal == "3") {
+      return "Pending";
+    }
+
+  }
+
+  function PaddedIDFormatter(pID) {
+
+    var length;
+    var padChar = "0";
+    var strReturn = pID;
+
+    if (pID.toString().length < 8) {
+      length = 8 - pID.toString().length;
+
+      for (i = 1; i <= length; i++) {
+        strReturn = padChar + strReturn.toString();
+      }
+
+      return strReturn;
+
+    }
+    else {
+      return pID;
+    }
+  }
+
+  function IDFormatter(pVal) {
+    return pVal;
+  }
+
+  function FailedRunFormatter(pVal, row) {
+    if (row.Status == "1") {
+      //Refresh(false);
+      $("#btnSubmit").prop("disabled", true);
+      $("#lblHasFailed").css({ display: "block" });
+      return "<a href='javascript:void(0)' class='lnkRerun'><sp class='glyphicon glyphicon-repeat'></span></a><input type='hidden' class='hdnRunID' value='" + row.ID + "' /><input type='hidden' class='hdnRunGroupID' value='" + row.RunGroupID + "' />";
+    }
+    else {
+      return "";
+    }
+  }
+
+  function Refresh(pIncludeTable) {
+
+    $("#btnSubmit").prop("disabled", false);
+    $("#lblHasFailed").css({ display: "none" });
+
+    if (pIncludeTable) {
+      $("#tblRuns").bootstrapTable("refresh");
+    }
+
+    //if ($(".lnkRerun").length > 0) {
+    //  $("#btnSubmit").prop("disabled", true);
+    //  $("#lblHasFailed").css({ display: "block" });
+    //}
+    //else {
+      //$("#btnSubmit").prop("disabled", false);
+      //$("#lblHasFailed").css({ display: "none" });
+    //}
+  }
+
+</script>
+
+
+
+
+<div class="container">
+  <div id="divCurrentRun" class="row">
+    <div class="col-md-7">
+      <h2 class="page-header">
+        Currently Running Task
+
+        <small></small>
+      </h2>
+
+      <div id="divCurrentProcess" class="alert alert-info" style="display: none;">
+        <div class="row">
+          <div class="col-md-5">
+            Run ID: <strong><span id="spRunID"></span></strong>
+            <br />
+            Process Name: <strong><span id="spProcessName"></span></strong>
+            <br />
+            Date to Process: <strong><span id="spDateProcessed"></span></strong>
+            <br />
+            Run Type: <strong><span id="spRunType"></span></strong>
+            <br />
+            Run By: <strong><span id="spRunBy"></span></strong>
+            <br />
+            Start Date: <strong><span id="spRunDate"></span></strong>
+
+          </div>
+          <div class="col-md-7" style="text-align: right;">
+            <img src="~/Scripts/images/icon-loading.gif" style="height: 100px; height: 100px;" />
+          </div>
+        </div>
+      </div>
+
+      <div id="divNoProcess" class="alert alert-success" style="display: none;">
+        <strong>No task currently in process.</strong>
+      </div>
+
+      @*<div class="panel panel-primary">
+          <div class="panel panel-heading">
+            Process currently running
+
+          </div>
+          <div class="panel panel-body">
+            <div class="col-md-4">
+              <strong>Details:</strong>
+              <br /><br />
+
+              Process Name: <strong>Reload Accounts (Daily)</strong>
+              <br />
+              Date to Process: <strong> Jan 30, 2016 </strong>
+              <br />
+              Start Date: <strong> Jan 30, 2016 05:39 AM </strong>
+            </div>
+            <div class="col-md-6">
+              <img src="~/Scripts/images/icon-loading.gif" style="height: 100px; height: 100px;" />
+            </div>
+          </div>
+        </div>*@
+
+    </div>
+    <div id="divManualRun" class="col-md-5">
+      <br />
+      <div class="well">
+        <form id="frmManualRun">
+          <h4>Manual Run</h4>
+          <hr />
+          <div class="form-group">
+            <label>Current Date</label>
+            <div>
+              <input type="text" class="form-control" id="txtProcessDate" name="txtProcessDate" placeholder="Process Date" value="@DateTime.Now" />
+            </div>
+          </div>
+          <div>
+            <br />
+            <button id="btnSubmit" class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-play"></i>&nbsp;Start Batch</button>
+            <label id="lblHasFailed" style="color: Red; display: none;">Cannot run new batch if there are previous failed runs</label>
+          </div>
+          <br />
+          <div id="divMissingFiles" style="font-size: smaller;">
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="divRunHistory" class="row">
+   <div class="col-md-12">
+    <h2 class="page-header">
+     Batch Run History
+     <small></small>
+    </h2>
+
+    <script type="text/javascript">
+     function queryParam(params) {
+      var query = {
+       limit: params.limit,
+       offset: params.offset,
+       search: params.search == 'undefined' ? '' : params.search,
+       runType: $("#selRunType").val()
+      }
+      return query;
+
+     }
+    </script>
+
+    <div id="toolbar">
+     <div class="form-inline" role="form">
+      <div class="form-group">
+       <span>Run Type: </span>
+       <select id="selRunType" class="form-control">
+        <option value="A">--All--</option>
+        <option value="M">Manual</option>
+        <option value="R">Regular</option>
+        <option value="S">Scheduled</option>
+       </select>
+      </div>
+     </div>
+    </div>
+
+
+    <div class="panel panel-primary">
+     <div class="panel-heading">Batch Run History </div>
+     <div class="panel-body">
+
+      <table id="tblRuns" class="" cellpadding="0" style="width:100%"
+             data-toggle="table"
+             data-url="@Url.Action("Display", "RegularBatchRun")"
+             data-toolbar="#toolbar"
+             data-search="true"
+             data-query-params="queryParam"
+             data-side-pagination="server"
+             data-page-list="[5, 10, 20]"
+             data-pagination="true"
+             data-cache="false"
+             data-search-text=""
+             data-classes="table table-hover table-condensed">
+       <thead>
+        <tr>
+         <th class="ID" data-field="ID" data-formatter="PaddedIDFormatter" data-sortable="true">Run ID</th>
+         @*<th data-field="ID" data-formatter="TaskIDFormatter" data-sortable="true">Task ID</th>*@
+         <th data-field="ID" data-formatter="ProcessFormatter" data-sortable="true">Process Name</th>
+         <th data-field="DateProcessed" data-formatter="DateFormatter">Date Processed</th>
+         <th data-field="RunType" data-formatter="RunTypeFormatter">Run Type</th>
+         <th data-field="Status" data-formatter="StatusFormatter">Status</th>
+         <th data-field="RunBy">Run By</th>
+         <th data-field="RunDate" data-formatter="DateTimeFormatter" data-sortable="true">Run Date</th>
+         <th data-field="EndDate" data-formatter="DateTimeFormatter" data-sortable="true">End Date</th>
+         @*<th data-field="ID" data-formatter="FailedRunFormatter"></th>*@
+        </tr>
+       </thead>
+      </table>
+      <br />
+     </div>
+    </div>
+   </div>

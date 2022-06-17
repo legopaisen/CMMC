@@ -1,0 +1,97 @@
+﻿@using CMMC.Models
+
+@model InvestmentTypes.InvestmentTypeDetails
+
+
+@{
+    ViewBag.Title = "Update Investment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+ <script type="text/javascript">
+  $(document).ready(function () {
+   var model = [];
+
+
+    $().DMSFormValidator('#frmGroupDetails')
+   .on('success.form.fv', function (e) {
+    e.preventDefault();
+
+    eModal.confirm("Save changes?", "Confirmation").then(function () {
+     //toastr.success("Changes has been saved.");
+     model = {
+      InvestmentCode: $('#txtInvestmentCode').val(),
+      InvestmentDescription: $('#txtInvestmentDescription').val(),
+      IsActive: $('#chkIsActive').prop('checked')
+     }
+
+     $.ajax({
+      url: '@Url.Action("InvestmentSaveChanges", "ParameterMaintenance")',
+      data: JSON.stringify(model),
+      type: 'POST',
+      contentType: 'application/json',
+      traditional: true,
+      success: function (data) {
+       if (data.ResponseStatus != 1) {
+        toastr.error(data.Description, "Information");
+       }
+       else {
+        toastr.success(data.Description, "Information");
+       }
+      },
+      error: function (response) { }
+     });
+     window.location = '@Url.Action("InvestmentType", "ParameterMaintenance")';
+    }, null);
+   });
+
+  });
+ </script>
+}
+
+<h2 class="page-header">
+ Edit Investment
+ <small></small>
+</h2>
+<div class="col-md-5 col-md-offset-4">
+ <form id="frmGroupDetails">
+  <div class="panel panel-primary">
+   <div class="panel-heading">Edit Investment Details</div>
+   <div class="panel-body">
+    @Html.AntiForgeryToken()
+    <div class="row">
+     <div class="col-md-12">
+
+      <div class="form-group">
+       <label>Investment Type Code: </label>
+       <input type="text" class="form-control" id="txtInvestmentCode" value="@Model.InvestmentCode" name="txtInvestmentCode" autocomplete="off" placeholder="Access Group Code" maxlength="4" />
+      </div>
+
+      <div class="form-group">
+       <label>Investment Type Description: </label>
+       <input type="text" class="form-control TextRequiredField" id="txtInvestmentDescription" value="@Model.InvestmentDescription" name="txtInvestmentDescription" autocomplete="off" placeholder="Access Group Name" />
+      </div>
+     
+      <div class="form-group">
+       <label class="checkbox-inline">
+        <input type="checkbox" id="chkIsActive" name="chkIsActive" @(Model.IsActive ? "checked" : "") /> Is Active?
+       </label>
+      </div>
+
+     </div>
+    </div>
+
+   </div>
+   <div class="panel-footer">
+    <div class="row">
+     <div class="col-md-12 text-right">
+      <button type="submit" id="btnSave" name="btnSave" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+      <button type="button" onclick="javascript: window.location='@Url.Action("InvestmentType", "ParameterMaintenance")'" id="btnSave" name="btnSave" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
+     </div>
+    </div>
+   </div>
+  </div>
+ </form>
+</div>

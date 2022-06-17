@@ -1,0 +1,173 @@
+﻿@using System.Web.Helpers;
+@using SYS_MATRIX.Models;
+
+@model List<SYS_ACCESS_MODEL>
+
+@{
+ ViewBag.Title = "Access Management";
+ Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+ {
+ <link rel="stylesheet" href="~/Assets/datatable/bootstrap-table.css" type="text/css">
+ <script type="text/javascript" src="~/Assets/datatable/bootstrap-table.js"></script>
+
+ <script type="text/javascript">
+  function CodeFormatter(value) {   
+   return PadLeft(value, 8, '0');
+  }
+
+  $(document).ready(function () {
+   var data = @Html.Raw(Json.Encode(Model))
+   $("#tblAccessList").bootstrapTable('load', data);
+   $("#btnDeactivate").click(function () {
+    ProcessAction(false);
+   });
+   $("#btnActivate").click(function () {
+    ProcessAction(true);
+   });
+  });
+
+  function removeAccess(paramID) {
+   var pID = paramID
+   $.ajax({
+    cache: false,
+    url: '@Url.Action("DeleteAccess", "Access")',
+    contentType: 'application/json',
+    data: JSON.stringify({
+     'pIDs': pID
+    }),
+    type: 'POST',
+    success: function (data) {
+     toastr.success("Successfully delete the Access!");
+     $("#tblAccessList").bootstrapTable('remove', {
+      field: 'AccessCode',
+      values: pID
+     });
+     location.reload();
+    },
+    error: function () {
+     toastr.info("Select atleast one to remove!")
+    }
+   });
+  }
+
+  function actionFormatter(value, row, index) {
+   return[
+      '<a class="edit" href="#" title="Edit">',
+      '<i class="glyphicon glyphicon-edit"></i>',
+      '</a> ', '<a class="view" href="javascript:void(0)" id="view" title="View">',
+      '<i class="glyphicon glyphicon-info-sign"></i>',
+      '</a> ',
+      '<a class="remove" href="javascript:void(0)" id="remove" title="Remove">',
+      '<i class="glyphicon glyphicon-trash"></i>',
+      '</a> '
+   ].join('');
+  }
+
+  window.actionEvents = {
+   'click .remove': function (e, value, row, index) {
+    bootbox.confirm("Are you sure you want to delete the Access and it's details?", function (result) {
+     if (result == true) {
+      removeAccess(row.AccessCode)
+     }
+     toastr.success("Successfully delete the Access!")
+    })
+   },
+   'click .edit': function (e, value, row, index) {
+    window.location = '@Url.Action("AccessEdit", "Access", new { CMSCode = "token" })'.replace("token", row.AccessCode);
+   },
+   'click .view': function (e, value, row, index) {
+    window.location = '@Url.Action("AccessView", "Access", new { CMSCode = "token" })'.replace("token", row.AccessCode);
+   }
+  }
+
+  function ProcessAction(IsActivate)
+   {
+   var $table = $("#tblAccessList");
+   if($table.bootstrapTable('getSelections').length > 0)
+   {    
+    eModal.confirm("Are you sure you want to " + (IsActivate ? "activate " : "deactivate ") + " selected item(s)?", "Confirmation").then(function () {
+     var ids = $.map($table.bootstrapTable('getSelections'), function (row, index) {
+      return row.AccessCode;
+     });     
+     
+     $.ajax({
+      url: '@Url.Action("AccessProcessAction", "Access")',
+      type: 'POST',
+      data: { IDs: ids, pIsActivate: IsActivate },
+      traditional: true,
+      success: function (data) {
+       if (data.ResponseStatus == 1) {
+        $.each(ids, function (index, value) {
+         $table.bootstrapTable('updateByUniqueId', {
+          id: value,
+          row: {
+           IsActive: (IsActivate ? "1" : "0") 
+          }
+         });
+        });
+        toastr.success(data.Description, "Information");
+       }
+       else if (data.ResponseStatus == 0) {
+        toastr.info(data.Description, "Information");
+       }
+      },
+      error: function (response) { }
+     });
+    }, null);
+   }
+   else
+   {
+    toastr.info("Select at least 1 item.");
+   }
+  }
+
+  function IsActiveFormatter(pValue) {   
+   return "<i class= 'glyphicon " + (pValue == '1' ? "glyphicon-ok text-success" : "glyphicon-remove text-danger") + "' ";
+  }
+ </script>
+}
+
+<h2 class="page-header">
+ Access Maintenance
+ <small></small>
+</h2>
+
+<div id="toolbar">
+ <button class="btn btn-success" id="btnAdd" onclick="window.location = '@Url.Action("AccessAddNew", "Access")'" title="Add New Record"><i class="glyphicon glyphicon-plus-sign"></i> Add Access</button>
+ <button class="btn btn-success" id="btnActivate" title="Activate Selected Item(s)"><i class="glyphicon glyphicon-ok"></i> Activate Access</button>
+ <button class="btn btn-danger" id="btnDeactivate" title="Deactivate Selected Item(s)"><i class="glyphicon glyphicon-ok"></i> Deactivate Access</button>
+</div>
+
+<div class="panel panel-primary">
+ <div class="panel-heading">Access Management</div>
+ <div class="panel-body">
+  <table id='tblAccessList'
+         style="margin:0px;"
+         data-classes="table table-hover table-condensed table-striped"
+         data-row-style="rowStyle"
+         data-toggle="table"
+         data-search="true"
+         data-cache="false"
+         data-unique-id="AccessCode"
+         data-checkbox-header="false"
+         data-click-to-select="true"
+         data-toolbar="#toolbar"
+         data-pagination="true"
+         data-page-list="[5, 10, 20]">
+   <thead>
+    <tr>
+     <th data-field="state" data-checkbox="true"></th>
+     <th class="AccessCode" data-field="AccessCode" data-width="100"> Access Code </th>
+     <th data-field="AccessName" data-sortable="true"> Access Name </th>
+     <th data-field="IsActive" data-align="center" data-width="100" data-formatter="IsActiveFormatter"> Is Active? </th>
+     <th data-field="Action" data-formatter="actionFormatter" data-events="actionEvents" data-width="100" data-align="center">Action</th>
+    </tr>
+   </thead>
+  </table>
+ </div>
+</div>
+
+

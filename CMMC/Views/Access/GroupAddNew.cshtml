@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Add New Group";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+ <script type="text/javascript">
+  $(document).ready(function () {
+   var model = [];
+   var hasRecord = false;
+
+   $().DMSFormValidator('#frmGroupDetails')
+   .on('success.form.fv', function(e){
+    e.preventDefault();
+
+    eModal.confirm("Save new Access Group?", "Confirmation").then(function () {
+     //toastr.success("New Access Group has been saved.");
+     model = {
+      Group_Name: $('#txtAccessGroupName').val(),
+      Description: $('#txtDescription').val(),
+      IsActive: $('#chkIsActive').prop('checked')
+     }
+
+     $.ajax({
+      url: '@Url.Action("GroupInsert", "Access")',
+      data: JSON.stringify(model),
+      type: 'POST',
+      contentType: 'application/json',
+      traditional: true,
+      success: function (data) {
+       if (data.ResponseStatus != 1) {
+        toastr.error(data.Description, "Information");
+       }
+       else {
+        toastr.success(data.Description, "Information")
+       }
+      },
+      error: function (response) { }
+     });
+     window.location = '@Url.Action("Groups", "Access")';
+    }, null);
+   });  
+
+  });
+ </script>
+}
+<h2 class="page-header">
+ New Group
+ <small></small>
+</h2>
+<div class="col-md-5 col-md-offset-4">
+ <form id="frmGroupDetails">
+  <div class="panel panel-primary">
+   <div class="panel-heading">Add New Group</div>
+   <div class="panel-body">
+
+    @Html.AntiForgeryToken()
+    <div class="row">
+     <div class="col-md-12">
+      <div class="form-group">
+       <label>Access Group Name</label>
+       <input type="text" class="form-control TextRequiredField" id="txtAccessGroupName" name="txtxAccessGroupName" placeholder="Access Group Name" autocomplete="off"/>
+      </div>
+      <div class="form-group">
+       <label>Access Group Description</label>
+       <input type="text" class="form-control TextRequiredField" id="txtDescription" name="txtDescription" placeholder="Description" autocomplete="off"/>
+      </div>
+      <div class="form-group">
+       <label class="checkbox-inline">
+        <input type="checkbox" id="chkIsActive" name="chkIsActive" checked /> Is Active?
+       </label>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="panel-footer">
+    <div class="row">
+     <div class="col-md-12 text-right">
+      <button type="submit" id="btnSave" name="btnSave" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+      <button type="button" onclick="javascript: window.location='@Url.Action("Groups", "Access")'" id="btnSave" name="btnSave" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
+     </div>
+    </div>
+   </div>
+  </div>
+ </form>
+</div>

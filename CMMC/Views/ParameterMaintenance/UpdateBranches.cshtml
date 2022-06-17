@@ -1,0 +1,114 @@
+﻿@using CMMC.Models
+
+@model Branches.Details
+
+@{
+    ViewBag.Title = "Update Branches";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+ <script type="text/javascript">
+  $(document).ready(function () {
+   var model = [];
+   var cluster = JSON.parse('@Html.Raw(Json.Encode(ViewBag.Cluster))');
+
+   $.each(cluster, function (index, value) {
+    $("#selCluster").append("<option value='" + value.Cluster + "' " + (value.Cluster == '@Model.Cluster' ? 'selected' : '') + ">" + value.Cluster + "</option>");
+   });
+
+   $().DMSFormValidator('#frmUpdateBranches')
+  .on('success.form.fv', function (e) {
+   e.preventDefault();
+    eModal.confirm("Save changes?", "Confirmation").then(function () {
+     model = {
+      BranchCode: $('#txtBranchCode').val(),
+      BranchName: $('#txtBranchName').val(),
+      Email: $('#txtEmail').val(),
+      IsActive: $('#chkIsActive').prop('checked'),
+      BhossEmail: $('#txtBhossEmail').val(),
+      Cluster: $("#selCluster").val()
+     }
+
+     $.ajax({
+      url: '@Url.Action("BranchSaveChanges", "ParameterMaintenance")',
+      data: JSON.stringify(model),
+      type: 'POST',
+      contentType: 'application/json',
+      traditional: true,
+      success: function (data) {
+       if (data.ResponseStatus != 1) {
+        toastr.error(data.Description, "Information");
+       }
+       else {
+        toastr.success(data.Description, "Information");
+       }
+      },
+      error: function (response) { }
+     });
+     window.location = '@Url.Action("Index", "ParameterMaintenance")';
+    }, null);
+  });
+  });
+ </script>
+}
+
+<h2 class="page-header">
+ Edit Branch
+ <small></small>
+</h2>
+<div class="col-md-5 col-md-offset-4">
+ <form id="frmUpdateBranches">
+  <div class="panel panel-primary">
+   <div class="panel-heading">Edit Branch Details</div>
+   <div class="panel-body">
+    @Html.AntiForgeryToken()
+    <div class="row">
+     <div class="col-md-12">
+
+      <div class="form-group">
+       <label>Branch Code: </label>
+       <input type="text" class="form-control" id="txtBranchCode" value="@Model.BranchCode" name="txtBranchCode" autocomplete="off" placeholder="Access Group Code" maxlength="3" />
+      </div>
+
+      <div class="form-group">
+       <label>Branch Name: </label>
+       <input type="text" class="form-control TextRequiredFieldAcceptAll" id="txtBranchName" value="@Model.BranchName" name="txtBranchName" autocomplete="off" placeholder="Access Group Name" />
+      </div>
+
+      <div class="form-group">
+       <label>Cluster: </label>
+       <select id="selCluster" name="selCluster" class="form-control"></select>
+      </div>
+
+      <div class="form-group">
+       <label>E-mail: </label>
+       <input type="text" class="form-control" id="txtEmail" value="@Model.Email" name="Email" data-fv-notempty="true" data-fv-emailaddress="true" data-fv-emailaddress-message="The value is not a valid email address" autocomplete="off" />
+      </div>
+
+      <div class="form-group">
+       <label>BHOSS E-Mail: </label>
+       <input type="text" class="form-control" id="txtBhossEmail" value="@Model.BhossEmail" data-fv-notempty="true" name="Email" data-fv-emailaddress="true" data-fv-emailaddress-message="The value is not a valid email address" autocomplete="off" />
+      </div>
+
+      <div class="form-group">
+       <label class="checkbox-inline">
+        <input type="checkbox" id="chkIsActive" name="chkIsActive" @(Model.IsActive ? "checked" : "") /> Is Active?
+       </label>
+      </div>
+
+     </div>
+    </div>
+   </div>
+   <div class="panel-footer">
+    <div class="row">
+     <div class="col-md-12 text-right">
+      <button type="submit" id="btnSave" name="btnSave" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+      <button type="button" onclick="javascript: window.location='@Url.Action("Index", "ParameterMaintenance")'" id="btnSave" name="btnSave" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
+     </div>
+    </div>
+   </div>
+  </div>
+ </form>
+</div>

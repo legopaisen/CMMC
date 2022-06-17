@@ -1,0 +1,217 @@
+﻿@using SYS_MATRIX.Models;
+
+@model SYS_USERS_MODEL
+
+@{
+ ViewBag.Title = "Add New User";
+ Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+ {
+ <link rel="stylesheet" href="~/Assets/datatable/bootstrap-table.css" type="text/css">
+ <script type="text/javascript" src="~/Assets/datatable/bootstrap-table.js"></script>
+ <script src="~/Assets/datatable/extensions/flatJSON/bootstrap-table-flatJSON.js"></script>
+
+ <script type="text/javascript">
+  var userdata = null;
+  var hasRecord = false;
+
+  function caps(id) {
+      document.getElementById(id).value = document.getElementById(id).value.toUpperCase();
+  }
+
+  $(document).ready(function () {
+   var access = '@Html.Raw(Json.Encode(ViewBag.AccessList))';
+  
+   var model = [];
+
+   $.each(JSON.parse(access), function (index, value) {
+    $("#selAccessName").append("<option value='" + value.AccessCode + "'>" + value.AccessName + "</option>");
+   }); // cmb
+
+  
+
+   $().DMSFormValidator('#frmUserDetails')
+   .on('success.form.fv', function (e) {
+    e.preventDefault();
+
+   });
+   // ^^ validate
+
+
+   $('body').on('click', '#btnSave', function () {
+    if (hasRecord) {
+     eModal.confirm("Save new user?", "Confirmation").then(function () {
+      model = {
+       UserID: userdata.Username,
+       FullName: userdata.FirstName + " " + userdata.LastName,
+       Email: userdata.EmailAddress,
+       IsActive: $("#chkIsActive").prop("checked"),
+       Access_Code: $("#selAccessName").val(),
+       Attribute1: $("#txtAttribute1").val(),
+       Attribute2: $("#txtAttribute2").val(),
+       Attribute3: $("#txtAttribute3").val(),
+       //GroupCode: userdata.GroupCode,
+       //GroupName: userdata.GroupName,
+       //DepartmentCode: userdata.DepartmentCode,
+       //DepartmentName: userdata.DepartmentName,
+       //UnitCode: userdata.UnitCode,
+       //UnitName: userdata.UnitName,
+       //IsGroupHead: userdata.IsGroupHead,
+       //IsDepartmentHead: userdata.IsDepartmentHead,
+       //IsUnitHead: userdata.IsUnitHead,
+      };
+
+      $.ajax({ //ajax for insert
+       url: '@Url.Action("UserInsert", "Access")',
+       data: JSON.stringify(model),
+       type: 'POST',
+       contentType: 'application/json',
+       traditional: true,
+       success: function (data) {
+        if (data.ResponseStatus != 1) {
+         toastr.error(data.Description, "Information");
+        }
+        else {
+         toastr.success(data.Description, "Information")
+        }
+       },
+       error: function (response) {
+       }
+      });
+      window.location = '@Url.Action("Users", "Access")';
+     }, null);
+    }
+    else {
+     toastr.error("You must employee first.", "Information");
+    }
+   });
+
+   //
+   $("#btnSearch").on('click', function () {
+    $.ajax({
+     url: '@Url.Action("SearchEmployee", "Access")',
+     data: { pEmployeeID: $("#txtUserID").val() },
+     success: function (data) {
+      if (data.Username == null) {
+       hasRecord = false;
+       toastr.error("Invalid Employee ID", "Error");
+      }
+      else {
+       hasRecord = true;
+       userdata = data;
+       $("#txtFullName").val(userdata.FullName);
+       $("#txtEmail").val(userdata.EmailAddress);
+      }
+     },
+     error: function () {
+      //alert(JSON.stringify(data));
+      toastr.error("Error in Employee ID Search ");
+     }
+    });
+   });
+   //
+   $("body").on('keyup', '#txtUserID', function () {
+    $("#txtFullName").val("");
+    $("#txtEmail").val("");
+    userdata = null;
+    hasRecord = false;
+   });
+  });
+
+ </script>
+}
+<h2 class="page-header">
+ New User
+ <small></small>
+</h2>
+<form id="frmUserDetails" class="form-horizontal">
+ @Html.AntiForgeryToken()
+ <div class="panel panel-primary">
+  <div class="panel-heading">Add User Details</div>
+  <div class="panel-body">
+   <div class="row">
+    <div class="col-md-6">
+     <div class="form-group">
+      <label class="col-md-2 control-label">User ID</label>
+      <div class="col-md-7">
+          <input type="text" id="txtUserID" name="txtUserID" class="form-control" autocomplete="off" onblur="caps(this.id)" placeholder="Enter User ID" />
+      </div>
+       <button type="button" id="btnSearch" name="btnSearch" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+     </div>
+
+     <div class="form-group">
+      <label class="col-md-2 control-label">User Fullname</label>
+      <div class="col-md-8">
+       <input type="text" id="txtFullName" readonly="readonly" name="txtFullName" class="form-control" autocomplete="off" />
+      </div>
+     </div>
+
+     <div class="form-group">
+      <label class="col-md-2 control-label">User Email</label>
+      <div class="col-md-8">
+       <input type="text" id="txtEmail" readonly="readonly" name="txtEmail" class="form-control" autocomplete="off" />
+      </div>
+     </div>
+
+
+     
+
+     <div class="form-group">
+      <div class="col-md-3 col-md-offset-2">
+       <label class="checkbox-inline">
+        <input type="checkbox" id="chkIsActive" name="chkIsActive" checked="checked" /> Is Active?
+       </label>
+      </div>
+     </div>
+
+    </div>
+
+
+
+    <div class="col-sm-6">
+     <div class="form-group">
+      <label class="col-sm-3 control-label">Access Name</label>
+      <div class="col-sm-9">
+       <select id="selAccessName" name="selAccessName" class="form-control"></select>
+      </div>
+     </div>
+
+
+
+     @*<div class="form-group">
+      <label class="col-sm-3 control-label">Attribute 1</label>
+      <div class="col-sm-9">
+       <input type="text" id="txtAttribute1" name="txtAttribute1" class="form-control" autocomplete="off"/>
+      </div>
+     </div>
+
+
+     <div class="form-group">
+      <label class="col-sm-3 control-label">Attribute 2</label>
+      <div class="col-sm-9">
+       <input type="text" id="txtAttribute2" name="txtAttribute2" class="form-control" autocomplete="off"/>
+      </div>
+     </div>
+
+     <div class="form-group">
+      <label class="col-sm-3 control-label">Attribute 3</label>
+      <div class="col-sm-9">
+       <input type="text" id="txtAttribute3" name="txtAttribute3" class="form-control" autocomplete="off"/>
+      </div>
+     </div>*@
+    </div>
+   </div>
+  </div>
+  <div class="panel-footer">
+   <div class="row">
+    <div class="col-md-12 text-right">
+     <button type="button" id="btnSave" name="btnSave" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+     <button type="button" onclick="javascript: window.location='@Url.Action("Users", "Access")'" id="btnSave" name="btnSave" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
+    </div>
+   </div>
+  </div>
+ </div>
+</form>
+

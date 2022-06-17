@@ -1,0 +1,587 @@
+﻿@{
+    ViewBag.Title = "User Settings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+<div class="row" id="MainTab">
+ <h2 class="page-header">
+ User Settings
+ <small>Details</small>
+ </h2>
+  <!--TAB HEADING-->
+  <ul class="nav nav-tabs" id="myTab">
+   <li class="nav active"><a href="#User" data-toggle="tab">User Maintenance</a></li>
+   <li class="nav"><a href="#Access" data-toggle="tab">Access Maintenance</a></li>
+   <li class="nav"><a href="#Group" data-toggle="tab">Group Maintenance</a></li>
+  </ul>
+  <!--TAB BODY-->
+  <div class="tab-content">
+   <!--User Maintenance-->
+   <div class="tab-pane fade in active" id="User">
+    <div class="row">
+     <div class="col-lg-12">
+      <div class="panel panel-primary">
+       <div class="panel-heading">User Maintenance</div>
+       <div class="panel-body">
+        <table id="UserList" class="table table-hover table-bordered" cellpadding="0" width="100%"
+               data-toggle="table"
+               data-pagination="true"
+               data-search="true"
+               data-detail-formatter="detailUser"
+               data-unique-id="UserID"
+               data-click-to-select="true"
+               data-url="@Url.Content("~/UserSettings/LoadUserList/")">
+
+         <thead>
+          <tr>
+           <th data-checkbox="true"></th>
+           <th data-field="UserID">UserID</th>
+           <th data-field="FullName">Full Name</th>
+           <th data-field="MemberOf">Member Of</th>
+           <th data-field="IsActive">Is Active</th>
+          </tr>
+         </thead>
+         <tbody></tbody>
+        </table>
+       </div>
+       <div class="panel-footer">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddUser" id="btnAddUser"><i class="glyphicon glyphicon-plus"></i> Add</button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#EditUser" id="btnEditUser" disabled><i class="glyphicon glyphicon-edit"></i> Edit</button>
+        <button type="button" class="btn btn-danger" id="btnDeleteUser" disabled><i class="glyphicon glyphicon-remove"></i> Delete</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+
+   <!--Access-->
+   <div class="tab-pane fade" id="Access">
+    <div class="row">
+     <div class="col-lg-12">
+      <div class="panel panel-primary">
+       <div class="panel-heading">Access Maintenance</div>
+       <div class="panel-body">
+        <table id="AccessList" class="table table-hover table-striped table-bordered" cellpadding="0" width="100%"
+               data-toggle="table"
+               data-pagination="true"
+               data-search="true"
+               data-detail-formatter="detailAccess"
+               data-unique-id="AccessCode"
+               data-click-to-select="true"
+               data-url="@Url.Content("~/UserSettings/LoadAccessList/")">
+         <thead>
+          <tr>
+           <th data-checkbox="true"></th>
+           <th data-field="AccessCode">Access Code</th>
+           <th data-field="AccessName">Access Name</th>
+           <th data-field="Description">Description</th>
+           <th data-field="IsAccessActive">Is Active</th>
+          </tr>
+         </thead>
+        </table>
+       </div>
+       <div class="panel-footer">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddAccess" id="btnAddAccess"><i class="glyphicon glyphicon-plus"></i> Add</button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#EditAccess" id="btnEditAccess" disabled><i class="glyphicon glyphicon-edit"></i> Edit</button>
+        <button type="button" class="btn btn-danger" id="btnDeleteAccess" disabled><i class="glyphicon glyphicon-remove"></i> Delete</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+
+   <!--Group-->
+   <div class="tab-pane fade" id="Group">
+    <div class="row">
+     <div class="col-lg-12">
+      <div class="panel panel-primary">
+       <div class="panel-heading">Group Maintenance</div>
+       <div class="panel-body">
+        <table id="GroupList" class="table table-hover table-striped table-bordered" cellpadding="0" width="100%"
+               data-toggle="table"
+               data-pagination="true"
+               data-search="true"
+               data-detail-formatter="detailGroup"
+               data-unique-id="GroupCode"
+               data-click-to-select="true"
+               data-url="@Url.Content("~/UserSettings/LoadgroupList/")">
+         <thead>
+          <tr>
+           <th data-checkbox="true"></th>
+           <th data-field="GroupCode">Group Code</th>
+           <th data-field="GroupName">Group Name</th>
+           <th data-field="IsGroupActive">Is Active</th>
+          </tr>
+         </thead>
+        </table>
+       </div>
+       <div class="panel-footer">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddGroup" id="btnAddGroup"><i class="glyphicon glyphicon-plus"></i> Add</button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#EditGroup" id="btnEditGroup" disabled><i class="glyphicon glyphicon-edit"></i> Edit</button>
+        <button type="button" class="btn btn-danger" id="btnDeleteGroup" disabled><i class="glyphicon glyphicon-remove"></i> Delete</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!---------------->
+<!--MODALS-->
+<!---------------->
+<!--USER MODAL-->
+<!--Add User-->
+<div id="AddUser" class="modal fade" role="dialog">
+ <div class="modal-dialog">
+  <div class="modal-content">
+   <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Add User</h4>
+   </div>
+   <div class="modal-body">
+    <div class="row">
+     <div class="container-fluid">
+      <ul class="nav nav-tabs">
+       <li class="nav active"><a href="#UserAddDetails" data-toggle="tab">Details</a></li>
+       <li class="nav"><a href="#UserAddSettings" data-toggle="tab">User Settings</a></li>
+      </ul>
+      <div class="tab-content" id="UserAddContent">
+       <div id="UserAddDetails" class="tab-pane fade in active">
+        <div class="panel panel-primary">
+         <div class="panel-heading">
+
+         </div>
+         <div class="panel-body">
+          <div class="input-group">
+           <span class="input-group-addon">Group</span>
+           <select class="form-control" id="UserAddtxtGroupName"></select><br />
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Member of</span>
+           <select class="form-control" id="UserAddtxtMemberOf"></select>
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Network ID</span>
+           <input type="text" class="form-control" placeholder="Network ID" id="UserAddtxtNetworkID" value="" />
+           <span class="input-group-btn">
+            <button class="btn btn-default" type="button">
+             <span class="glyphicon glyphicon-search"></span>
+            </button>
+           </span>
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Fullname</span>
+           <input type="text" class="form-control" placeholder="Full Name" id="UserAddtxtFullName" value="" />
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Email</span>
+           <input type="text" class="form-control" placeholder="Email" value="" id="UserAddtxtEmail" />
+          </div>
+         </div>
+        </div>
+       </div>
+       <div id="UserAddSettings" class="tab-pane fade">
+        <div class="panel panel-primary">
+         <div class="panel-heading">Details</div>
+         <div class="panel-body">
+          Send notifiction from the group of:
+          <table id="UserList" class="table table-hover table-bordered" cellpadding="0" width="100%"
+                 data-toggle="table"
+                 data-pagination="true"
+                 data-search="true"
+                 data-detail-formatter="detailUser"
+                 data-unique-id="UserID"
+                 data-click-to-select="true"
+                 data-url="@Url.Content("~/UserSettings/LoadUserList/")">
+
+           <thead>
+            <tr>
+             <th data-checkbox="true"></th>
+             <th data-field="UserID">UserID</th>
+             <th data-field="FullName">Full Name</th>
+             <th data-field="MemberOf">Member Of</th>
+             <th data-field="IsActive">Is Active</th>
+            </tr>
+           </thead>
+           <tbody></tbody>
+          </table>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-primary" id="UserAddbtnSave"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+    <button type="button" class="btn btn-danger" data-dismiss="modal" id="UserAddbtnClose"> <i class="glyphicon glyphicon-remove"></i> Close</button>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!--Edit User-->
+<div id="EditUser" class="modal fade" role="dialog">
+ <div class="modal-dialog">
+
+  <div class="modal-content">
+   <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Edit User</h4>
+   </div>
+   <div class="modal-body">
+    <div class="row">
+     <div class="container-fluid">
+      <ul class="nav nav-tabs">
+       <li class="nav active"><a href="#UserEditDetails" data-toggle="tab">Details</a></li>
+       <li class="nav"><a href="#UserEditSettings" data-toggle="tab">User Settings</a></li>
+      </ul>
+      <div class="tab-content" id="UserEditContent">
+       <div id="UserEditDetails" class="tab-pane fade in active">
+        <div class="panel panel-primary">
+         <div class="panel-heading">
+
+         </div>
+         <div class="panel-body">
+          <div class="input-group">
+           <span class="input-group-addon">Group</span>
+           <select class="form-control" id="UserEdittxtGroupName"></select><br />
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Member of</span>
+           <select class="form-control" id="UserEdittxtMemberOf"></select>
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Network ID</span>
+           <input type="text" class="form-control" placeholder="Network ID" id="UserEdittxtNetworkID" />
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Fullname</span>
+           <input type="text" class="form-control" placeholder="Full Name" id="UserEdittxtFullName" />
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Email</span>
+           <input type="text" class="form-control" placeholder="Email" id="UserEdittxtEmail" />
+          </div><br />
+          <div class="input-group">
+           <input type="checkbox" id="IsActive" />
+           <label for="Input">Is Active</label>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div id="UserEditSettings" class="tab-pane fade">
+        <div class="panel panel-primary">
+         <div class="panel-heading">Details</div>
+         <div class="panel-body">
+          Send notification from the group of:
+          <table id="UserList" class="table table-hover table-bordered" cellpadding="0" width="100%"
+                 data-toggle="table"
+                 data-pagination="true"
+                 data-search="true"
+                 data-detail-formatter="detailUser"
+                 data-unique-id="UserID"
+                 data-click-to-select="true"
+                 data-url="@Url.Content("~/UserSettings/LoadUserList/")">
+
+           <thead>
+            <tr>
+             <th data-checkbox="true"></th>
+             <th data-field="UserID">UserID</th>
+             <th data-field="FullName">Full Name</th>
+             <th data-field="MemberOf">Member Of</th>
+             <th data-field="IsActive">Is Active</th>
+            </tr>
+           </thead>
+           <tbody></tbody>
+          </table>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-primary" id="UserEditbtnSave"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+    <button type="button" class="btn btn-danger" data-dismiss="modal" id="UserEditbtnCancel"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!--ACCESS MODAL-->
+<!--Add Access-->
+<div id="AddAccess" class="modal fade" role="dialog">
+ <div class="modal-dialog">
+
+  <div class="modal-content">
+   <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Add Access</h4>
+   </div>
+   <div class="modal-body">
+    <div class="row">
+     <div class="container-fluid">
+      <ul class="nav nav-tabs">
+       <li class="nav active"><a href="#AccessAddDetails" data-toggle="tab">Details</a></li>
+       <li class="nav"><a href="#AccessAddModules" data-toggle="tab">Modules</a></li>
+      </ul>
+      <div class="tab-content" id="AccessAddContent">
+       <div id="AccessAddDetails" class="tab-pane fade in active">
+        <div class="panel panel-primary">
+         <div class="panel-heading">
+
+         </div>
+         <div class="panel-body">
+          <div class="input-group">
+           <span class="input-group-addon">Access Name</span>
+           <input type="text" class="form-control" placeholder="Access Name" id="AccessAddtxtAccessName" />
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Group</span>
+           <select class="form-control" id="AccessAddtxtGroupName"></select><br />
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Description</span>
+           <input type="text" class="form-control" placeholder="Description" id="AccessAddtxtDescription" />
+          </div>
+         </div>
+        </div>
+       </div>
+       <div id="AccessAddModules" class="tab-pane fade">
+        <div class="panel panel-primary">
+         <div class="panel-heading">
+         </div>
+         <div class="panel-body">
+          <div>
+           <button id="btnAddModule" type="button" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></button>
+           <button id="btnDeleteModule" type="button" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
+          </div><br />
+          <table id="ModuleTable" class="table table-hover table-bordered" cellpadding="0" width="100%"
+                 data-pagination="true"
+                 data-search="true"
+                 data-click-to-select="true">
+           <thead>
+            <tr>
+             <th data-field="">Module</th>
+             <th data-field="">Permission</th>
+            </tr>
+           </thead>
+           <tbody>
+            <tr>
+             <td data-field="name">
+              <select id='ModuleList' name="finditem" class="form-control"></select>
+             </td>
+             <td data-field="name">
+              <select id='PermissionList' name="finditem" class="form-control"></select>
+             </td>
+            </tr>
+           </tbody>
+          </table>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-primary" id="AccessAddbtnSave"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+    <button type="button" class="btn btn-danger" data-dismiss="modal" id="AccessAddbtnClose"><i class="glyphicon glyphicon-remove"></i> Close</button>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!--Edit Access-->
+<div id="EditAccess" class="modal fade" role="dialog">
+ <div class="modal-dialog">
+
+  <div class="modal-content">
+   <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Edit Access</h4>
+   </div>
+   <div class="modal-body">
+    <div class="row">
+     <div class="container-fluid">
+      <ul class="nav nav-tabs">
+       <li class="nav active"><a href="#AccessEditDetails" data-toggle="tab">Details</a></li>
+       <li class="nav"><a href="#AccessEditModules" data-toggle="tab">Modules</a></li>
+      </ul>
+      <div class="tab-content" id="AccessEditContent">
+       <div id="AccessEditDetails" class="tab-pane fade in active">
+        <div class="panel panel-primary">
+         <div class="panel-heading">
+
+         </div>
+         <div class="panel-body">
+          <div class="input-group col-md-6">
+           <span class="input-group-addon">Code</span>
+           <input type="text" class="form-control" placeholder="Code" id="AccessEdittxtAccessCode" />
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Access Name</span>
+           <input type="text" class="form-control" placeholder="Access Name" id="AccessEdittxtAccessName" />
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Group</span>
+           <select class="form-control" id="AccessEdittxtGroupName"></select><br />
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Description</span>
+           <input type="text" class="form-control" placeholder="Description" id="AccessEdittxtDescription" />
+          </div><br />
+          <div class="input-group">
+           <input type="checkbox" />
+           <label for="Input">Is Active</label>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div id="AccessEditModules" class="tab-pane fade">
+        <div class="panel panel-primary">
+         <div class="panel-heading">Details</div>
+         <div class="panel-body">
+          <div>
+           <button id="EditbtnAddModule" type="button" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></button>
+           <button id="EditbtnDeleteModule" type="button" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
+          </div><br />
+          <table id="EditModuleTable" class="table table-hover table-bordered" cellpadding="0" width="100%"
+                 data-pagination="true"
+                 data-search="true"
+                 data-click-to-select="true">
+           <thead>
+            <tr>
+             <th data-field="">Module</th>
+             <th data-field="">Permission</th>
+            </tr>
+           </thead>
+           <tbody>
+            <tr>
+             <td data-field="name">
+              <select id='EditModuleList' name="finditem" class="form-control"></select>
+             </td>
+             <td data-field="name">
+              <select id='EditPermissionList' name="finditem" class="form-control"></select>
+             </td>
+            </tr>
+           </tbody>
+          </table>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-primary" id="AccessEditbtnSave"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+    <button type="button" class="btn btn-danger" data-dismiss="modal" id="AccessEditbtnCancel"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!--GROUP MODAL-->
+<!--Add Group-->
+<div id="AddGroup" class="modal fade" role="dialog">
+ <div class="modal-dialog">
+
+  <div class="modal-content">
+   <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Add Group</h4>
+   </div>
+   <div class="modal-body">
+    <div class="row">
+     <div class="container-fluid">
+      <ul class="nav nav-tabs">
+       <li class="nav active"><a href="#GroupAddDetails" data-toggle="tab">Details</a></li>
+      </ul>
+      <div class="tab-content" id="GroupAddContent">
+       <div id="GroupAddDetails" class="tab-pane fade in active">
+        <div class="panel panel-primary">
+         <div class="panel-heading">
+
+         </div>
+         <div class="panel-body">
+          <div class="input-group">
+           <span class="input-group-addon">Group Name</span>
+           <input type="text" class="form-control" placeholder="Group Name" id="GroupAddtxtGroupName" />
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Description</span>
+           <input type="text" class="form-control" placeholder="Description" id="GroupAddtxtDescription" />
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-primary" id="GroupAddbtnSave"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+    <button type="button" class="btn btn-danger" data-dismiss="modal" id="GroupAddbtnClose"><i class="glyphicon glyphicon-remove"></i> Close</button>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!--Edit Group-->
+<div id="EditGroup" class="modal fade" role="dialog">
+ <div class="modal-dialog">
+  <div class="modal-content">
+   <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Edit Group</h4>
+   </div>
+   <div class="modal-body">
+    <div class="row">
+     <div class="container-fluid">
+      <ul class="nav nav-tabs">
+       <li class="nav active"><a href="#GroupEditDetails" data-toggle="tab">Details</a></li>
+      </ul>
+      <div class="tab-content" id="GroupEditContent">
+       <div id="GroupEditDetails" class="tab-pane fade in active">
+        <div class="panel panel-primary">
+         <div class="panel-heading">
+
+         </div>
+         <div class="panel-body">
+          <div class="input-group col-md-6">
+           <span class="input-group-addon">Code</span>
+           <input type="text" class="form-control" placeholder="Code" id="GroupEdittxtGroupCode" />
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Group Name</span>
+           <input type="text" class="form-control" placeholder="Group Name" id="GroupEdittxtGroupName" />
+          </div><br />
+          <div class="input-group">
+           <span class="input-group-addon">Description</span>
+           <input type="text" class="form-control" placeholder="Description" id="GroupEdittxtDescription" />
+          </div><br />
+          <div class="input-group">
+           <input type="checkbox" />
+           <label for="Input">Is Active</label>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="modal-footer">
+    <button type="button" class="btn btn-primary" id="GroupEditbtnSave"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+    <button type="button" class="btn btn-danger" data-dismiss="modal" id="GroupEditbtnCancel"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+   </div>
+  </div>
+ </div>
+</div>

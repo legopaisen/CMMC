@@ -1,0 +1,105 @@
+﻿@using SYS_MATRIX.Models;
+
+@{
+    ViewBag.Title = "View User Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model SYS_USERS_MODEL
+ 
+
+@section head
+ {
+<link rel="stylesheet" href="~/Assets/datatable/bootstrap-table.css" type="text/css">
+<script type="text/javascript" src="~/Assets/datatable/bootstrap-table.js"></script>
+<script src="~/Assets/datatable/extensions/flatJSON/bootstrap-table-flatJSON.js"></script>
+
+ <script type="text/javascript">
+ $(document).ready(function () {
+  var access = '@Html.Raw(Json.Encode(ViewBag.AccessList))';
+ 
+  var usercode = '@Model.Access_Code';
+ 
+  $.each(JSON.parse(access), function(index, value){
+   $("#selAccessName").append("<option value='" + value.AccessCode + "' " + (value.AccessCode == usercode ? 'selected' : '') + ">" + value.AccessName + "</option>");
+  });
+ });//docu end 
+
+ </script>
+}
+<h2 class="page-header">
+ User Details
+ <small></small>
+</h2>
+<form id="frmUserDetails" class="form-horizontal">
+ @Html.AntiForgeryToken()
+ <div class="panel panel-primary">
+  <div class="panel-heading">User Details</div>
+  <div class="panel-body">
+   <div class="row">
+    <div class="col-sm-6">
+     <div class="form-group">
+      <label class="col-sm-2 control-label">User ID</label>
+      <div class="col-sm-6">
+       <input type="text" id="txtUserID" name="txtUserID" value="@Model.UserID" class="form-control" readonly/>
+      </div>
+     </div>
+     <div class="form-group">
+      <label class="col-sm-2 control-label">User Fullname</label>
+      <div class="col-sm-8">
+       <input type="text" id="txtFullName" name="txtFullName" value="@Model.FullName" class="form-control" readonly/>
+      </div>
+     </div>
+     <div class="form-group">
+      <label class="col-sm-2 control-label">User Email</label>
+      <div class="col-sm-8">
+       <input type="text" id="txtEmail" name="txtEmail" value="@Model.Email" class="form-control" readonly/>
+      </div>
+     </div>
+     <div class="form-group">
+      <div class="col-sm-3 col-sm-offset-2">
+       <label class="checkbox-inline">
+        <input type="checkbox" id="chkIsActive" name="chkIsActive" @(Model.IsActive ? "checked" : "") /> Is Active?
+       </label>
+      </div>
+     </div>
+    </div>
+    <div class="col-sm-6">
+     <div class="form-group">
+      <label class="col-sm-3 control-label">Access Name</label>
+      <div class="col-sm-9">
+       <select id="selAccessName" name="selAccessName" class="form-control" disabled></select>
+      </div>
+     </div>
+     @*<div class="form-group">
+      <label class="col-sm-3 control-label">Attribute 1</label>
+      <div class="col-sm-9">
+       <input type="text" id="txtAttribute1" name="txtAttribute1" value="@Model.Attribute1" class="form-control" readonly/>
+      </div>
+     </div>
+     <div class="form-group">
+      <label class="col-sm-3 control-label">Attribute 2</label>
+      <div class="col-sm-9">
+       <input type="text" id="txtAttribute2" name="txtAttribute2" value="@Model.Attribute2" class="form-control" readonly/>
+      </div>
+     </div>
+     <div class="form-group">
+      <label class="col-sm-3 control-label">Attribute 3</label>
+      <div class="col-sm-9">
+       <input type="text" id="txtAttribute3" name="txtAttribute3" value="@Model.Attribute3" class="form-control" readonly/>
+      </div>
+     </div>*@
+    </div>
+   </div>
+  </div>
+  <div class="panel-footer">
+   <div class="row">
+    <div class="col-md-12 text-right">
+     <button type="button" onclick="javascript: window.location='@Url.Action("Users", "Access")'" id="btnSave" name="btnSave" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
+    </div>
+   </div>
+  </div>
+ </div>
+</form>
+
+

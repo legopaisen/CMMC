@@ -1,0 +1,261 @@
+﻿@using SYS_MATRIX.Models;
+
+@{
+    ViewBag.Title = "Add New Access";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section head
+{
+<link rel="stylesheet" href="~/Assets/datatable/bootstrap-table.css" type="text/css">
+<script type="text/javascript" src="~/Assets/datatable/bootstrap-table.js"></script>
+
+ <script type="text/javascript">  
+  $(document).ready(function () {   
+   var groups = JSON.parse('@Html.Raw(Json.Encode(ViewBag.GroupList))');
+   var modules = JSON.parse('@Html.Raw(Json.Encode(ViewBag.ModuleList))');
+      var permission = JSON.parse('@Html.Raw(Json.Encode(ViewBag.PermissionList))');
+      var usertype = '@Html.Raw(Json.Encode(ViewBag.UserTypeList))';
+  
+   $.each(modules, function (index, value) {
+    $("#lstSystemModules").append("<li class='list-group-item list-group-item-success' data-value='" + value.Module_Code + "'>" +
+     "<div class='input-group'>" + //+ value.ModuleName + 
+     "<span class='input-group-addon' >" + value.ModuleName + "</span>" +
+     "<select class='cmbPermissions form-control'></select>" +
+     "</div></li>");
+   });
+
+   $.each(JSON.parse(usertype), function (index, value) {
+       $("#selUserType").append("<option value='" + value.UserType + "'>" + value.UserTypeText + "</option>");
+   });
+   //dito iyong sa permission
+   //$.each(modules, function (index, value) {
+   // $("#lstSystemModules").append("<li class='list-group-item list-group-item-success' data-value='" + value.Module_Code + "'>" +
+   //  value.ModuleName + "</li>");
+      //});
+
+   $.each(permission, function (ndx, value) {
+    $(".cmbPermissions").append($('<option />').val(value.Permission).text(value.PermissionText));
+   });
+   
+   $.each(groups, function (index, value) {
+     $("#cmbGroups").append("<option value='" + value.Group_Code + "'>" + value.Group_Name + "</option>");
+     $("#cmbNotifyGroups").append("<option value='" + value.Group_Code + "'>" + value.Group_Name + "</option>");
+    });
+
+   $().DMSFormValidator('#frmAccessDetails')
+    .on('success.form.fv', function (e) {
+     e.preventDefault();
+     eModal.confirm("Save new Access?", "Confirmation").then(function () {
+      var assignedmodules = [];
+      $.each($("#lstAssignedModules").parent().find("ul li"), function () {
+       var mods = {
+        ModuleCode: $(this).data("value"),
+        AccessCode: 0,
+        Permission: $('.cmbPermissions').val()
+       };
+       assignedmodules.push(mods);
+      });
+
+      var UserType =
+    {
+        UserType: $("#selUserType").val(),
+        UserTypeText: $("#selUserType").text()
+    };
+
+      var model = {
+       AccessName: $("#txtAccessName").val(),
+       Description: $("#txtDescription").val(),
+       GroupCode: $("#cmbGroups").val(),
+       NotifiedGroupCode: $("#cmbNotifyGroups").val(),
+       IsActive: $("#chkIsActive").prop("checked"),
+       ModuleList: assignedmodules,
+       UserType: UserType,
+      };
+      
+      $.ajax({
+       url: '@Url.Action("AccessInsert", "Access")', //add data 
+       data: JSON.stringify(model),
+       type: 'POST',
+       contentType: 'application/json',
+       traditional: true,
+       success: function (data) {        
+        if (data.ResponseStatus == 1) {
+         toastr.success(data.Description, "Information");
+        }
+      
+        else if (data.ResponseStatus == 0) {
+         toastr.error(data.Description, "Information");
+        }
+       },
+       error: function (response) { }
+      });
+      window.location = '@Url.Action("Index", "Access")';
+     }, null);
+    });
+
+      /*js control form codes */
+   $('body').on('click', '.list-group .list-group-item', function () {
+    $(this).toggleClass('active');
+   });
+   $('body').on('click', '.list-group .list-group-item .input-group', function (e) {
+    e.stopPropagation();
+   });
+   //permission 
+   $('body').on('click', '#btnMoveRightSingle', function () {
+    var selected = $('#lstSystemModules').parent().find('ul li.active');
+   // $('#lstAssignedModules').parent().find('ul').append(selected.toggleClass('active').append("<select style='width: 130px' id='cmbPermission' class='badge'><option value ='F'> Full Access</option><option value='R'>Read Only</option></select>").fadeOut().fadeIn());
+   // if (selected.length == 0) {
+   //  toastr.error("Select item to move", "Information");
+   // }
+   //});
+    $('#lstAssignedModules').parent().find('ul').append(selected.toggleClass('active').fadeOut().fadeIn());
+    if(selected.length == 0)
+    {
+     toastr.error("Select item to move", "Information");
+    }
+    });
+
+   //permission
+   $('body').on('click', '#btnMoveRightAll', function () {
+    var selected = $('#lstSystemModules').parent().find('ul li');
+   // $('#lstAssignedModules').parent().find('ul').append(selected.toggleClass('active').append("<select style='width: 130px' id='cmbPermission' class='badge'><option value ='F'> Full Access</option><option value='R'>Read Only</option></select>").fadeOut().fadeIn());
+   // if (selected.length == 0) {
+   //  toastr.error("Select item to move", "Information");
+   // }
+   //});
+    $('#lstAssignedModules').parent().find('ul').append(selected.toggleClass('li.active').fadeOut().fadeIn());
+    if (selected.length == 0) {
+     toastr.error("Select item to move", "Information");
+    }  
+   });
+   //permission
+   $('body').on('click', '#btnMoveLeftSingle', function () {
+    var selected = $('#lstAssignedModules').parent().find('ul li.active');
+   // $(selected.find('select')).detach();
+   // $('#lstSystemModules').parent().find('ul').append(selected.toggleClass('active').fadeOut().fadeIn());
+   // if (selected.length == 0) {
+   //  toastr.error("Select item to move", "Information");
+   // }
+   //});
+    $('#lstSystemModules').parent().find('ul').append(selected.toggleClass('active').fadeOut().fadeIn());
+    if (selected.length == 0) {
+     toastr.error("Select item to move", "Information");
+    }
+   });
+   //permission
+   $('body').on('click', '#btnMoveLeftAll', function () {
+    var selected = $('#lstAssignedModules').parent().find('ul li');
+   // $(selected.find('select')).detach();
+   // $('#lstSystemModules').parent().find('ul').append(selected.toggleClass('active').fadeOut().fadeIn());
+   // if (selected.length == 0) {
+   //  toastr.error("Select item to move", "Information");
+   // }
+   //});
+    $('#lstSystemModules').parent().find('ul').append(selected.toggleClass('li.active').fadeOut().fadeIn());
+    if (selected.length == 0) {
+     toastr.error("Select item to move", "Information");
+    }
+   });
+      /*control form js codes ^^*/
+  });
+ </script>
+
+ <style>
+  .s-scroll {
+   max-height: 206px;
+   overflow-y: auto;
+  }
+ </style>
+}
+<h2 class="page-header">
+ New Access
+ <small></small>
+</h2>
+ <form id="frmAccessDetails">  
+   <div class="panel panel-primary">
+    <div class="panel-heading">Add New Access</div>
+    <div class="panel-body">
+     @Html.AntiForgeryToken()
+     <div class="row">
+      <div class="col-md-5">
+       <div class="form-group">
+        <label>Access Name</label>
+        <input type="text" class="form-control TextRequiredField" id="txtAccessName" name="txtxAccessGroupName" placeholder="Input an Access Name" autocomplete="off"/>
+       </div>
+       <div class="form-group">
+        <label>Access Description</label>
+        <input type="text" class="form-control TextRequiredField" id="txtDescription" name="txtDescription" placeholder="Description" autocomplete="off"/>
+       </div>
+
+       <div class="form-group">
+        <label class="checkbox-inline">
+         <input type="checkbox" id="chkIsActive" name="chkIsActive" checked/> Is Active?
+        </label>
+       </div>
+      </div>
+
+      <div class="col-md-5 col-md-offset-2">
+       <div class="form-group">
+        <label>Belongs to Group</label>
+        <select id="cmbGroups" class="form-control" name="cmbGroups"></select>
+       </div>
+       <div class="form-group">
+        <label>Notify this Group</label>
+        <select id="cmbNotifyGroups" class="form-control" name="cmbNotifyGroups"></select>
+       </div>
+          <div class="form-group">
+              <label>User Type</label>
+              <select id="selUserType" name="selUserType" class="form-control"></select>
+          </div>
+      </div>
+     </div>
+      
+
+       
+       
+
+     <div class="row">
+      <div class="col-md-5">
+       <div class="panel panel-primary">
+        <div class="panel-heading">System Modules</div>
+        <div class="panel-body">
+         <ul id="lstSystemModules" class="list-group s-scroll"></ul>
+        </div>
+       </div>
+      </div>
+
+      <div class="col-md-2">
+       <div class="panel panel-primary">
+        <div class="panel-heading">Controls</div>
+        <div class="panel-body">
+         <button id="btnMoveRightSingle" type="button" class="btn col-md-6 col-md-offset-3 btn-success"><i class="glyphicon glyphicon-chevron-right"></i></button>
+         <button id="btnMoveRightAll" type="button" class="btn col-md-6 col-md-offset-3 btn-success"><i class="glyphicon glyphicon-chevron-right"></i><i class="glyphicon glyphicon-chevron-right"></i></button>
+         <button id="btnMoveLeftSingle" type="button" class="btn col-md-6 col-md-offset-3 btn-success"><i class="glyphicon glyphicon-chevron-left"></i></button>
+         <button id="btnMoveLeftAll" type="button" class="btn col-md-6 col-md-offset-3 btn-success"><i class="glyphicon glyphicon-chevron-left"></i><i class="glyphicon glyphicon-chevron-left"></i></button>
+        </div>
+       </div>
+      </div>
+
+      <div class="col-md-5">
+       <div class="panel panel-primary">
+        <div class="panel-heading">Assigned Modules</div>
+        <div class="panel-body">
+         <ul id="lstAssignedModules" class="list-group s-scroll"></ul>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="panel-footer">
+     <div class="row">
+      <div class="col-md-12 text-right">
+       <button type="submit" id="btnSave" name="btnSave" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+       <button type="button" onclick="javascript: window.location='@Url.Action("Index", "Access")'" id="btnSave" name="btnSave" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
+      </div>
+     </div>
+    </div>
+   </div>  
+</form>
+

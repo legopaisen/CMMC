@@ -1,0 +1,934 @@
+﻿@model CMMC.Models.SharedFunctions.Details
+@{
+ ViewBag.Title = "System Settings";
+ Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">  
+ $(window).load(function () {
+  var $EditFileAndBatch = $("#EditFileAndBatch"),
+      $SaveFileandBatch = $("#SaveFileandBatch"),
+      $CancelFileandBatch = $("#CancelFileandBatch"),
+      $EditATMConnectionSettings = $("#EditATMSettings"),
+      $SaveATMConnectionSettings = $("#SaveATMSettings"),
+      $CancelATMConnectionSettings = $("#CancelATMSettings"),
+      $EditFTPConnectionSettings = $("#EditFTPConSettings"),
+      $SaveFTPConnectionSettings = $("#SaveFTPConSettings"),
+      $CancelFTPConnectionSettings = $("#CancelFTPConSettings"),
+      $EditADB = $("#EditADB"),
+      $SaveADB = $("#SaveADB"),
+      $CancelADB = $("#CancelADB"),
+      $EditNotificationSetting = $("#EditNotificationSettings"),
+      $SaveNotificationSetting = $("#SaveNotificationSettings"),
+      $CancelNotificationSetting = $("#CancelNotificationSettings"),
+      $EditConn = $("#EditConnection"),
+      $SaveConnection = $("#SaveSettingConnection"),
+      $CancelConnection = $("#CancelConnection")
+    
+
+  if (localStorage.getItem("Status") == "successfilebatch") {
+   Command: toastr["success"]("Success", "Successful update for file and batch program settings.")
+   localStorage.clear();
+  }
+  if (localStorage.getItem("Status") == "errorfilebatch") {
+   Command: toastr["error"]("Error", "Error update for file and batch program settings.")
+   localStorage.clear();
+  }
+  if (localStorage.getItem("Status") == "successatmsettings") {
+   Command: toastr["success"]("Success", "Successful update for ATM System Database Connection Settings")
+   localStorage.clear();
+  }
+  if (localStorage.getItem("Status") == "erroratmsettings") {
+   Command: toastr["error"]("Error", "Error updating for ATM System Database Connection Settings")
+   localStorage.clear();
+  }
+  if (localStorage.getItem("Status") == "successftp") {
+   Command: toastr["success"]("Success", "Successful update for FTP Connection Settings")
+   localStorage.clear();
+  }
+  if (localStorage.getItem("Status") == "errorftp") {
+   Command: toastr["error"]("Error", "Error updating for FTP Connection Settings")
+   localStorage.clear();
+  }
+  if (localStorage.getItem("Status") == "successnotif") {
+   Command: toastr["success"]("Success", "Successful update for Notification Settings")
+   localStorage.clear();
+  }
+  if (localStorage.getItem("Status") == "errornotif") {
+   Command: toastr["error"]("Error", "Error updating for Notification Settings")
+   localStorage.clear();
+  }
+  if (localStorage.getItem("Status") == "successset") {
+   Command: toastr["success"]("Success", "Successful update for SQL Connection settings")
+   localStorage.clear();
+  }
+  if (localStorage.getItem("Status") == "errorset") {
+   Command: toastr["error"]("Error", "Error updating SQL Connection settings")
+   localStorage.clear();
+  }
+  if (localStorage.getItem("Status") == "successadb") {
+      Command: toastr["success"]("Success", "Successful update for  ADB Transfer file details")
+      localStorage.clear();
+  }
+  if (localStorage.getItem("Status") == "erroradb") {
+      Command: toastr["error"]("Error", "Error updating ADB Transfer file details")
+      localStorage.clear();
+  }
+
+  //Save File and Batch
+  $SaveFileandBatch.click(function () {
+   var model =  {
+    FileName: $("#FileName").val(),
+    FileLoadPath: $("#FileLoadPath").val(),
+    FMTFilesPath: $("#FMTFilesPath").val(),
+    InvvPath: $("#InvvPath").val(),
+    AcctPath: $("#AcctPath").val(),
+    CustPath: $("#CustPath").val(),
+    ADBCasaPath: $("#ADBCasaPath").val(),
+    BackUp: $("#BackUp").val(),
+    BackUpPath: $("#BackUpPath").val(),
+    BulkInsert: $("#BulkInsert").val(),
+    DumpinInvvPath: $("#DumpinInvvPath").val(),
+    ProgramName: $("#ProgramName").val(),
+    FNSAdbFile: $("#FNSAdbFile").val(),
+    ChargingFilePath: $("#ChargingFilePath").val(),
+    UpdateAcct: $("#UpdateAcct").val(),
+    AcctOnePath: $("#AcctOnePath").val(),
+    UpdateCust: $("#UpdateCust").val(),
+    CustOnePath: $("#CustOnePath").val(),
+    MaintenanceSubject: $("#MaintenanceSubject").val(),
+    MaintenanceRecipient: $("#MaintenanceRecipient").val()
+      }
+         $.ajax({
+          data: JSON.stringify({ fileandBatch: model }),
+             url: '@Url.Action("SaveFileAndBatch", "SystemSettings")',
+             type: 'POST',
+             contentType: 'application/json; charset=utf8',
+    success: function (data) {
+     location.reload();
+     localStorage.setItem("Status", "successfilebatch")
+    },
+    error: function (e) {
+        alert(JSON.stringify(e));
+     location.reload();
+     console.log(JSON.stringify(e));
+     localStorage.setItem("Status", "errorfilebatch")
+    }
+   });
+   $("#EditFileAndBatchModal").modal('hide');
+  });
+
+ //Save Atm Settings
+  $SaveATMConnectionSettings.click(function () {
+      var model = {
+       PowercardServer: $("#PowercardServer").val(),
+       PowercardPort: $("#PowercardPort").val(),
+       PowercardServiceName: $("#PowercardServiceName").val(),
+       PowercardUserID: $("#PowercardUserID").val(),
+       POwercardPassword: $("#PowercardPassword").val()
+      }
+   $.ajax({
+    data: JSON.stringify({ atmcon: model }),
+       url: '@Url.Action("SaveATMDatabaseSettings", "SystemSettings")',
+       type: 'POST',
+       contentType: 'application/json; charset=utf8',
+    success: function () {
+     location.reload();
+     localStorage.setItem("Status", "successatmsettings")
+    },
+    error: function (e) {
+        alert(JSON.stringify(e));
+     location.reload();
+     console.log(JSON.stringify(e));
+     localStorage.setItem("Status", "erroratmsettings")
+    }
+   });
+   $("#EditATMModal").modal('hide');
+  });
+   
+  //Save ADB
+  $SaveADB.click(function () {
+   var model = {
+    ADBDatabase: $("#DatabaseADB").val(),
+    DBID: $("#DatabaseID").val(),
+    JobName: $("#ADBJobName").val(),
+    ADBPassword: $("#PasswordADB").val(),
+    ADBServer: $("#ServerADB").val()
+   }
+   $.ajax({
+    data: JSON.stringify({ adbfiles: model }),
+    url: '@Url.Action("SaveADB", "SystemSettings")',
+    type: 'POST',
+    contentType: 'application/json; charset=utf8',
+    success: function () {
+     location.reload();
+     localStorage.setItem("Status", "successadb")
+    },
+    error: function () {
+     alert(JSON.stringify(e));
+     location.reload();
+     console.log(JSON.stringify(e));
+     localStorage.setItem("status", "erroradb")
+    }
+   });
+   $("#EditADBModal").modal('hide');
+  });
+
+  //Save FTP Connection Settings
+  $SaveFTPConnectionSettings.click(function () {
+   var model = {
+    FTPIPAddress: $("#FTPIPAddress").val(),
+    FTPTimeout: $("#FTPTimeout").val(),
+    FTPDestination: $("#FTPDestination").val(),
+    FTPUserID: $("#FTPUserID").val(),
+    FTPPassword: $("#FTPPassword").val(),
+    FTPDestinationFileName: $("#FTPDestinationFileName").val()
+   }
+   $.ajax({
+    data: JSON.stringify({ ftp: model }),
+    url: '@Url.Action("SaveFTPConnectionSetting", "SystemSettings")',
+    type: 'POST',
+    contentType: 'application/json; charset=utf8',
+    success: function () {
+     location.reload();
+     localStorage.setItem("Status", "successftp")
+    },
+    error: function () {
+     alert(JSON.stringify(e));
+     location.reload();
+     console.log(JSON.stringify(e));
+     localStorage.setItem("status", "successftp")
+    }
+   });
+   $("#EditFTPModal").modal('hide');
+  });
+
+  $SaveNotificationSetting.click(function () {
+   var model = {
+    SMPTPServer: $("#SMPTPServer").val(),
+    Sender: $("#Sender").val(),
+    SubjectError: $("#SubjectError").val(),
+    SubjectSuccess: $("#SubjectSuccess").val(),
+    BodyError: $("#BodyError").val(),
+    BodySuccess: $("#BodySuccess").val(),
+    LogFilePath: $("#LogFilePath").val(),
+    Email: $("#Email").val(),
+    AccountEmailRecipient: $("#AccountEmail").val(),
+    AccountEmailSubject: $("#AccountSubject").val()
+   }
+   $.ajax({
+    data: JSON.stringify({ notif: model }),
+    url: '@Url.Action("SaveNotificationSettings", "SystemSettings")',
+    type: 'POST',
+    contentType: 'application/json; charset=utf8',
+    success: function () {
+     location.reload();
+     localStorage.setItem("Status", "successnotif")
+    },
+    error: function () {
+     alert(JSON.stringify(e));
+     location.reload();
+     console.log(JSON.stringify(e));
+     localStorage.setItem("status", "errornotif")
+    }
+   });
+   $("#EditNotificationModal").modal('hide');
+  });
+
+ //Saveconnection
+  $SaveConnection.click(function () {
+      var model = {
+          SQLServer: $("#Server").val(),
+          SQLDatabase: $("#Database").val(),
+          SQLUserID: $("#DBID").val(),
+          SQLPassword: $("#Password").val(),
+          SecurityKey: $("#SecurityKey").val(),
+          UserID: $("#UserID").val(),
+          Schedule: $("#Schedule").val(),
+          Fee: $("#Fee").val(),
+          INVTYPE_MOTHER: $("#INVTYPE_MOTHER").val(),
+          INVTYPE_CHILD: $("#INVTYPE_CHILD").val()
+      }      
+   $.ajax({
+       data: JSON.stringify({ sett: model }),
+    url: '@Url.Action("SaveConnectionSetting", "SystemSettings")',//'/SystemSettings/SaveConnectionSetting',
+       type: 'POST',
+       contentType: 'application/json; charset=utf8',
+    success: function (data) {
+     location.reload();
+     localStorage.setItem("Status", "successset")
+    },
+    error: function (e) {
+        alert(JSON.stringify(e));
+     location.reload();
+     console.log(JSON.stringify(e));
+     localStorage.setItem("Status", "errorset")
+    }
+   });
+
+   $("#EditConnectionModal").modal('hide');
+  });   
+ });//END OF WINDOW LOAD
+</script>
+
+<div class="container" id="sysDetails">
+ <div class="row">
+  <h2 class="page-header">
+   System Settings
+  </h2>
+  <div class="row">
+   <div class="col-lg-12">
+    <div class="well">
+     <h3>
+      File and Batch Program Settings
+      <small> -- Used for file directory setup</small>
+      <span class="pull-right">
+       <button id="EditFileAndBatch" data-toggle="modal" data-target="#EditFileAndBatchModal" class="btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
+      </span>
+     </h3>
+     <hr />
+     <ul class="list-group">
+      <li class="list-group-item"><strong>File Name: </strong> @Model.FileAndBatch.FileName</li>
+      <li class="list-group-item"><strong>File Load Path: </strong> @Model.FileAndBatch.FileLoadPath</li>
+      <li class="list-group-item"><strong>FMT Files Path: </strong> @Model.FileAndBatch.FMTFilesPath</li>
+      <li class="list-group-item"><strong>INVV Path: </strong> @Model.FileAndBatch.InvvPath</li>
+      <li class="list-group-item"><strong>Account Path: </strong> @Model.FileAndBatch.AcctPath</li>
+      <li class="list-group-item"><strong>Customer Path: </strong> @Model.FileAndBatch.CustPath</li>
+      <li class="list-group-item"><strong>ADB CASA Path:</strong> @Model.FileAndBatch.ADBCasaPath</li>
+      <li class="list-group-item"><strong>Back Up: </strong> @Model.FileAndBatch.BackUp</li>
+      <li class="list-group-item"><strong>Back Up Path: </strong> @Model.FileAndBatch.BackUpPath</li>
+      <li class="list-group-item"><strong>Bulk Insert Folder: </strong> @Model.FileAndBatch.BulkInsert</li>
+      <li class="list-group-item"><strong>Dump INVV Path: </strong> @Model.FileAndBatch.DumpinInvvPath</li>
+      <li class="list-group-item"><strong>Program Name: </strong> @Model.FileAndBatch.ProgramName</li>
+      <li class="list-group-item"><strong>FNS ADB File: </strong> @Model.FileAndBatch.FNSAdbFile</li>
+      <li class="list-group-item"><strong>Charging File Path:</strong> @Model.FileAndBatch.ChargingFilePath</li>
+      <li class="list-group-item"><strong>Update Account: </strong> @Model.FileAndBatch.UpdateAcct</li>
+      <li class="list-group-item"><strong>Account One Path: </strong> @Model.FileAndBatch.AcctOnePath</li>
+      <li class="list-group-item"><strong>Update Customer: </strong> @Model.FileAndBatch.UpdateCust</li>
+      <li class="list-group-item"><strong>Customer One Path:</strong> @Model.FileAndBatch.CustOnePath</li>
+      <li class="list-group-item"><strong>Maintenance Email Subject: </strong> @Model.FileAndBatch.MaintenanceSubject</li>
+      <li class="list-group-item"><strong>Maintenance Email Recipients: </strong> @Model.FileAndBatch.MaintenanceRecipient</li>
+     </ul>
+     <hr />
+    </div>
+   </div>
+   <div class="col-lg-12">
+    <div class="well">
+     <h3>
+      ATM System (Powercard) Database Connection Settings
+      <small> -- For updating of CMS codes in Powercard Database</small>
+      <span class="pull-right">
+       <button id="EditATMSettings" data-toggle="modal" data-target="#EditATMModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
+      </span>
+     </h3>
+     <hr />
+     <ul class="list-group">
+      <li class="list-group-item"><strong>Powercard Server: </strong> @Model.ATMSystemConnection.PowercardServer</li>
+      <li class="list-group-item"><strong>Powercard Port: </strong> @Model.ATMSystemConnection.PowercardPort</li>
+      <li class="list-group-item"><strong>Powercard Service Name: </strong> @Model.ATMSystemConnection.PowercardServiceName</li>
+      <li class="list-group-item"><strong>Powercard User ID: </strong> @Model.ATMSystemConnection.PowercardUserID</li>
+     </ul>
+     <hr />
+    </div>
+   </div>
+  </div>
+  <div class="row">
+   <div class="col-lg-12">
+    <div class="well">
+     <h3>
+     FTP Connection Settings
+      <small> -- Used for file transfer of CMMC Charging File to BANCS</small>
+      <span class="pull-right">
+       <button id="EditFTPConSettings" data-toggle="modal" data-target="#EditFTPModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
+      </span>
+     </h3>
+     <hr />
+     <ul class="list-group">
+      <li class="list-group-item"><strong>FTP IP ADDRESS: </strong> @Model.FTPConSettings.FTPIPAddress</li>
+      <li class="list-group-item"><strong>FTP Timeout: </strong> @Model.FTPConSettings.FTPTimeout</li>
+      <li class="list-group-item"><strong>FTP Destination: </strong> @Model.FTPConSettings.FTPDestination</li>
+      <li class="list-group-item"><strong>FTP User ID: </strong> @Model.FTPConSettings.FTPUserID</li>
+      @*<li class="list-group-item"><strong>FTP Password:</strong> @Model.FTPConSettings.FTPPassword</li>*@
+      <li class="list-group-item"><strong>FTP Destination File Name:</strong> @Model.FTPConSettings.FTPDestinationFileName</li>
+     </ul>
+     <hr />
+    </div>
+   </div>
+   <div class="col-lg-12">
+    <div class="well">
+     <h3>
+      Notification Settings
+      <small> -- Email Notification Parameters</small>
+      <span class="pull-right">
+       <button id="EditNotificationSettings" data-toggle="modal" data-target="#EditNotificationModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
+      </span>
+     </h3>
+     <hr />
+     <ul class="list-group">
+      <li class="list-group-item"><strong>SMTP Server: </strong> @Model.NotificationSettings.SMPTPServer</li>
+      <li class="list-group-item"><strong>Sender: </strong> @Model.NotificationSettings.Sender</li>
+      <li class="list-group-item"><strong>Subject Error: </strong> @Model.NotificationSettings.SubjectError</li>
+      <li class="list-group-item"><strong>Subject Success: </strong> @Model.NotificationSettings.SubjectSuccess</li>
+      <li class="list-group-item"><strong>Body Error:</strong> @Model.NotificationSettings.BodyError</li>
+      <li class="list-group-item"><strong>Body Success:</strong> @Model.NotificationSettings.BodySuccess</li>
+      <li class="list-group-item"><strong>Log File Path:</strong> @Model.NotificationSettings.LogFilePath</li>
+      <li class="list-group-item"><strong>E- Mail:</strong> @Model.NotificationSettings.Email</li>
+      <li class="list-group-item"><strong>Account Email Recipients: </strong> @Model.NotificationSettings.AccountEmailRecipient</li>
+      <li class="list-group-item"><strong>Account Email Subject: </strong> @Model.NotificationSettings.AccountEmailSubject</li>
+     </ul>
+     <hr />
+    </div>
+   </div>
+   </div>
+   <div class="row">
+    <div class="col-lg-12">
+     <div class="well">
+      <h3>
+       General System Settings
+       <span class="pull-right">
+        <button id="EditConnection" data-toggle="modal" data-target="#EditConnectionModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
+       </span>
+      </h3>
+      <hr />
+      <ul class="list-group">
+       <li class="list-group-item"><strong>Server Name: </strong> @Model.Settings.SQLServer</li>
+       <li class="list-group-item"><strong>Database: </strong> @Model.Settings.SQLDatabase</li>
+       <li class="list-group-item"><strong>Database ID: </strong> @Model.Settings.SQLUserID</li>
+       @*<li class="list-group-item"><strong>Password: </strong>@Model.Settings.SQLPassword</li>*@
+       <li class="list-group-item"><strong>Security Key: </strong> @Model.Settings.SecurityKey</li>
+       <li class="list-group-item"><strong>User ID: </strong> @Model.Settings.UserID</li>
+       <li class="list-group-item"><strong>Schedule Day: </strong> @Model.Settings.Schedule</li>
+       <li class="list-group-item"><strong>Withdrawal Fee: </strong> @Model.Settings.Fee</li>
+       <li class="list-group-item"><strong>Investment Mother Account: </strong> @Model.Settings.INVTYPE_MOTHER</li>
+       <li class="list-group-item"><strong>Investment Child Account: </strong> @Model.Settings.INVTYPE_CHILD</li>
+      </ul>
+      <hr />
+     </div>
+    </div>
+    <div class="col-lg-12">
+     <div class="well">
+      <h3>
+       ADB DTS Connection Settings
+       <small> -- Used for FNS_ADB bulk loading on month-end processing</small>
+       <span class="pull-right">
+        <button id="EditADB" data-toggle="modal" data-target="#EditADBModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
+       </span>
+      </h3>
+      <hr />
+      <ul class="list-group">
+       <li class="list-group-item"><strong>Server: </strong> @Model.ADBTransferFile.ADBServer</li>
+       <li class="list-group-item"><strong>ADB Database: </strong> @Model.ADBTransferFile.ADBDatabase</li>
+       <li class="list-group-item"><strong>Database ID: </strong> @Model.ADBTransferFile.DBID</li>
+       @*<li class="list-group-item"><strong>Password: </strong> @Model.ADBTransferFile.ADBPassword</li>*@
+       <li class="list-group-item"><strong>ADB Jobname: </strong> @Model.ADBTransferFile.JobName</li>
+      </ul>
+      <hr />
+     </div>
+    </div>
+   </div>
+  </div>
+</div>
+<!----------------->
+<!--Modal-->
+<!--------Edit ADB DTS Connection Settings--------->
+<div id="EditADBModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: teal; color: white;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit ADB DTS Connection Settings</h4>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row" id="sourcefile">
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">ADB Database:</span>
+                                            <input id="DatabaseADB" class="form-control" type="text" autocomplete="off" value="@Model.ADBTransferFile.ADBDatabase" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Database ID:</span>
+                                            <input id="DatabaseID" class="form-control" type="text" value="@Model.ADBTransferFile.DBID" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">ADB Jobname:</span>
+                                            <input id="ADBJobName" class="form-control" type="text"  value="@Model.ADBTransferFile.JobName" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Password:</span>
+                                            <input id="PasswordADB" class="form-control" type="password" value="@Model.ADBTransferFile.ADBPassword" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">Server:</span>
+                                            <input id="ServerADB" class="form-control" type="text" value="@Model.ADBTransferFile.ADBServer" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <button class="btn btn-primary" id="SaveADB"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+                                    <button class="btn btn-danger" id="CancelADB" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--------Edit File and Batch Modal--------->
+<div id="EditFileAndBatchModal" class="modal fade" role="dialog" >
+ <div class="modal-dialog">
+  <div class="modal-content">
+   <div class="modal-header" style="background-color: teal; color: white;">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Edit File and Batch Program Settings</h4>
+   </div>
+   <div class="modal-body">
+    <div class="container-fluid">
+     <div class="row" id="sourcefile">
+      <div class="col-sm-12">
+       <div class="panel panel-default">
+        <div class="panel-body">
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">File Name:</span>
+           <input id="FileName" class="form-control" type="text" value="@Model.FileAndBatch.FileName" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">File Load Path:</span>
+           <input id="FileLoadPath" class="form-control" type="text" value="@Model.FileAndBatch.FileLoadPath" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">FMT Files Path:</span>
+           <input id="FMTFilesPath" class="form-control" type="text" value="@Model.FileAndBatch.FMTFilesPath" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">INVV Path:</span>
+           <input id="InvvPath" class="form-control" type="text" value="@Model.FileAndBatch.InvvPath" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Account Path:</span>
+           <input id="AcctPath" class="form-control" type="text" value="@Model.FileAndBatch.AcctPath" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Customer Path:</span>
+           <input id="CustPath" class="form-control" type="text" value="@Model.FileAndBatch.CustPath"/>
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">ADB CASA Path:</span>
+           <input id="ADBCasaPath" class="form-control" type="text" value="@Model.FileAndBatch.ADBCasaPath" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Back Up:</span>
+           <input id="BackUp" class="form-control" type="text" value="@Model.FileAndBatch.BackUp" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Back Up Path:</span>
+           <input id="BackUpPath" class="form-control" type="text" value="@Model.FileAndBatch.BackUpPath" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Bulk Insert Folder:</span>
+           <input id="BulkInsert" class="form-control" type="text" value="@Model.FileAndBatch.BulkInsert" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Dump INVV Path:</span>
+           <input id="DumpinInvvPath" class="form-control" type="text" value="@Model.FileAndBatch.DumpinInvvPath" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Program Name:</span>
+           <input id="ProgramName" class="form-control" type="text" value="@Model.FileAndBatch.ProgramName" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">FNS ADB File:</span>
+           <input id="FNSAdbFile" class="form-control" type="text" value="@Model.FileAndBatch.FNSAdbFile" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Charging File Path:</span>
+           <input id="ChargingFilePath" class="form-control" type="text" value="@Model.FileAndBatch.ChargingFilePath" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Update Account:</span>
+           <input id="UpdateAcct" class="form-control" type="text" value="@Model.FileAndBatch.UpdateAcct" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Account One Path:</span>
+           <input id="AcctOnePath" class="form-control" type="text" value="@Model.FileAndBatch.AcctOnePath" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Update Customer:</span>
+           <input id="UpdateCust" class="form-control" type="text" value="@Model.FileAndBatch.UpdateCust" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Customer One Path:</span>
+           <input id="CustOnePath" class="form-control" type="text" value="@Model.FileAndBatch.CustOnePath" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Maintenance Email Subject:</span>
+           <input id="MaintenanceSubject" class="form-control" type="text" value="@Model.FileAndBatch.MaintenanceSubject" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Maintenance Email Recipients:</span>
+           <input id="MaintenanceRecipient" class="form-control" type="text" value="@Model.FileAndBatch.MaintenanceRecipient" />
+          </div>
+         </div>
+        </div>
+        <div class="panel-footer">
+         <button class="btn btn-primary" id="SaveFileandBatch"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+         <button class="btn btn-danger" id="CancelFileandBatch" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+        </div>
+       </div>     
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!--Edit ATM DATABASE File-->
+<div id="EditATMModal" class="modal fade" role="dialog">
+ <div class="modal-dialog">
+  <div class="modal-content">
+   <div class="modal-header" style="background-color: teal; color: white;">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Edit ATM system (Powercard) Database Connection Settings</h4>
+   </div>
+   <div class="modal-body">
+    <div class="container-fluid">
+     <div class="row" id="destinationfile">
+      <div class="col-sm-12">
+       <div class="panel panel-default">
+        <div class="panel-body">
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Powercard Server:</span>
+           <input id="PowercardServer" class="form-control" type="text" value="@Model.ATMSystemConnection.PowercardServer" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Powercard Port:</span>
+           <input id="PowercardPort" class="form-control" type="text" value="@Model.ATMSystemConnection.PowercardPort" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Powercard Service Name:</span>
+           <input id="PowercardServiceName" class="form-control" type="text" value="@Model.ATMSystemConnection.PowercardServiceName" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Powercard User ID:</span>
+           <input id="PowercardUserID" class="form-control" type="text" value="@Model.ATMSystemConnection.PowercardUserID" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Powercard Password:</span>
+           <input id="PowercardPassword" class="form-control" type="password" value="@Model.ATMSystemConnection.PowercardPassword" />
+          </div>
+         </div>
+        </div>
+        <div class="panel-footer">
+         <button class="btn btn-primary" id="SaveATMSettings"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+         <button class="btn btn-danger" id="CancelATMSettings" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cancel</button>       
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!--Edit FTP Connection Settings-->
+<div id="EditFTPModal" class="modal fade" role="dialog">
+ <div class="modal-dialog">
+  <div class="modal-content">
+   <div class="modal-header" style="background-color: teal; color: white;">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Edit FTP Connection Settings</h4>
+   </div>
+   <div class="modal-body">
+    <div class="container-fluid">
+     <div class="row" id="destinationfile">
+      <div class="col-sm-12">
+       <div class="panel panel-default">
+        <div class="panel-body">
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">FTP IP Address:</span>
+           <input id="FTPIPAddress" class="form-control" type="text" value="@Model.FTPConSettings.FTPIPAddress" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">FTP Timeout:</span>
+           <input id="FTPTimeout" class="form-control" type="text" value="@Model.FTPConSettings.FTPTimeout" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">FTP Destination:</span>
+           <input id="FTPDestination" class="form-control" type="text" value="@Model.FTPConSettings.FTPDestination" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">FTP User ID:</span>
+           <input id="FTPUserID" class="form-control" type="text" value="@Model.FTPConSettings.FTPUserID" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">FTP Password:</span>
+           <input id="FTPPassword" class="form-control" type="text" value="@Model.FTPConSettings.FTPPassword" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">FTP Destination File Name:</span>
+           <input id="FTPDestinationFileName" class="form-control" type="text" value="@Model.FTPConSettings.FTPDestinationFileName" />
+          </div>
+         </div>
+        </div>
+        <div class="panel-footer">
+         <button class="btn btn-primary" id="SaveFTPConSettings"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+         <button class="btn btn-danger" id="CancelFTPConSettings" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!--Edit Connection String SQL Server Setting-->
+<div id="EditConnectionModal" class="modal fade" role="dialog">
+ <div class="modal-dialog">
+  <div class="modal-content">
+   <div class="modal-header" style="background-color: teal; color: white;">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Edit General System Settings</h4>
+   </div>
+   <div class="modal-body">
+    <div class="container-fluid">
+     <div class="row" id="destinationfile">
+      <div class="col-sm-12">
+       <div class="panel panel-default">
+        <div class="panel-body">
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Server: </span>
+           <input id="Server" class="form-control" type="text" value="@Model.Settings.SQLServer" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Database: </span>
+           <input id="Database" class="form-control" type="text" value="@Model.Settings.SQLDatabase" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">DBID:</span>
+           <input id="DBID" class="form-control" type="text" value="@Model.Settings.SQLUserID"/>
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Password: </span>
+           <input id="Password" class="form-control" type="password" value="@Model.Settings.SQLPassword" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Security Key: </span>
+           <input id="SecurityKey" class="form-control" type="text" value="@Model.Settings.SecurityKey" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">User ID: </span>
+           <input id="UserID" class="form-control" type="text" value="@Model.Settings.UserID" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Schedule: </span>
+           <input id="Schedule" class="form-control" type="text" value="@Model.Settings.Schedule" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Withdrawal Fee: </span>
+           <input id="Fee" class="form-control" type="text" value="@Model.Settings.Fee" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Investment Mother Account: </span>
+           <input id="INVTYPE_MOTHER" class="form-control" type="text" value="@Model.Settings.INVTYPE_MOTHER" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Investment Child Account: </span>
+           <input id="INVTYPE_CHILD" class="form-control" type="text" value="@Model.Settings.INVTYPE_CHILD" />
+          </div>
+         </div>
+        </div>
+        <div class="panel-footer">
+         <button class="btn btn-primary" id="SaveSettingConnection"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+         <button class="btn btn-danger" id="CancelConnection" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!--Edit Notification Settings-->
+<div id="EditNotificationModal" class="modal fade" role="dialog">
+ <div class="modal-dialog">
+  <div class="modal-content">
+   <div class="modal-header" style="background-color: teal; color: white;">
+    <button type="button" class="close" data-dismiss="modal">&times;</button>
+    <h4 class="modal-title">Edit Notification Settings</h4>
+   </div>
+   <div class="modal-body">
+    <div class="container-fluid">
+     <div class="row" id="destinationfile">
+      <div class="col-sm-12">
+       <div class="panel panel-default">
+        <div class="panel-body">
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">SMTP Server:</span>
+           <input id="SMPTPServer" class="form-control" type="text" value="@Model.NotificationSettings.SMPTPServer" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Sender:</span>
+           <input id="Sender" class="form-control" type="text" value="@Model.NotificationSettings.Sender" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Subject Error:</span>
+           <input id="SubjectError" class="form-control" type="text" value="@Model.NotificationSettings.SubjectError" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Subject Success:</span>
+           <input id="SubjectSuccess" class="form-control" type="text" value="@Model.NotificationSettings.SubjectSuccess" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Body Error:</span>
+           <input id="BodyError" class="form-control" type="text" value="@Model.NotificationSettings.BodyError" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Body Success:</span>
+           <input id="BodySuccess" class="form-control" type="text" value="@Model.NotificationSettings.BodySuccess" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Log File Path:</span>
+           <input id="LogFilePath" class="form-control" type="text" value="@Model.NotificationSettings.LogFilePath" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">E-mail:</span>
+           <input id="Email" class="form-control" type="text" value="@Model.NotificationSettings.Email" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Account Email Recipients:</span>
+           <input id="AccountEmail" class="form-control" type="text" value="@Model.NotificationSettings.AccountEmailRecipient" />
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="input-group">
+           <span class="input-group-addon">Account Email Subject:</span>
+           <input id="AccountSubject" class="form-control" type="text" value="@Model.NotificationSettings.AccountEmailSubject" />
+          </div>
+         </div>
+        </div>
+        <div class="panel-footer">
+         <button class="btn btn-primary" id="SaveNotificationSettings"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+         <button class="btn btn-danger" id="CancelNotificationSettings" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>

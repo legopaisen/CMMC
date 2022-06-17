@@ -1,0 +1,57 @@
+﻿@using CTBC
+@using CMMC.Models
+
+@model ServiceTypes.Details
+
+@{
+    ViewBag.Title = "View Services";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2 class="page-header">
+ Service Details
+ <small></small>
+</h2>
+<div class="col-md-5 col-md-offset-4">
+ <div class="panel panel-primary">
+  <div class="panel-heading">Service Details</div>
+  <div class="panel-body">
+   <div class="row">
+    <div class="col-md-4">
+     <label>Service ID: </label>
+     <input type="text" name="txtServiceID" id="txtServiceID" class="form-control" value="@Model.ServiceID" readonly />
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <label>Service Name:</label>
+     <input type="text" name="txtServiceName" id="txtServiceName" class="form-control" value="@Model.ServiceName" readonly />
+
+     <label>Service Category:</label>
+     <input type="text" name="txtServiceName" id="txtServiceName" class="form-control" value="@Model.ServiceCategory" readonly />
+
+     <label>Created By</label>
+     <input type="text" name="txtCreatedBy" id="txtCreatedBy" class="form-control" value="@Model.CreatedBy" readonly />
+
+     <label>Created On</label>
+     <input type="text" name="txtCreatedOn" id="txtCreatedOn" class="form-control" value="@Model.CreatedOn.ToString("MMM dd, yyyy hh:mm tt")" readonly />
+
+     <label>Modified By</label>
+     <input type="text" name="txtModifiedBy" id="txtModifiedBy" class="form-control" value="@Model.ModifiedBy" readonly />
+
+     <label>Modified On</label>
+     <input type="text" name="txtModifiedOn" id="txtModifiedOn" class="form-control" value="@Model.ModifiedOn.ToString().ToDateTime().ToString("MMM dd, yyyy hh:mm tt")" readonly />
+
+     @*<label class="checkbox-inline"><input type="checkbox" name="chkIsActive" id="chkIsActive" checked="@Model.IsActive" disabled /> Is Active?</label>*@
+    </div>
+   </div>
+   <br />
+   <div class="row  pull-right">
+    <div class="col-md-12">
+     <button type="button" onclick="javascript: window.location='@Url.Action("Services", "ParameterMaintenance")'" class="btn btn-primary" name="btnBack" id="btnBack"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>

@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" http-equiv="X-UA-Compatible" content="IE=8,IE=9, IE=edge,chrome=1" />
+    @*<meta name="viewport" content="width=device-width" />*@
+    <title>@ViewBag.Title</title>
+    <link href="~/asas.ico" rel="shortcut icon" type="image/x-icon" />
+    <script src="~/Scripts/jquery-1.12.0.min.js"></script>
+    @*<link href="~/Scripts/bootstrap/css/bootstrap.min.css" rel="stylesheet" />*@
+    <link href="~/Content/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/Scripts/bootstrap/css/bootstrap-theme.css" rel="stylesheet" />*@
+    <link href="~/Scripts/AjaxRequestDim/Dim.css" rel="stylesheet" />
+    <link href="~/Scripts/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/Login.css" rel=" stylesheet" />
+    <script src="~/Scripts/AjaxRequestDim/Dim.js"></script>
+    <script src="~/Scripts/IE8Compatibility/respond.min.js"></script>
+    <script src="~/Scripts/IE8Compatibility/html5shiv.min.js"></script>
+    <script src="~/Scripts/IE8Compatibility/excanvas.js"></script>
+    <script src="~/Scripts/app/aes.js"></script>
+    <script src="~/Scripts/toastr/toastr.min.js"></script>
+
+</head>
+<body class="full" id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+ <div id="body">
+  @RenderSection("featured", required: false)
+  <section class="content-wrapper main-content clear-fix">
+   @RenderBody()
+  </section>
+ </div>
+ <footer class="foot">
+  <div class="content-wrapper">
+   <div class="float-left">
+    <p>&copy; @DateTime.Now.Year - CTBC BANK (PHILIPPINES) CORP.</p>
+   </div>
+  </div>
+ </footer>
+ <div id="loadscreen" class="loadscreen"><!-- Place at bottom of page --></div>
+</body>
+</html>

@@ -1,0 +1,588 @@
+﻿@{
+    ViewBag.Title = "Enrollment";
+    ViewBag.Message = "CMS Code Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+ var TerminationList = @Html.Raw(Json.Encode(ViewBag.TerminationList))
+
+ function dateFormatter(value) {
+  if (value.substring(0, 1) == '/'){
+   if (value.substring(0, 7) == "/Date(-") {
+    return "N/A"
+   } else {
+    return moment(value).format('DD-MMMM-YYYY');
+   }
+  }
+  else { return value }
+ }
+
+ var usertype = readCookie('usertype');
+ var ApproverList = JSON.parse('@Html.Raw(Json.Encode(ViewBag.ApproverList))');
+ var TerminationCMSCodeList = [];
+
+ function statusformatter(value) {
+  if (value == 1) { return "Pending"; }
+  else if (value == 2) { return "Approved"; }
+  else if (value == 3) { return "Disapproved"; }
+  else if (value == 4) { return "Cancelled"; }
+  else if (value == 5) { return "Removed"; }
+ }
+
+ function activeFormatter(value) {
+  if(value){ return "Active"; }
+  else{ return "InActive";}  
+ }
+
+  function actionFormatter(value, row, index) {
+   if ('@Session["UserType"]' == "1") {
+    if (row.Status == 1) {
+     return [
+      '<a class="edit" href="#" title="Edit">',
+      '<i class="glyphicon glyphicon-edit"></i>',
+      '</a> ',
+      '<a id="approve" class="approve" href="#" title="Approve">',
+      '<i class="glyphicon glyphicon-thumbs-up"></i>',
+      '</a> ',
+      '<a class="view" href="javascript:void(0)" id="view" title="View">',
+      '<i class="glyphicon glyphicon-eye-open"></i>',
+      '</a> ',
+      '<a class="remove" href="javascript:void(0)" id="remove" title="Reject">',
+      '<i class="glyphicon glyphicon-remove"></i>',
+      '</a> '
+     ].join('');
+    }
+    else if (row.status == 2) {
+     return [
+     '<a class="edit" href="#" title="Edit">',
+      '<i class="glyphicon glyphicon-edit"></i>',
+      '</a> ',
+      '<a class="view" href="javascript:void(0)" id="view" title="View">',
+      '<i class="glyphicon glyphicon-eye-open"></i>',
+      '</a> '
+     ].join('');
+    }
+    else {
+     return [
+      //'<a class="edit" href="#" title="Edit">',
+      //'<i class="glyphicon glyphicon-edit"></i>',
+      //'</a> ',
+      '<a class="view" href="javascript:void(0)" id="view" title="View">',
+      '<i class="glyphicon glyphicon-eye-open"></i>',
+      '</a> '
+     ].join('');
+    }
+   }
+   else {
+    if (row.Status == 1) {
+     return [
+      '<a class="edit" href="#" title="Edit">',
+      '<i class="glyphicon glyphicon-edit"></i>',
+      '</a> ',
+      '<a class="view" href="javascript:void(0)" id="view" title="View">',
+      '<i class="glyphicon glyphicon-eye-open"></i>',
+      '</a> ',
+      '<a class="cancel" href="javascript:void(0)" id="cancel" title="Cancel">',
+      '<i class="glyphicon glyphicon-remove"></i>',
+      '</a>'
+     ].join('');
+    }
+    else if (row.Status == 2) {
+     return [
+      '<a class="edit" href="#" title="Edit">',
+      '<i class="glyphicon glyphicon-edit"></i>',
+      '</a> ',
+      '<a class="view" href="javascript:void(0)" id="view" title="View">',
+      '<i class="glyphicon glyphicon-eye-open"></i>',
+      '</a> ',
+      '<a class="terminate" href="javascript:void(0)" id="terminate" title="Terminate">',
+      '<i class="glyphicon glyphicon-remove"></i>',
+      '</a> '
+     ].join('');
+    }
+    else {
+     return [
+      '<a class="view" href="javascript:void(0)" id="view" title="View">',
+      '<i class="glyphicon glyphicon-eye-open"></i>',
+      '</a> '
+     ].join('');
+    }   
+   }
+  }
+
+  function readCookie(name) {
+   var i, c, ca, nameEQ = name + "=";
+   ca = document.cookie.split(';');
+   for (i = 0; i < ca.length; i++) {
+    c = ca[i];
+    while (c.charAt(0) == ' ') {
+     c = c.substring(1, c.length);
+    }
+    if (c.indexOf(nameEQ) == 0) {
+     return c.substring(nameEQ.length, c.length);
+    }
+   }
+   return;
+  }
+  $(document).ready(function () {
+   for (var i =0 ; i < TerminationList.length; i++) {
+    $.each(TerminationList[i].WhereValues, function (sndx, sitem) {
+     if(sitem.FieldName == "CMSCode"){
+      TerminationCMSCodeList.push(sitem.Value);
+     }
+    });
+   };
+   $('#btnSend').css("display", '@Session["UserType"]' == "1" ? "none" : "inline");
+   $('#btnAdd').css("display", '@Session["UserType"]' == "1" ? "none" : "inline");
+
+    //AFM 202205
+      $("#btnSend").click(function () {
+          var ids = $.map($("#UnmanagedCmsCodeList").bootstrapTable('getSelections'), function (row) {
+              return [[row.CMSCode, row.BranchName]];
+          });
+          if (ids != "") {
+              bootbox.confirm("Send email to their corresponding Branches?", function (result) {
+                  if (result == true) {
+                      var pCMSCode = [];
+                      var pBranchName = [];
+                      for (var i = 0; i < ids.length; i++) {
+                          pCMSCode.push(ids[i][0])
+                          pBranchName.push(ids[i][1])
+                      };
+
+                      var model = {
+                          'pCMSCode': pCMSCode,
+                          'pBranchName': pBranchName
+                      };
+                      $.ajax({
+                          cache: false,
+                          type: 'POST',
+                          data: JSON.stringify(model),
+                          contentType: 'application/json',
+                          url: '@Url.Action("SendEmailUnmanagedAccountsList", "Enrollment")',
+                          success: function (data) {
+                              localStorage.setItem("SendEmail", "success")
+                              window.location = '@Url.Action("Index","Enrollment")';
+                          },
+                          error: function (response) {
+                          }
+                      });
+                  };
+              });
+          }
+          else {
+              Command: toastr["info"]("Select atleast one!");
+        }
+    });
+
+    if (localStorage.getItem("SendEmail") == "success") {
+        Command: toastr["success"]("Success", "Email Sent!")
+        localStorage.clear();
+    }
+
+   var $CmsTable = $("#CmsCodeList"),
+       $btnAdd = $("#btnAdd");
+   moment().format();      
+   var params = {
+    "pPaycode": $('#Paycode').val()
+   };
+
+   var $UnmanagedCmsTable = $("#UnmanagedCmsCodeList"), $btnSend = $("#btnSend");
+   var params = {
+       "pPaycode": $('#Paycode').val()
+   };
+      //Unmanaged
+   $.ajax({
+       cache: false,
+       url: '@Url.Action("GetUnmanagedCMSCodeList", "Enrollment")',
+       method: 'GET',
+       contentType: 'application/json',
+       success: function (data) {
+           console.log(data);
+           $UnmanagedCmsTable.bootstrapTable('load', { data: data });
+       },
+       error: function (response) {
+           console.log(JSON.stringify(response))
+       }
+   });
+      //Approved
+    $.ajax({
+        cache: false,
+        url: '@Url.Action("GetCMSCodeListApproved","Enrollment")',
+        method: 'GET',
+        contentType: 'application/json',
+        success: function (data) {
+            $CmsTable.bootstrapTable('load', { data: data });
+        },
+        error: function (response) {
+            console.log(JSON.stringify(response))
+        }
+    });
+
+   $.ajax({
+    cache: false,
+    url: '@Url.Action("GetCMSCodeList", "Enrollment")',
+    method: 'GET',
+    contentType: 'application/json',
+    success: function (data) {
+     $("#CmsCodeListPending").bootstrapTable('load', { data: data });
+    },
+    error: function (response) {     
+    }
+   });
+
+   if (localStorage.getItem("Status") == "deleted") {
+    Command: toastr["success"]("Deleted", "Successfully deleted!");
+    localStorage.clear();
+   }
+   if (localStorage.getItem("Status") == "remove") {
+    Command: toastr["success"]("Removed", "Successfully removed!");
+    localStorage.clear();
+   }
+   if(localStorage.getItem("Status") == "approved"){
+    Command: toastr['success']('Success', 'Successfully approved CMSCode!');
+    localStorage.clear();   
+   }
+   if (localStorage.getItem("Status") == "savenewrecord") {
+    Command: toastr['success']('Success', 'Successfully saved new record!');
+    localStorage.clear();
+   }
+   if (localStorage.getItem("Status") == "savechanges") {
+    Command: toastr['success']('Success', 'Successfully saved changes!');
+    localStorage.clear();    
+   }
+
+   window.actionEvents = {
+    'click .cancel': function (e, value, row, index) {
+     bootbox.confirm("Are you sure you want to delete CMSCode and it's details?", function (result) {
+      if (result == true) {
+       deleteCMSCode(row.CMSCode);
+      }
+     })
+    },
+    'click .remove': function (e, value, row, index) {
+     bootbox.confirm("Are you sure you want to delete CMSCode and it's details?", function (result) {
+      if (result == true) {
+       removeCMSCode(row.CMSCode);
+      }
+     })
+    },
+    'click .edit': function (e, value, row, index) {
+     var IsExist = false;
+     $.each(TerminationCMSCodeList, function (ndx, item) {
+      if (item == row.CMSCode) {
+       IsExist = true;
+      } else { IsExist = IsExist ? true : false }
+     });     
+     if (!IsExist) {
+      getCMSCode(row.CMSCode);
+     } else {
+      Command: toastr["info"]("Oopps!", "You cannot edit a CMSCode that is for termination!")
+     }
+    },
+    'click .approve': function (e, value, row, index) {
+     if (row.Status == 2) {
+      Command: toastr["info"]("Oopps", "Already approved!")
+     }
+     else {
+      approveCMSCode(row.CMSCode);
+     }
+    },
+    'click .view': function (e, value, row, index) {
+     viewDetails(row.CMSCode);
+    },
+    'click .terminate': function (e, value, row, index) {     
+     var IsExist = false;
+     $.each(TerminationCMSCodeList, function (ndx, item) {
+      if (item == row.CMSCode) {
+       IsExist = true;
+      } else { IsExist = IsExist ? true : false }
+     });
+     if (!IsExist) {
+      bootbox.confirm("Terminated CMSCode will no longer be available for transactions! Are you sure you want to terminate CMSCode and it's details?", function (result) {
+       if (result == true) {
+        $("#approverBootbox").append('<select class="app form-control" id="approver"></select>');
+        $(".app").empty();
+        $.each(ApproverList, function (ndx, item) {
+         $(".app").append($('<option />').val(item.UserID).text(item.FullName));
+        });
+        bootbox.dialog({
+         title: "Please choose your approver to proceed.",
+         message: $(".app"),
+         buttons: {
+          danger: {
+           label: "Cancel",
+           className: "btn-danger",
+           callback: function () {
+           }
+          },
+          success: {
+           label: "Proceed",
+           className: "btn-success",
+           callback: function () {
+            terminate(row.CMSCode, $(".app").val(), row.Description);
+            TerminationCMSCodeList.push(row.CMSCode);
+           }
+          }         
+         }
+        });
+
+       }
+      });
+     } else {
+      Command: toastr["info"]("Oopps!", "There is already request of termination for the CMSCode!")
+     }
+    }
+   };
+  });
+
+ RequestListDetails = {};
+ RequestsDetails = {};
+
+ function terminate(pCMSCode, pApprover, pCompanyName) {
+  RequestsDetails = {
+   'CreatedBy': '@Session["UserID"]',
+   'CreatedOn': new Date(),
+   'IPAddress': '',
+   'AssignedApprover': pApprover,
+  }
+
+  RequestListDetails = {
+   'RequestListCode':'',
+   'RequestCode':'',
+   'Module':'Home',
+   'Action':1,
+   'NewValues':'IsActive::2|ModifiedOn::' + new Date() + "|" + "ModifiedBy" + '@Session["UserID"]',
+   'OldValues':'', 
+   'WhereValues':'CMSCode::' + pCMSCode, 
+   'AffectedTable':'CMSCodes',
+   'Remarks': 'Request to terminate [' + pCMSCode + "] " + pCompanyName,
+   'Status':1, 
+   'RequestsDetails': RequestsDetails
+  }  
+  $.ajax({
+   cache: false,
+   type: "POST",
+   contentType: "application/json; charset=utf-8",
+   url: "@Url.Action("InsertForTerminationRequest", "Enrollment")",
+   data: JSON.stringify({
+    'pCMSCode': pCMSCode,
+    'pReqList': RequestListDetails
+   }),
+   success: function (data) {
+    Command: toastr["success"]("Information","CMSCode [" + pCMSCode + "] " + pCompanyName + " was successfully pending for approval for termination!")
+   },
+   error: function () {
+
+   }
+  });
+ }
+
+    function rowStyleUnmanaged() {
+        return { classes: 'danger' };
+    }
+
+  function rowStyle(row, index) {
+   if (row.Status == 2) {
+    return { classes: 'success' };
+   }
+   else if (row.Status == 1) {
+    return { classes: 'active' };
+   } 
+   else if (row.Status == 4 || row.Status == 5) {
+    return {
+     classes: 'danger',
+     disabled: true
+    };
+   }
+   else if (row.Status == 3) {
+    return { classes: 'warning' };
+   }
+   return {};
+  }
+
+  function getCMSCode(pCMSCode) {
+   var pcmscode = {
+    'CMSCode': pCMSCode
+   }
+   window.location = "Enrollment/EditCmsCode/" + pcmscode.CMSCode
+  }
+
+  function viewDetails(pCMSCode) {
+   var pcmscode = {
+    'CMSCode': pCMSCode
+   }
+   window.location = "Enrollment/ViewDetails/" + pcmscode.CMSCode
+  }
+
+  function approveCMSCode(pCMSCode) {
+   var details = {
+    'CMSCode': pCMSCode,
+    'Status': 2,
+    'IsActive': true
+   }
+
+   $.ajax({
+    cache: false,
+    url: '@Url.Action("ApprovedCMSCode","Enrollment")',
+    method: 'GET',
+    data: details,
+    success: function (data) {
+     localStorage.setItem("Status", "approved")
+     location.reload();
+    },
+    error: function (e) {
+     Command: toastr['error']('Error', e)
+    }
+   });
+  } 
+
+  function deleteCMSCode(pCMSCode) {  
+   var details = {
+    'CMSCode': pCMSCode,
+    'Status': 4,
+    'IsActive': false
+   }
+
+   $.ajax({
+    url: '@Url.Action("CancelandRemove","Enrollment")',
+    method: 'GET',
+    data: details,
+    cache: false,
+    success: function (data) {
+     localStorage.setItem("Status", "deleted")
+     location.reload();
+    },
+    error: function (e) {
+     Command: toastr['error']('Error', e)
+    }
+   });
+  }
+
+  function removeCMSCode(pCMSCode) {
+   var details = {
+    'CMSCode': pCMSCode,
+    'Status': 5,
+    'IsActive': false
+   }
+
+   $.ajax({
+    url: '@Url.Action("CancelandRemove","Enrollment")',
+    method: 'GET',
+    cache: false,
+    data: details,
+    success: function (data) {
+     localStorage.setItem("Status", "remove")
+     location.reload();
+    },
+    error: function (e) {
+     Command: toastr['error']('Error', e)
+    }
+   });
+  }
+
+    //AFM 202205
+    function openTab(event, name) {
+        var tabcontent;
+        
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (var i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        document.getElementById(name).style.display = "block";
+    }
+
+</script>
+<div class="container">
+ <div class="row">
+  <div class="col-md-12">
+   <h2 class="page-header">Enrollment
+   <small>CMS Code Details</small>
+   </h2>
+  <div class="panel panel-primary">
+   <div class="panel-heading">CMS Code Information</div>
+    <div class="panel-body">   
+     <ul class="nav nav-tabs" id="myTab">
+         <li class="active" onclick="openTab(event,'approved')" data-toggle="tab" data-target="#approved"><a href="#approved">Approved</a></li>
+         <li class="" data-toggle="tab" onclick="openTab(event,'unmanaged')" data-target="#unmanaged"><a href="#unmanaged">Unmanaged Accounts</a></li>
+     </ul>
+     <div id="approved" class="tab-content">
+      <div class="tab-pane active" id="approved">
+       <div id="toolbarCreate">
+        <a href="Enrollment/CreateCmsCode" id="btnAdd" class="btn btn-primary" style="display:none;"><i class="glyphicon glyphicon-plus"></i> New CMS Code</a>
+       </div>
+       <table id="CmsCodeList" class="" cellpadding="0" style="width:100%"
+              data-toggle="table"
+              data-pagination="true"
+              data-page-list="[5, 10, 20]"
+              data-toolbar="#toolbarCreate"
+              data-classes="table table-hover table-bordered"
+              data-row-style="rowStyle"
+              data-search="true"
+              data-show-columns="true"
+              data-show-pagination-switch="true"
+              data-show-toggle="true"
+              data-detail-formatter="formatCmsCodeDate"
+              data-unique-id="CmsCode">
+        <thead>
+         <tr>
+          <th data-field="CMSCode" @*quirra*@ data-sortable="true">CMS Code</th>
+          <th data-field="Description" @*quirra*@ data-sortable="true">CMS Description</th>
+          <th data-field="BranchName" @*quirra*@ data-sortable="true">Branch</th>
+          <th data-field="Status" data-formatter="statusformatter">Status</th>
+          <th data-field="IsActive" data-formatter="activeFormatter">Company Status</th>
+          <th data-field="CreatedBy">Created By</th>
+          <th data-field="CreatedOn" data-formatter="dateFormatter" @*quirra*@ data-sortable="true">Created On</th>
+          <th data-field="ModifiedBy">Modified By</th>
+          <th data-field="ModifiedOn" data-formatter="dateFormatter">Last Modified</th>
+          <th data-field="Action" data-formatter="actionFormatter" data-events="actionEvents">Action</th>
+         </tr>
+        </thead>
+       </table>
+      </div>
+     </div>
+    <div id="unmanaged" class="tab-content" style="display: none;">
+        <div class="tab-pane active" id="unmanaged">
+            <div id="toolbarSend">
+                <a href="#" id="btnSend" class="btn btn-primary" style="display:none;"><i class="glyphicon glyphicon-send"></i> Send Email</a>
+            </div>
+            <table id="UnmanagedCmsCodeList" class="" cellpadding="0" style="width:100%"
+                   data-toggle="table"
+                   data-pagination="true"
+                   data-page-list="[5, 10, 20]"
+                   data-toolbar="#toolbarSend"
+                   data-classes="table table-hover table-bordered"
+                   data-row-style="rowStyleUnmanaged"
+                   data-search="true"
+                   data-show-columns="true"
+                   data-show-pagination-switch="true"
+                   data-show-toggle="true"
+                   data-detail-formatter="formatCmsCodeDate"
+                   data-unique-id="CmsCode"
+                   data-checkbox-header="true">
+                <thead>
+                    <tr>
+                        <th data-checkbox="true"></th>
+                        <th data-field="CMSCode" data-sortable="true">CMS Code</th>
+                        <th data-field="Description" data-sortable="true">CMS Description</th>
+                        <th data-field="BranchName" data-sortable="true">Branch</th>
+                        <th data-field="Status" data-formatter="statusformatter">Status</th>
+                        <th data-field="IsActive" data-formatter="activeFormatter">Company Status</th>
+                        <th data-field="CreatedBy">Created By</th>
+                        <th data-field="CreatedOn" data-formatter="dateFormatter" data-sortable="true">Created On</th>
+                        <th data-field="ModifiedBy">Modified By</th>
+                        <th data-field="ModifiedOn" data-formatter="dateFormatter">Last Modified</th>
+                        <th data-field="Action" data-formatter="actionFormatter" data-events="actionEvents">Action</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+<div id="approverBootbox">
+</div>

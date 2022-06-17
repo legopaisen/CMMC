@@ -1,0 +1,105 @@
+﻿@using CMMC.Models
+
+@model ServiceTypes.Details
+
+@{
+    ViewBag.Title = "Update Services";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+ <script type="text/javascript">
+  $(document).ready(function () {
+   var model = [];
+   var category = '@Html.Raw(Json.Encode(ViewBag.ServiceCategory))';
+
+   $.each(JSON.parse(category), function (index, value) {
+    $("#selCategory").append("<option value='" + value.Category + "' " + (value.Category == '@Model.ServiceCategory' ? 'selected' : '') + ">" + value.Category + "</option>");
+   });
+
+   $().DMSFormValidator('#frmGroupDetails')
+  .on('success.form.fv', function (e) {
+   e.preventDefault();
+    eModal.confirm("Save changes?", "Confirmation").then(function () {
+     model = {
+      ServiceName: $('#txtServiceName').val(),
+      ServiceID: $('#txtServiceID').val(),
+      IsActive: $('#chkIsActive').prop('checked'),
+      ServiceCategory: $("#selCategory").val(),
+     }
+
+     $.ajax({
+      url: '@Url.Action("ServiceSaveChanges", "ParameterMaintenance")',
+      data: JSON.stringify(model),
+      type: 'POST',
+      contentType: 'application/json',
+      traditional: true,
+      success: function (data) {
+       if (data.ResponseStatus != 1) {
+        toastr.error(data.Description, "Information");
+       }
+       else {
+        toastr.success(data.Description, "Information");
+       }
+      },
+      error: function (response) {
+      }
+     });
+     window.location = '@Url.Action("Services", "ParameterMaintenance")';
+    }, null);
+   });
+  });
+ </script>
+}
+
+<h2 class="page-header">
+ Edit Service
+ <small></small>
+</h2>
+<div class="col-md-5 col-md-offset-4">
+ <form id="frmGroupDetails">
+  <div class="panel panel-primary">
+   <div class="panel-heading">Edit Service Details</div>
+   <div class="panel-body">
+    @Html.AntiForgeryToken()
+    <div class="row">
+     <div class="col-md-12">
+
+      <div class="form-group">
+       <label>Service ID: </label>
+       <input type="text" class="form-control TextRequiredField" id="txtServiceID" value="@Model.ServiceID" name="txtServiceID" autocomplete="off" placeholder="Access Group Name" readonly />
+      </div>
+
+      <div class="form-group">
+       <label>Service Type Name: </label>
+       <input type="text" class="form-control" id="txtServiceName" value="@Model.ServiceName" data-fv-notempty="true" name="txtServiceName" autocomplete="off" placeholder="Access Group Name" />
+      </div>
+
+
+      <div class="form-group">
+       <label>Service Category: </label>
+       <select id="selCategory" name="selCategory" class="form-control"></select>
+      </div>
+     
+      <div class="form-group">
+       <label class="checkbox-inline">
+        <input type="checkbox" id="chkIsActive" name="chkIsActive" @(Model.IsActive ? "checked" : "") /> Is Active?
+       </label>
+      </div>
+
+     </div>
+    </div>
+   </div>
+
+   <div class="panel-footer">
+    <div class="row">
+     <div class="col-md-12 text-right">
+      <button type="submit" id="btnSave" name="btnSave" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+      <button type="button" onclick="javascript: window.location='@Url.Action("Services", "ParameterMaintenance")'" id="btnSave" name="btnSave" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
+     </div>
+    </div>
+   </div>
+  </div>
+ </form>
+</div>

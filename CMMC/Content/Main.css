@@ -1,0 +1,233 @@
+﻿/*HTML*/
+html{
+ background-color: white;
+ color: /*black*/#094A4A;
+ text-align: left;
+ padding-top: 56px;
+}
+/*HEADER*/
+/*--------- NAV HEADER -----------*/
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    background-color: #808080;
+    color: white;
+}
+
+/*remove spin in number input types*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin:0;
+}
+
+/*BODY*/
+body{
+ padding-top: 5px;
+ padding-left: 7%;
+ padding-right: 7%;
+ background-color: white; 
+}
+
+/*----ENROLLMENT------*/
+.form-inline, .btn-group li{
+ text-align: left;
+}
+
+#EnrollmentNotes{
+ color:red;
+ font-size: 11px;
+}
+
+#Penalty, #Service, #Account,
+#User, #Access, #Group, #Run, #Holiday {
+
+}
+
+#UserEditContent, #UserAddContent,
+#AccessAddContent, #AccessEditContent,
+#GroupAddContent, #GroupEditContent{
+ 
+}
+
+#destinationfile .input-group-addon{
+ min-width: 143px;
+ text-align:left;
+}
+#Batch .input-group-addon{
+  min-width: 100%;
+ text-align:left;
+}
+#reports .input-group-addon{
+  min-width: 100%;
+ text-align:left;
+}
+#scdGroup .input-group-addon {
+min-width: 250px;
+text-align:left;
+}
+#frstGroup .input-group-addon {
+min-width: 125px;
+text-align:left;
+}
+#sourcefile .input-group-addon{
+  min-width: 122px;
+ text-align:left;
+}
+#Server .input-group-addon{
+  min-width: 87px;
+ text-align:left;
+}
+
+#AddHoliday #date .input-group-addon{
+  min-width: 100%;
+ text-align:left;
+}
+#AddHoliday .input-group-addon{
+  min-width: 94px;
+ text-align:left;
+}
+
+#AddUser .input-group-addon{
+ min-width: 94px;
+ text-align:left;
+}
+
+#AddAccess .input-group-addon{
+ min-width: 110px;
+ text-align:left;
+}
+
+#AddGroup .input-group-addon{
+ min-width: 105px;
+ text-align:left;
+}
+
+
+#EditServices .input-group-addon{
+ min-width: 238px;
+ text-align:left;
+}
+
+/*FOOTER*/
+.footer{
+ background-color: #094a4a;
+ text-align: center;
+ color: white;
+ font-size: 10px;
+}
+table.dataTable{
+}
+table.dataTable tbody th.dt-body-center,table.dataTable tbody td.dt-body-center{
+
+}
+table.dataTable thead .sorting,table.dataTable thead .sorting_asc,table.dataTable thead .sorting_desc,table.dataTable thead .sorting_asc_disabled,table.dataTable thead .sorting_desc_disabled{
+ background-repeat: no-repeat;
+ background-position: left;
+}
+
+#AddEditService .input-group{
+ border-bottom: 2px;
+}
+.row, .panel{ 
+ display: none; 
+}
+
+hr {
+  display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0; 
+}
+#sysDetails .list-group-item,#BasicCMSdetails .list-group-item{
+ background-color: inherit;
+ height: 20px;
+ font-size: 14px;
+ align-content: center;
+ padding: 5px;
+ padding-left: 10px;
+ border: none;
+}
+#sysDetails .list-group, #BasicCMSdetails .list-group{
+ box-shadow: none;
+}
+
+.bs-callout {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #eee;
+    border-image: none;
+    border-radius: 3px;
+    border-style: solid;
+    border-width: 1px 1px 1px 5px;
+    margin-bottom: 5px;
+    padding: 20px;
+}
+.bs-callout:last-child {
+    margin-bottom: 0px;
+}
+.bs-callout h4 {
+    margin-bottom: 10px;
+    margin-top: 0;
+}
+
+.bs-callout-danger {
+    border-left-color: #d9534f;
+}
+
+.bs-callout-danger h4{
+    color: #d9534f;
+}
+
+.badge{
+ background-color: green;
+}
+
+li.dropdown-submenu:hover ul{
+display: block;
+right: 100%;
+}
+.dropdown-submenu{
+  position:relative;
+}
+  
+.dropdown-submenu:hover .dropdown-menu{
+  top:0;
+}
+
+.caret-left {
+    border-bottom: 6px solid transparent;
+    border-top: 6px solid transparent;
+    border-right: 6px solid;
+    display: inline-block;
+    height: 0;
+    opacity: 1;
+    width: 5px;
+}
+
+#lstSystemModules .input-group-addon { 
+ min-width: 128px;
+ text-align:left;
+}
+#lstAssignedModules .input-group-addon { 
+ min-width: 128px;
+ text-align:left;
+}
+
+/*.basicTable {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.basicTable td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.basicTable tr:nth-child(even) {
+    background-color: #dddddd;
+}*/

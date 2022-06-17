@@ -1,0 +1,141 @@
+﻿
+@{
+ ViewBag.Title = "Login Page";
+ Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+@*<div class="jumbotron">
+ <div>
+  <h1><font color="#12397">C  M  M  C</font></h1>
+ 
+  <p><font color="#12397">Cash Management Monitoring and Charging System</font></p>
+  <div class="form-group text-center" id="myForm">
+   <form method="post" action="@Url.Action("SignOn", "Login")">
+    <input id="hdnUserIDEncrypted" name="hdnUserIDEncrypted" value="" type="hidden" />
+    <input id="hdnPasswordEncrypted" name="hdnPasswordEncrypted" value="" type="hidden" />
+    <input type="hidden" value="@ViewBag.CryptoHashCode" id="HashCode" name="HashCode" />
+    <div class="form-group">
+     
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Login </h3>
+            </div>
+         
+            <div class="panel-body">
+                <label>ID Number:</label>
+                <div class="input-group">
+                    <input id="loginid" type="text" class="form-control" placeholder="LogIn ID" onblur="caps(this.id)" name="loginid" maxlength="10" autocomplete="off" autofocus required />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                </div>
+                <label>Password:</label>
+                <div class="input-group">
+                    <input id="password" type="password" name="password" class="form-control" placeholder="Password" maxlength="20" autocomplete="off" required />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                </div><br />
+                <div class="btn-group" id="btnLogin">
+                    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-log-in"></i> Login    </button>
+                </div>
+            </div>
+            </div>
+        </div>
+   </form>
+  </div>
+ </div>
+</div>*@
+
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5" style="text-align:center">
+                <h1><font color="#12397">C  M  M  C</font></h1>
+                <p><font color="#12397">Cash Management Monitoring and Charging System</font></p>
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <form method="post" action="@Url.Action("SignOn", "Login")">
+                    <input id="hdnUserIDEncrypted" name="hdnUserIDEncrypted" value="" type="hidden" />
+                    <input id="hdnPasswordEncrypted" name="hdnPasswordEncrypted" value="" type="hidden" />
+                    <input type="hidden" value="@ViewBag.CryptoHashCode" id="HashCode" name="HashCode" />
+                    <div class="divider d-flex align-items-center my-4">
+                        <img src="~/CTBC%20New%20Logo.png" style="width:270px;height:85px; padding-top:0;" />
+                    </div>
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="form3Example3">ID Number</label>
+                        <input type="text"  id="loginid" class="form-control form-control-lg"
+                               placeholder="LogIn ID" onblur="caps(this.id)" name="loginid" maxlength="10" autocomplete="off" autofocus required />
+                    </div>
+                    <div class="form-outline mb-3">
+                        <label class="form-label" for="form3Example4">Password</label>
+                        <input type="password" id="password" class="form-control form-control-lg"
+                               placeholder="Password" name="password" maxlength="20" autocomplete="off" required />
+                    </div>
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="submit" class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                            Login
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+
+    function caps(id) {
+        document.getElementById(id).value = document.getElementById(id).value.toUpperCase();
+    }
+
+ function writeCookie(name, value, days) {
+  var date, expires;
+  if (days) {
+   date = new Date();
+   date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+   expires = "; expires=" + date.toGMTString();
+  } else {
+   expires = "";
+  }
+  document.cookie = name + "=" + value + expires + "; path=/";
+ }
+
+ $(document).ready(function () {
+  var response = JSON.parse('@Html.Raw(Json.Encode(ViewBag.Response))');
+  if (response != null) {
+   if (response.ResponseStatus == 0) {
+    toastr.error(response.Description, "Information");
+   }
+  }  
+
+  $("#HashCode").val("@ViewBag.CryptoHashCode");
+  $("#loginid").val("");
+  $("#password").val("");
+
+  $("form").submit(function () {
+   var key = CryptoJS.enc.Utf8.parse($("#HashCode").val());
+   var iv = CryptoJS.enc.Utf8.parse($("#HashCode").val().substring(0, 16));
+   var encryptedlogin = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse($("#loginid").val()), key,
+   {
+    keySize: 256,
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+   });
+
+   var encryptedpassword = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse($("#password").val()), key,
+   {
+    keySize: 256,
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+   });
+
+
+   $("#hdnUserIDEncrypted").val(encryptedlogin);
+   $("#hdnPasswordEncrypted").val(encryptedpassword);
+   var sId = $("#loginid").val()
+   writeCookie("loginid", sId, 10);
+   $("#loginid").val("");
+   $("#password").val("");   
+  });
+ });
+</script>

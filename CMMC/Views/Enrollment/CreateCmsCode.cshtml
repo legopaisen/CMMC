@@ -1,0 +1,1152 @@
+﻿@using CTBC
+@{
+    ViewBag.Title = "NewCMSCode";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+ var RMList = JSON.parse('@Html.Raw(Json.Encode(ViewBag.RMList))');
+ var AvailedDetailsList = [];
+
+ $(function () {
+  $("#AccountInfoAddtxtAccountDate").datetimepicker({
+   format: "DD-MMMM-YYYY"
+  });
+ });
+
+ function dateFormatter(value) {
+  if (value.substring(0, 1) == "/")
+  { return moment(value).format("DD-MMMM-YYYY"); }
+  else { return value }
+ }
+
+ function branchOnChange() {
+  $.each(AvailedDetailsList, function (ndx, item) {
+   item.RMID.ID = null;
+  });
+  if(AvailedDetailsList != ""){
+   Command: toastr["info"]("Information","Please reassign RM for your services!")
+  }
+ }
+
+ function statusFormatter(value) {
+  if (value == 1) { return "Pending"; }
+  else if (value == 2) { return "Approved"; }
+  else if (value == 3) { return "Disapproved"; }
+  else if (value == 4) { return "Cancelled"; }
+ }
+
+ function caps(id) {
+  document.getElementById(id).value = document.getElementById(id).value.toUpperCase();
+ }
+
+ Number.prototype.formatMoney = function (c, d, t) {
+  var n = this,
+      c = isNaN(c = Math.abs(c)) ? 2 : c,
+      d = d == undefined ? "." : d,
+      t = t == undefined ? "," : t,
+      s = n < 0 ? "-" : "",
+      i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
+      j = (j = i.length) > 3 ? j % 3 : 0;
+  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+ };
+
+ function toDeci(id) {
+   $("#" + id).val($("#" + id).val().replace(",", ""));
+  if (!isNaN(parseFloat($("#" + id).val()))) {
+   $("#" + id).val(Number($("#" + id).val()).formatMoney(2, '.', ','));
+  }
+ }
+ 
+ $(document).ready(function () {
+  var ApproverList = JSON.parse('@Html.Raw(Json.Encode(ViewBag.ApproverList))');
+  var pCMSCode = {
+   "CMSCode": 0
+  }
+  var pMotherAcctNo = {
+    "MotherAcctNo": ""
+  }
+
+  $.each(ApproverList, function (ndx, item) {
+   $("#approverList").append($("<option />").val(item.UserID).text(item.FullName));
+  });
+
+  document.getElementById("chkIsAutoDebit").value = true;
+  $("#txtBasePenalty, #txtPenaltyFee, #ServiceEdittxtMARequiredADB, #ServiceEdittxtSARequiredADB, #ServiceEdittxtMinNoOfEmployee, #ServiceEdittxtMaxWithdrawalPaidbyEmployer, #AccountInfoAddtxtAccountNumber, #ServiceAddtxtMARequiredADB, #ServiceAddtxtSARequiredADB, #ServiceAddtxtMinNoOfEmployee, #ServiceEdittxtMARequiredADB, #ServiceEdittxtSARequiredADB, #ServiceEdittxtMinNoOfEmployee").keydown(function (e) {
+   // Allow: backspace, delete, tab, escape, enter and .
+   if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 188]) !== -1 ||
+    // Allow: Ctrl+A
+       (e.keyCode == 65 && e.ctrlKey === true) ||
+    // Allow: Ctrl+C
+       (e.keyCode == 67 && e.ctrlKey === true) ||
+    // Allow: Ctrl+X
+       (e.keyCode == 88 && e.ctrlKey === true) ||
+    // Allow: home, end, left, right
+       (e.keyCode >= 35 && e.keyCode <= 39)) {
+    // let it happen, don't do anything
+    return;
+   }
+   // Ensure that it is a number and stop the keypress
+   if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+    e.preventDefault();
+   }
+  });
+  
+  var $AvailedServicesTable = $("#ServiceList"),
+      $RelatedAccountsTable = $("#RelatedAccountList"),
+      $AccountInfoTable = $("#AccountInformation"),
+      $EditService = $("#btnEditService"),
+      $DeleteService = $("#btnDeleteService"),
+      $ApproveService = $("#btnApproveService"),
+      $AddRelatedAccounts = $("#btnAddRelatedAccounts"),
+      $DeleteRelatedAccounts = $("#btnDeleteRelatedAccounts"),
+      $ApproveRelatedAccounts = $("#btnApproveRelatedAccounts"),
+      $AddSaveRelatedAccounts = $("#RelatedAccountAddbtnSave"),
+      $AddSaveAccountInfo = $("#AccountInfoAddbtnSave"),
+      $DeleteAccountInfo = $("#btnDeleteAccountInfo"),
+      $ApproveAccountInfo = $("#btnApproveAccountInfo"),
+      $SearchAccount = $("#btnAccountSearch")
+
+  var gbpRestBaseURL = "https://ctbchopdappsit.chinatrust.com.ph:55051/gbprest/"; //BANCS API
+
+  //AFM 20220429
+  //MOTHER ACCOUNT validation GBP
+  $("#btnAccountSearch").click(function (e) {
+      e.preventDefault();
+      var urlQuery = $("#MotherAccountNo").val();
+      if ($("#btnAccountSearch").hasClass('btn btn-primary'))
+      {
+          $.ajax({
+              beforeSend: function(request) {
+                  request.setRequestHeader("languageCode", "1");
+                  request.setRequestHeader("userId", "1");
+                  request.setRequestHeader("entity", "GCTBCPH001");
+              },
+              dataType: "json",
+              type: "GET",
+              url: gbpRestBaseURL + "accountManagement/account/details/" + urlQuery,
+              contentType: "application/json",
+              success: function (data) {
+                  $("#CmsCodeDescription").val(data.accountDetail.account.accountSchema.name).change();
+                  $("#CMSDetails")
+                    .formValidation("revalidateField", "companyname") //validate company field
+
+                  Command: toastr["success"]("Success", "Account No. Found!");
+                  CheckExistingCMS();
+              },
+              error: function (response) {
+                  if (response.data == undefined)
+                      Command: toastr["error"]("Failed", "Business Partner does not exist");
+              }
+          });
+      }
+      else
+          $("#btnReset").trigger("click");
+  });
+
+  function ChangeMotherControls() {
+      $("#MotherAccountNo").attr('disabled', 'disabled');
+      $("#btnAccountSearch").attr('class', 'btn btn-danger');
+      $("#btnAccountSearch").find('#btnSearchIcon').attr('class', 'glyphicon glyphicon-remove');
+  }
+
+  function CheckCMSName() {
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: "@Url.Action("CheckCMSName", "Enrollment")",
+            data: {
+                sCompanyName: $("#CmsCodeDescription").val()
+            },
+            success: function (data) {
+                if (data)
+                    Command: toastr["warning"]("NOTICE", "Similar company name found.");
+            },
+            error: function (response) {
+            }
+    });
+
+  }
+
+    function CheckExistingCMS() {
+        $.ajax({
+            cache: false,
+            type: "GET",
+            url: "@Url.Action("CheckExistingCMS", "Enrollment")",
+            data: {
+                sAcctNo: $("#MotherAccountNo").val()
+            },
+            success: function (data) {
+                if (data == true) {
+                    bootbox.alert("Account number already has existing CMS Code");
+                }
+                else
+                {
+                    CheckCMSName();
+                    ChangeMotherControls();
+                }
+            },
+            error: function (response) {
+            }
+        })
+    }
+
+     //AFM 202205
+     $('#MotherAccountNo').keyup(function () {
+      if ($("#MotherAccountNo").val().length != 0)
+          $("#btnAccountSearch").attr('disabled', false)
+      else
+          $("#btnAccountSearch").attr('disabled', true)
+    });
+
+  //AVAILED SERVICES
+  $.ajax({
+   cache: false,
+   type: "GET",
+   data: pCMSCode,
+   url: "@Url.Action("LoadAvailedServices","Enrollment")",
+   contentType: "application/json",
+  success: function (data) {
+   $.each(data, function () {
+    $AvailedServicesTable.bootstrapTable("load", { data: data });
+   })
+   $AvailedServicesTable.bootstrapTable("hideColumn", "ServiceID");
+  },
+  error: function (response) {
+  }
+  });
+
+  $.ajax({
+   cache: false,
+   type: 'GET',
+   url: '@Url.Action("LoadBranchName","Enrollment")',
+   success: function (data) {
+    $.each(data, function () {
+     $("#BranchTagging").append($('<option />').val(this.BranchCode).text(this.BranchName));
+    });
+   },
+   error: function (response) {
+   }
+  });
+
+  //LOAD Free TRANSACTION
+  $.ajax({
+   cache: false,
+   url: "@Url.Action("LoadFreeTransaction","Enrollment")",
+   success: function (data) {
+    $.each(data, function () {
+     $("#ServiceEdittxtMaxFreeTransaction").append($("<option />").val(this.MaxFreeTransaction).text(this.MaxFreeTransaction));
+    });
+   },
+  error: function (response) {
+  }
+ });
+
+ //LOAD SERVICES NOT AVAILED
+ $.ajax({
+  cache: false,
+  type: "GET",
+  data: pCMSCode,
+  url: "@Url.Action("LoadServiceName","Enrollment")",
+  success: function (data) {
+   $("#ServiceAddtxtServiceName").empty();
+   $.each(data, function () {
+    $("#ServiceAddtxtServiceName").append($("<option />").val(this.ServiceID).text(this.ServiceName))
+   });
+  },
+ error: function (response) {
+ }
+ });
+
+  
+  //LoadRelated in dropdown
+  $.ajax({
+   cache: false,
+   type: "GET",
+   data: pCMSCode,
+   url: "@Url.Action("LoadNotAddedRelatedAccount","Enrollment")",
+   contentType: "application/json",
+  success: function (data) {
+   $.each(data, function () {
+    $("#RelatedAccountAddtxtAccountNumber").append($("<option />").val(this.AccountNumber).text(this.AccountNumber + " | " + this.AccountName))
+   })
+  },
+  error: function (response) {
+  }
+ });
+
+ //Load CMSTagging
+ $.ajax({
+  cache: false,
+  type: "GET",
+  url: "@Url.Action("LoadCMSTagging","Enrollment")",
+  contentType: "application/json",
+ success: function(data) {
+  $.each(data, function () {
+   $("#CMStagging").append($("<option />").val(this.Tagging).text(this.Tagging))
+  })
+ },
+ error: function (response) {
+ }
+ });
+  
+  //Load InvestmentType
+  $.ajax({
+   url: "@Url.Action("LoadInvestmentType","Enrollment")",
+   cache: false,
+  type: "GET",
+  contentType: "application/json",
+  success: function (data) {
+   $.each(data, function () {
+    $("#AccountInfoAddtxtAccountInvestmentType").append($("<option />").val(this.InvestmentCode).text(this.InvestmentDesc));
+   })
+  },
+  error: function (exception) {
+  }
+ });
+
+  $AvailedServicesTable.on("check.bs.table uncheck.bs.table " +
+      "check-all.bs.table uncheck-all.bs.table", function () {
+       $EditService.prop("disabled", !$AvailedServicesTable.bootstrapTable("getSelections").length);
+       $DeleteService.prop("disabled", !$AvailedServicesTable.bootstrapTable("getSelections").length);
+       $ApproveService.prop("disabled", !$AvailedServicesTable.bootstrapTable("getSelections").length);
+       selections = getIdSelections();
+      });
+
+  function getIdSelections() {
+   return $.map($AvailedServicesTable.bootstrapTable("getSelections"), function (row) {
+    return row.ServiceID
+   });
+  }
+
+  //CHECKBOX IN ACCOUNTInfoTable
+  $AccountInfoTable.on("check.bs.table uncheck.bs.table " +
+     "check-all.bs.table uncheck-all.bs.table", function () {
+      $DeleteAccountInfo.prop("disabled", !$AccountInfoTable.bootstrapTable("getSelections").length);
+      $ApproveAccountInfo.prop("disabled", !$AccountInfoTable.bootstrapTable("getSelections").length);
+      selections = getIdinAccountInfo();
+     });
+
+  function getIdinAccountInfo() {
+   return $.map($AccountInfoTable.bootstrapTable("getSelections"), function (row) {
+    return row.AccountID
+   });
+  }
+
+  //CHECKBOX IN RELATEDACCOUNTSTable
+  $RelatedAccountsTable.on("check.bs.table uncheck.bs.table " +
+        "check-all.bs.table uncheck-all.bs.table", function () {
+         $DeleteRelatedAccounts.prop("disabled", !$RelatedAccountsTable.bootstrapTable("getSelections").length);
+         $ApproveRelatedAccounts.prop("disabled", !$RelatedAccountsTable.bootstrapTable("getSelections").length);
+         selections = getIdinRelated();
+        });
+
+  function getIdinRelated() {
+   return $.map($RelatedAccountsTable.bootstrapTable("getSelections"), function (row) {
+    return row.AccountID
+   });
+  }
+
+  //function readCookie(name) {
+  // var i, c, ca, nameEQ = name + "=";
+  // ca = document.cookie.split(";");
+  // for (i = 0; i < ca.length; i++) {
+  //  c = ca[i];
+  //  while (c.charAt(0) == " ") {
+  //   c = c.substring(1, c.length);
+  //  }
+  //  if (c.indexOf(nameEQ) == 0) {
+  //   return c.substring(nameEQ.length, c.length);
+  //  }
+  // }
+  // return;
+  //}
+
+  var RelatedAccounts = [];
+  var AccountInformationList = [];
+  var ServiceOptionDetails = {};  
+  PenaltyCharges = {};
+  CmsCodeDetails = {};
+  RequestListDetails = {};
+  RequestsDetails = {};
+
+
+  //SAVE EVERYTHING
+  function SaveRecord() {
+   var IsNull = false;
+   $.each(AvailedDetailsList, function (ndx, item) {
+    var pNull = false;
+    if (item.RMID.ID == null || item.RMID.ID == "" || item.RMID.ID == "null") {
+     pNull = true;
+    }
+    IsNull = ((pNull) ? true : false);
+   });
+   if (!IsNull) {
+    RequestsDetails = {
+     "CreatedBy": '@Session["UserID"]',
+     "CreatedOn": new Date(),
+     "IPAddress": "",
+     "AssignedApprover": $("#approverList").val()
+    }
+
+    RequestListDetails = {
+     "RequestCode": "",
+     "Module": "CreateCMSCode",
+     "Action": 2,
+     "NewValues": "",
+     "OldValues": "",
+     "WhereValues": "",
+     "AffectedTable": "",
+     "Remarks": "",
+     "Status": 1,
+     "ApprovedBy": "",
+     "RequestsDetails": RequestsDetails
+    }
+    GeneralDetails = {
+     "CMSCode": 108, // generated
+     "Description": $("#CmsCodeDescription").val(),
+     "BranchCode": $("#BranchTagging").val(),
+     "BranchName": $("#BranchTagging option:selected").text(),
+     "IsActive": true,
+     "Status": 1,
+     "CreatedOn": new Date(),
+     "CreatedBy": '@Session["UserID"]',
+     "ModifiedOn": null,
+     "ModifiedBy": null,
+     "Tagging": $("#CMStagging option:selected").val(),
+     "BasePenalty": $("#txtBasePenalty").val(),
+     "PenaltyFee": $("#txtPenaltyFee").val(),
+     "IsAutoDebit": $("#chkIsAutoDebit").val(),
+     "MaxWithdrawalPaidByEmployer": $("#ServiceEdittxtMaxWithdrawalPaidbyEmployer").val(),
+     "MaxFreeTransaction": $("#ServiceEdittxtMaxFreeTransaction").val(), //val
+     "WithdrawalFeePerTransaction": $("#ServiceEdittxtMaxFeePerTransaction").val(),
+    }
+    var CmsCodeDetails = {
+     "GeneralDetails": GeneralDetails,
+     "AvailedDetailsList": AvailedDetailsList,
+    }
+    
+    $.ajax({
+     cache: false,
+     type: "POST",
+     processData: false,
+     contentType: "application/json; charset=utf-8",
+     url: "@Url.Action("SaveNewRecord","Enrollment")",
+     data: JSON.stringify({
+      "pDetails": CmsCodeDetails,
+      "pRequestListDetails": RequestListDetails
+     }),
+     success: function (data) {
+      localStorage.setItem("Status", "savenewrecord")
+      window.location = "@Url.Action("Index","Enrollment")";
+     },
+     error: function (response) {
+     }
+    });
+   } else {
+    Command: toastr["info"]("Information", "Please check if there is unassigned RM for your services, this might cause of changing your cmscode branch")
+   }
+  }
+  
+  //AddbtnSave service
+  $("#ServiceAddbtnSave").click(function () {
+   AvailedDetailsList.push({
+    "ServiceID": $("#ServiceAddtxtServiceName").val(),
+    "ServiceName": $("#ServiceAddtxtServiceName option:selected").text(),
+    "ServiceOptionID": 0,
+    "EnrolledOn": new Date(),
+    "EnrolledBy": '@Session["UserID"]',
+    "ModifiedOn": null,
+    "ModifiedBy": null,
+    "Status": 1,
+    "RMID": { "ID": $("#RelMan").val() },
+    "MotherRequiredADB": $("#ServiceAddtxtMARequiredADB").val().toString().replace(/,/g, ""),
+    "SubRequiredADB": $("#ServiceAddtxtSARequiredADB").val().toString().replace(/,/g, ""),
+    "MinNumberEmployee": $("#ServiceAddtxtMinNoOfEmployee").val(),
+    "PayrollFrequency": 2
+   });
+
+   $("#ServiceList").bootstrapTable("insertRow", {
+    index: 0,
+    row: {
+     ServiceID: $("#ServiceAddtxtServiceName").val(),
+     ServiceName: $("#ServiceAddtxtServiceName option:selected").text(),
+     MotherRequiredADB: $("#ServiceAddtxtMARequiredADB").val(),
+     SubRequiredADB: $("#ServiceAddtxtSARequiredADB").val(),
+     MinNumberEmployee: $("#ServiceAddtxtMinNoOfEmployee").val(),
+     EnrolledOn: moment().format("DD-MMMM-YYYY"),
+     EnrolledBy: '@Session["UserID"]',
+     ModifiedOn: moment().format("DD-MMMM-YYYY"),
+     ModifiedBy: '@Session["UserID"]',
+      Status: 1
+    }
+   });
+   $("#ServiceAddtxtServiceName option:selected").remove();
+   $("#ServiceAddbtnClose").click();
+  });
+
+ //EditbtnSAVE
+ $("#ServiceEditbtnSave").click(function () {
+  var pServiceId = $.map($AvailedServicesTable.bootstrapTable("getSelections"), function (row) {
+   return row.ServiceID
+  });
+  $AvailedServicesTable.bootstrapTable('updateByUniqueId', {
+   id: pServiceId,
+   row: {
+    MotherRequiredADB: $("#ServiceEdittxtMARequiredADB").val().toString().replace(/,/g, ""),
+     SubRequiredADB: $("#ServiceEdittxtSARequiredADB").val().toString().replace(/,/g, ""),
+    MinNumberEmployee: $("#ServiceEdittxtMinNoOfEmployee").val(),
+    ModifiedOn: moment().format("DD-MMMM-YYYY"),
+    ModifiedBy: '@Session["UserID"]'
+   }
+  });
+  //update list
+  changeValues(pServiceId);
+  $("#ServiceEditbtnCancel").trigger('click');  
+ });
+
+ $EditService.click(function (e) {
+  var pServiceId = $.map($AvailedServicesTable.bootstrapTable("getSelections"), function (row) {
+   return row.ServiceID
+  });
+  if (pServiceId.length != 1) {
+   Command: toastr["info"]("Oopps!", "Please select only one item when editing")
+   e.stopPropagation();
+  }
+
+  var rmID = 0;
+  $.each(AvailedDetailsList, function (ndx, item) {
+   if (item.ServiceID == pServiceId) {
+    $("#ServiceEdittxtMARequiredADB").val(item.MotherRequiredADB);
+    $("#ServiceEdittxtSARequiredADB").val(item.SubRequiredADB);
+    $("#ServiceEdittxtMinNoOfEmployee").val(item.MinNumberEmployee);
+    rmID = item.RMID.ID;
+   }
+  });
+  
+  var val = [];
+  if ($("#BranchTagging").val() == null || $("#BranchTagging").val() == "" || $("#BranchTagging").val() == "null") {
+   e.stopPropagation();
+   Command: toastr["info"]("Information", "Please fill up branch for RM tagging!")
+  } else {
+   $.each(RMList, function (ndx, item) {
+    if (item.BranchAssigned == $("#BranchTagging").val()) {
+     val.push(item);
+    }
+   });
+   $("#EditRelMan").empty();
+   $.each(val, function (ndx, item) {
+     //$("#EditRelMan").append($('<option />').val(item.ID).text(item.RMFullName))
+     $("#EditRelMan").append("<option value='" + item.ID + "' " + (item.ID == rmID ? "selected" : "") + ">" + item.RMFullName + "</option>");
+   });
+  }
+ });
+
+ $AddSaveRelatedAccounts.click(function () {
+  RelatedAccounts.push({
+   "LinkedCMSCode": 0,
+   "AccountID": $("#RelatedAccountAddtxtAccountNumber").val(),
+   "AccountName": $("#RelatedAccountAddtxtAccountNumber option:selected").text().substr(15),
+   "DateAdded": moment().format("DD-MMMM-YYYY"),
+   "AddedBy": '@Session["UserID"]',
+   "Status": 1
+  });
+
+  $RelatedAccountsTable.bootstrapTable("insertRow", {
+   index: 0,
+   row: {
+    AccountID: $("#RelatedAccountAddtxtAccountNumber").val(),
+    AccountName: $("#RelatedAccountAddtxtAccountNumber option:selected").text().substr(15),
+    DateAdded: moment().format("DD-MMMM-YYYY"),
+    AddedBy: '@Session["UserID"]',
+    Status: 1
+   }
+  });
+
+  $("#RelatedAccountAddtxtAccountNumber option:selected").remove();
+  $("#RelatedAccountAddbtnClose").click();
+ });
+
+ $("#btnAddService").click(function (e) {
+  if ($("#ServiceAddtxtServiceName").val() == null) {
+   Command: toastr["info"]("Oppps!", "You have availed all CMS Products");
+   e.stopPropagation();
+  }
+  var val = [];
+  if ($("#BranchTagging").val() == null || $("#BranchTagging").val() == "" || $("#BranchTagging").val() == "null") {
+   e.stopPropagation();
+   Command: toastr["info"]("Information","Please fill up branch for RM tagging!")
+  } else {
+   $.each(RMList, function (ndx, item) {
+    if (item.BranchAssigned == $("#BranchTagging").val()) {
+     val.push(item);
+    }
+   });
+   $("#RelMan").empty();
+   $.each(val, function (ndx, item) {
+    $("#RelMan").append($('<option />').val(item.ID).text(item.RMFullName))
+   });
+   $("#ServiceAddtxtMARequiredADB").val(null);
+   $("#ServiceAddtxtSARequiredADB").val(null);
+   $("#ServiceAddtxtMinNoOfEmployee").val(null);
+  }
+ });
+
+ $("#btnAddRelatedAccounts").click(function (e) {
+  if ($("#RelatedAccountAddtxtAccountNumber").val() == null) {
+   Command: toastr["info"]("Oppps!", "No available Account number!");
+   e.stopPropagation();
+  }
+ });
+
+ $DeleteService.click(function () {
+  //get serviceid in the table
+  var pServiceId = $.map($AvailedServicesTable.bootstrapTable("getSelections"), function (row) {
+   return row.ServiceID
+  });
+  //bootstrap table remove
+  var ids = $.map($AvailedServicesTable.bootstrapTable("getSelections"), function (row) {
+   return row.ServiceID;
+  });
+  $AvailedServicesTable.bootstrapTable("remove", {
+   field: "ServiceID",
+   values: ids
+  });
+  //remove in the array
+
+  function deleteValues(servid) {
+   for (var j in AvailedDetailsList) {
+    if (AvailedDetailsList[j].ServiceID == servid) {
+     $("#ServiceAddtxtServiceName").append($("<option />").val(AvailedDetailsList[j].ServiceID).text(AvailedDetailsList[j].ServiceName))
+     AvailedDetailsList.splice(j, 1);
+     $("#ServiceAddtxtServiceName").append(AvailedDetailsList.sort());
+    }
+   }
+  };
+  for (var item in pServiceId) {
+   deleteValues(pServiceId[item]);
+  }
+  sortSelect("#ServiceAddtxtServiceName", "text", "asc");
+ });
+
+ var sortSelect = function (select, attr, order) {
+  if (attr === "text") {
+   if (order === "asc") {
+    $(select).html($(select).children("option").sort(function (x, y) {
+     return $(x).text().toUpperCase() < $(y).text().toUpperCase() ? -1 : 1;
+    }));
+    $(select).get(0).selectedIndex = 0;
+    //e.preventDefault();
+   }// end asc
+   if (order === "desc") {
+    $(select).html($(select).children("option").sort(function (y, x) {
+     return $(x).text().toUpperCase() < $(y).text().toUpperCase() ? -1 : 1;
+    }));
+    $(select).get(0).selectedIndex = 0;
+    e.preventDefault();
+   }// end desc
+  }
+ };
+
+
+ $DeleteAccountInfo.click(function () {
+  //get accountid in the table
+  var pAccountNumber = $.map($AccountInfoTable.bootstrapTable("getSelections"), function (row) {
+   return row.AccountNumber
+  });
+
+  $AccountInfoTable.bootstrapTable("remove", {
+   field: "AccountNumber",
+   values: pAccountNumber
+  });
+
+  //remove in the array
+  function deleteAccount(accountnumber) {
+   for (var j in AccountInformationList) {
+    if (AccountInformationList[j].AccountNumber == accountnumber) {
+     $("#AccountInfoAddtxtAccountNumber").append($("<option />").val(AccountInformationList[j].AccountNumber).text(AccountInformationList[j].AccountNumber + " | " + AccountInformationList[j].AccountName))
+     $("#idAccount option[value=" + AccountInformationList[j].AccountNumber + "]").remove();
+     $("#ServiceEdittxtAccountNoServiceType option[value=" + AccountInformationList[j].AccountNumber + "]").remove();
+     $("#ServiceEdittxtWithdrawalFeeAccountNo option[value=" + AccountInformationList[j].AccountNumber + "]").remove();
+     AccountInformationList.splice(j, 1);
+    }
+   }
+  };
+  for (var item in pAccountNumber) {
+   deleteAccount(pAccountNumber[item]);
+  }
+ });
+
+ $DeleteRelatedAccounts.click(function () {
+  //get accountid in the table
+  var pAccountID = $.map($RelatedAccountsTable.bootstrapTable("getSelections"), function (row) {
+   return row.AccountID
+  });
+
+  $RelatedAccountsTable.bootstrapTable("remove", {
+   field: "AccountID",
+   values: pAccountID
+  });
+
+  //remove in the array
+  function deleteRelated(accountid) {
+   for (var j in RelatedAccounts) {
+    if (RelatedAccounts[j].AccountID == accountid) {
+     $("#RelatedAccountAddtxtAccountNumber").append($("<option />").val(RelatedAccounts[j].AccountID).text(RelatedAccounts[j].AccountID + " | " + RelatedAccounts[j].AccountName))
+     RelatedAccounts.splice(j, 1);
+    }
+   }
+  };
+
+  for(var item in pAccountID){
+   deleteRelated(pAccountID[item]);
+  }
+ });
+
+ $("#btnCancel").click(function () {   
+  window.location = '@Url.Action("Index","Enrollment")';
+ });
+
+ $("#CMSDetails")
+  .formValidation({
+   framework: "bootstrap",
+   icon: {
+    valid: "glyphicon glyphicon-ok",
+    invalid: "glyphicon glyphicon-remove",
+    validating: "glyphicon glyphicon-refresh"
+   },
+   fields: {
+    accountno: {
+        validators: {
+            notEmpty: {
+                message: "Account no. is required"
+            }
+        }
+    },
+    companyname: {
+     validators: {
+      notEmpty: {
+       message: "The company name is required"
+      },
+      stringLength: {
+       min: 5,
+       max: 50,
+       message: "The name must be more than 6 and less than 50 characters long"
+      }
+      //regexp: {
+      //    regexp: /^[a-zA-Z0-9\_\," "]+$/i,
+      //    //regexp: /[^a-zA-Z0-9\-\/()&.]/,
+      // message: "The name can only consist of alphabetical, number and underscore"
+      //}
+     }
+    },
+    clienttype: {
+     validators: {
+      notEmpty: {
+       message: "The client type is required"
+      }
+     }
+    },
+    branch: {
+     validators: {
+      notEmpty: {
+       message: "The branch is required"
+      }
+     }
+    },
+    base: {
+     validators: {
+      notEmpty: {
+       message: "The base penalty is required"
+      },
+      numeric: {
+       message: "The base penalty must be a number",
+       // The default separators
+       thousandsSeparator: "",
+       decimalSeparator: "."
+      },
+      stringLength: {
+       min: 1,
+       max: 15,
+       message: "The base penalty must be more than 1 and less than 15 characters long"
+      }
+     }
+    },
+    debit: {
+     validators: {
+      notEmpty: {
+       message: "Auto debit status is required"
+      }
+     }
+    },
+    maxfreetransaction: {
+     validators: {
+      notEmpty: {
+       message: "Max free transaction is required"
+      }
+     }
+    },
+    maxwithdrawal: {
+     validators: {
+      notEmpty: {
+       message: "Max withdrawal paid by employer is required"
+      },
+      numeric: {
+       message: "Max withdrawal paid by employer must be a number"
+      }
+     }
+    },
+    penaltyfee: {
+     validators: {
+      notEmpty: {
+       message: "The penalty fee is required"
+      },
+      numeric: {
+       message: "The penalty fee must be a number",
+       thousandsSeparator: "",
+       decimalSeparator: "."
+      },
+      stringLength: {
+       min: 1,
+       max: 15,
+       message: "The base penalty must be more than 1 and less than 15 characters long"
+      }
+     }
+    },
+    fee: {
+     validators: {
+      notEmpty: {
+       message: "The fee per transaction is required"
+      },
+      numeric: {
+       message: "The fee per transaction must be a number"
+      }
+     }
+    },
+    approver: {
+     validators: {
+      notEmpty: {
+       message: "The approver is required"
+      }
+     }
+    },
+   }
+  })
+  .on("change", "[name='base']", function () {
+   var thousandsSeparator = ",",
+       decimalSeparator = ".";
+   $("#CMSDetails")
+    .formValidation("updateOption", "number", "numeric", "thousandsSeparator", thousandsSeparator)
+    .formValidation("updateOption", "number", "numeric", "decimalSeparator", decimalSeparator)
+    .formValidation("revalidateField", "number")
+  })
+
+  .on("success.form.fv", function (e) {
+   e.preventDefault();
+   SaveRecord();
+  })
+
+ $("#btnReset").click(function () {
+  bootbox.confirm("This will reset all the data filled up in the form! Do you want to proceed?", function (result) {
+   if (result == true) {
+    $("#ServiceList").bootstrapTable("removeAll");
+    $.each(AvailedDetailsList, function (ndx, item) {
+     $("#ServiceAddtxtServiceName").append($("<option />").val(item.ServiceID).text(item.ServiceName));
+    });
+    AvailedDetailsList = [];
+    $("#CMSDetails").trigger("reset")
+    $("#MotherAccountNo").removeAttr('disabled');
+    $("#CMSDetails").data("formValidation").resetForm();
+    sortSelect("#ServiceAddtxtServiceName", "text", "asc");
+    $("#btnAccountSearch").attr('class', 'btn btn-primary');
+    $("#btnAccountSearch").find('#btnSearchIcon').attr('class', 'glyphicon glyphicon-search');
+    $("#btnAccountSearch").attr('disabled', true);
+   }
+  });
+ });
+ }); // END OF DOCU
+
+
+ function changeValues(servid) {
+  for (var i in AvailedDetailsList) {
+   if (AvailedDetailsList[i].ServiceID == servid) {
+    AvailedDetailsList[i].MotherRequiredADB = $("#ServiceEdittxtMARequiredADB").val();
+    AvailedDetailsList[i].SubRequiredADB = $("#ServiceEdittxtSARequiredADB").val();
+    AvailedDetailsList[i].MinNumberEmployee = $("#ServiceEdittxtMinNoOfEmployee").val();
+    AvailedDetailsList[i].PayrollFrequency = 2;
+    AvailedDetailsList[i].RMID.ID = $("#EditRelMan").val();
+   }
+  }
+ }
+
+</script>
+
+@*TAB PART HERE*@
+<div class="container">
+ <div class="row">
+  <div class="col-md-12">
+   <h2 class="page-header">
+    Create New CMS Code
+
+    <small>Details</small>
+   </h2>
+   <form id="CMSDetails">
+    <div class="form-group">
+     <button type="submit" id="btnSave" class="btn btn-primary" disabled><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+     <button type="button" id="btnCancel" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+     <button type="button" id="btnReset" class="btn btn-warning"><i class="glyphicon glyphicon-refresh"></i> Reset</button>
+    </div>
+   <div class="form-group" id="MainTab">
+    <div id="General">
+     <div class="row">
+      <div class="col-xs-12">
+       <div class="panel panel-primary">
+        <div class="panel-heading">General Information</div>
+        <div class="panel-body">
+         <div class="col-xs-6" id="frstGroup">
+             <div class="form-group" id="motheraccount">
+                 <div class="input-group">
+                     <span class="input-group-addon">Account No.</span>
+                     <input type="text" id="MotherAccountNo" class=" form-control" placeholder="Type account no. here" name="accountno" autocomplete="off" style="width:80%" />
+                     <button type="button" disabled id="btnAccountSearch" class="btn btn-primary"><i id="btnSearchIcon" class="glyphicon glyphicon-search"></i></button>
+                 </div>
+             </div>
+          <div class="form-group" id="cmsdesc">
+           <div class="input-group">
+            <span class="input-group-addon">Company Name</span>
+               <input id="CmsCodeDescription" class="form-control" name="companyname" onblur="caps(this.id)" autocomplete="off" readonly="readonly" />
+           </div>
+          </div>
+          <div class="form-group" id="tagging">
+           <div class="input-group">
+            <span class="input-group-addon">Client Type</span>
+            <select class="form-control" id="CMStagging" name="clienttype">
+             <option disabled selected value> -- select a value --</option>
+            </select>
+           </div>
+          </div>
+          <div class="form-group" id="Branchgroup">
+           <div class="input-group">
+            <span class="input-group-addon">Branch</span>
+            <select class="form-control" id="BranchTagging" name="branch" onchange="branchOnChange();">
+             <option disabled selected value> -- select a value -- </option>
+            </select>
+           </div>
+          </div>
+          <div class="form-group">
+           <div class="input-group" style="width: 70%">
+            <span class="input-group-addon">Base Penalty</span>
+            <input id="txtBasePenalty" class="form-control" placeholder="Base penalty" value="0.00" name="base" onblur="toDeci(this.id)" />
+           </div>
+          </div>
+          <div class="form-group">
+           <div class="input-group" style="width: 70%">
+            <span class="input-group-addon">Penalty Fee</span>
+            <input id="txtPenaltyFee" type="text" class="form-control" placeholder="Penalty Fee" value="10.00" name="penaltyfee" onblur="toDeci(this.id)" />
+           </div>
+          </div>
+         </div>
+         <div class="col-xs-6" id="scdGroup">
+          <div class="form-group">
+           <div class="input-group">
+            <span class="input-group-addon">Auto Debit</span>
+            <select class="form-control" id="chkIsAutoDebit" name="debit">
+             <option value="true">Yes</option>
+             <option value="false">No</option>
+            </select>
+           </div>
+          </div>
+          <div class="form-group">
+           <div class="input-group">
+            <span class="input-group-addon">Max free Transaction</span>
+            <select class="form-control" id="ServiceEdittxtMaxFreeTransaction" name="maxfreetransaction">
+             <option disabled selected value> -- select a value -- </option>
+            </select>
+           </div>
+          </div>
+          <div class="form-group">
+           <div class="input-group">
+            <span class="input-group-addon">Max Withdrawal Paid by Employer</span>
+            <input type="text" class="form-control" placeholder="Max Withdrawal Paid by Employer" id="ServiceEdittxtMaxWithdrawalPaidbyEmployer" value="0" name="maxwithdrawal" />
+           </div>
+          </div>
+          <div class="form-group">
+           <div class="input-group">
+            <span class="input-group-addon">Fee per Transaction</span>
+            <input type="text" value="12.00" class="form-control" id="ServiceEdittxtMaxFeePerTransaction" disabled name="fee" />
+           </div>
+          </div>
+          <div class="form-group">
+           <div class="input-group">
+            <span class="input-group-addon">Approver List</span>
+            <select class="form-control" id="approverList" name="approver">
+             <option disabled selected value> -- select a value -- </option>
+            </select>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div id="Service">
+     <div class="row">
+      <div class="col-xs-12">
+       <div class="panel panel-primary">
+        <div class="panel-heading">Availed services</div>
+        <div class="panel-body">
+          <table id="ServiceList" class="table table-hover table-bordered" cellpadding="0" style="width:100%"
+                 data-toggle="table"
+                 data-pagination="true"
+                 data-search="true"
+                 data-unique-id="ServiceID"
+                 data-detail-formatter="detailFormatter"
+                 data-checkbox-header="false"
+                 data-click-to-select="true"
+                 data-single-select="true">
+            <thead>
+              <tr>
+                <th data-checkbox="true"></th>
+                <th data-field="ServiceID">Service ID</th>
+                <th data-field="ServiceName">Availed Service</th>
+                <th data-field="MotherRequiredADB" data-align="right">Mother Account Required ADB</th>
+                <th data-field="SubRequiredADB" data-align="right">Sub Account Required ADB</th>
+                <th data-field="MinNumberEmployee" data-align="right">Minimum No of Employee</th>
+                <th data-field="EnrolledOn" data-formatter="dateFormatter">Date Enrolled</th>
+                <th data-field="EnrolledBy">Enrolled By</th>
+                <th data-field="ModifiedOn" data-formatter="dateFormatter">Date Modified</th>
+                <th data-field="ModifiedBy">Modified By</th>
+                <th data-field="Status" data-formatter="statusFormatter">Status</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="panel-footer">
+         <button class="btn btn-primary" type="button" id="btnAddService" data-toggle="modal" data-target="#AddServices"><i class="glyphicon glyphicon-plus"></i> Add</button>
+         <button class="btn btn-success" type="button" id="btnEditService" data-toggle="modal" data-target="#EditServices" disabled> <i class="glyphicon glyphicon-edit"></i> Edit</button>
+         <button class="btn btn-danger" type="button" id="btnDeleteService" disabled><i class="glyphicon glyphicon-remove"></i> Delete</button>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+</form>
+  </div>
+ </div>
+</div>
+ @*MODALS*@
+ @*Create Service*@
+<!-- Modal for Add Service-->
+<div id="AddServices" class="modal fade" role="dialog">
+ <div class="modal-dialog">
+  <!-- Modal content-->
+  <form id="addformservices">
+   <div class="modal-content">
+    <div class="modal-header">
+     <button type="button" class="close" data-dismiss="modal">&times;</button>
+     <h4 class="modal-title">New Service</h4>
+    </div>
+    <div class="modal-body">
+     <div class="well">
+      <div class="form-group">
+       <div class="input-group">
+        <span class="input-group-addon">Services</span>
+        <select class="form-control" id="ServiceAddtxtServiceName" name="servicename">
+         <option disabled selected value> -- select a value -- </option>
+        </select>
+       </div>
+      </div>
+      <div class="form-group">
+       <div class="input-group">
+        <span class="input-group-addon">Relationship Manager</span>
+        <select class="form-control" id="RelMan" name="rm">
+         <option disabled selected value> -- select a value -- </option>
+        </select>
+       </div>
+      </div>
+     </div>
+     <div class="panel panel-primary">
+      <div class="panel-heading">Service details</div>
+      <div class="panel-body">
+       <div class="form-group">
+        <div class="input-group">
+         <span class="input-group-addon">Mother Account Required ADB</span>
+         <input type="text" class="form-control" placeholder="Mother Account Required ADB" id="ServiceAddtxtMARequiredADB" name="motherrequiredadb" onblur="toDeci(this.id)" autocomplete="off" />
+        </div>
+       </div>
+       <div class="form-group">
+        <div class="input-group">
+         <span class="input-group-addon">Sub Account Required ADB</span>
+         <input type="text" class="form-control" placeholder="Sub Account Required ADB" id="ServiceAddtxtSARequiredADB" name="subrequiredadb" onblur="toDeci(this.id)" autocomplete="off"/>
+        </div>
+       </div>
+       <div class="form-group">
+        <div class="input-group">
+         <span class="input-group-addon">Minimum No of Employee</span>
+         <input type="text" class="form-control" placeholder="Minimum No of Employee" id="ServiceAddtxtMinNoOfEmployee" name="minnumemp" autocomplete="off" />
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="modal-footer">
+     <button type="button" class="btn btn-primary" id="ServiceAddbtnSave"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+     <button type="button" class="btn btn-danger" data-dismiss="modal" id="ServiceAddbtnClose"><i class="glyphicon glyphicon-remove"></i> Close</button>
+    </div>
+   </div>
+  </form>
+ </div>
+</div>
+
+<!-- Modal for EditServices-->
+<div id="EditServices" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+  <!-- Modal content-->
+   <div class="modal-content">
+    <div class="modal-header">
+     <button type="button" class="close" data-dismiss="modal">&times;</button>
+     <h4 class="modal-title">Edit Availed Services</h4>
+    </div>
+    <div class="modal-body" id="AddEditService">
+     <div class="well">
+      <div class="form-group">
+       <div class="input-group">
+        <span class="input-group-addon">Relationship Manager</span>
+        <select class="form-control" id="EditRelMan" name="rm">
+         <option disabled selected value> -- select a value -- </option>
+        </select>
+       </div>
+      </div>
+     </div>
+     <div id="adbreq" class="panel panel-primary">
+      <div class="panel-heading">ADB Requirements</div>
+      <div class="panel-body">
+       <div class="form-group">
+        <div class="input-group">
+         <span class="input-group-addon">Mother Account Required ADB</span>
+         <input type="text" class="form-control" placeholder="Mother Account Required ADB" id="ServiceEdittxtMARequiredADB" max="999999999999" maxlength="15" onblur="toDeci(this.id)" />
+        </div>
+       </div>
+       <div class="form-group">
+        <div class="input-group">
+         <span class="input-group-addon">Sub Account Required ADB</span>
+         <input type="text" class="form-control" placeholder="Sub Account Required ADB" id="ServiceEdittxtSARequiredADB" max="999999999999" maxlength="15" onblur="toDeci(this.id)" />
+        </div>
+       </div>
+       <div class="form-group">
+        <div class="input-group">
+         <span class="input-group-addon">Minimum No of Employee</span>
+         <input type="text" class="form-control" placeholder="Minimum No of Employee" id="ServiceEdittxtMinNoOfEmployee" max="999999999999" maxlength="15" />
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="modal-footer">
+     <button type="button" class="btn btn-primary" id="ServiceEditbtnSave"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+     <button type="button" class="btn btn-danger" data-dismiss="modal" id="ServiceEditbtnCancel"><i class="glyphicon glyphicon-remove"></i> Cancel</button>
+    </div>
+   </div>
+  </div>
+</div>

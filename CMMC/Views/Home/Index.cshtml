@@ -1,0 +1,602 @@
+﻿@*@model CMMC.Models.CMSCode*@
+@model CMMC.Models.RequestList
+@{
+    ViewBag.Title = "Home"; 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script type="text/javascript">
+ var TerminationList = @Html.Raw(Json.Encode(ViewBag.TerminationList))
+  function generateEmail() {
+   var model = ('1', '2');
+   $.ajax({
+    cache: false,
+    data: {
+     'pCMSCodes': model
+    },
+    url: '@Url.Action("SendAccountMaintainedStatus", "Home")',
+    contentType: 'application/json',
+    success: function (data) {
+    },
+    error: function (e) {
+    }
+   });
+  }
+
+ Number.prototype.formatMoney = function (c, d, t) {
+  var n = this,
+      c = isNaN(c = Math.abs(c)) ? 2 : c,
+      d = d == undefined ? "." : d,
+      t = t == undefined ? "," : t,
+      s = n < 0 ? "-" : "",
+      i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
+      j = (j = i.length) > 3 ? j % 3 : 0;
+  return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+ };
+
+ var request = [],
+  byCode = [],
+  BranchList = JSON.parse('@Html.Raw(Json.Encode(ViewBag.BranchList))');
+ var TerminationCodeList = [];
+ $(document).ready(function () {
+  for (var i = 0; i < TerminationList.length; i++) {
+   TerminationCodeList.push(TerminationList[i].Request.RequestCode);
+  }
+
+  if ('@Session["UserType"]' == '1') {
+   $("#btnApproveAll").show();
+   $("#btnRejectAll").show();
+   $("#btnCancelAll").hide();
+  }
+  else if ('@Session["UserType"]' == '3') //AFM 202204 developer access
+  {
+      $("#btnApproveAll").show();
+      $("#btnRejectAll").show();
+      $("#btnCancelAll").show();
+  }
+  else {
+   $("#btnApproveAll").hide();
+   $("#btnRejectAll").hide();
+   $("#btnCancelAll").show();
+  }
+
+  $.ajax({
+   cache: false,
+   url: '@Url.Action("LoadRequestListDetails", "Home")',
+   type: 'GET',
+   contentType: 'application/json',
+   async: false,
+   success: function (data) {
+    for (var i = 0; i < data.length; i++) {
+     request.push({
+      'Remarks': data[i].Remarks,
+      'CMSCodeDetails': data[i].ConcernedCMSCode,
+      'RequestCode': data[i].Request.RequestCode,
+      'RequestListCode': data[i].RequestListCode
+     });
+    }
+
+    $.ajax({
+     cache: false,
+     url: '@Url.Action("LoadRequestListCodeDetails", "Home")',
+     type: 'GET',
+     contentType: 'application/json',
+     success: function (dataCode) {
+      var req = [];
+      $.each(dataCode, function (ndx, item) {
+       req.push({
+        'RequestCode': item.RequestCode,
+        'ConcernedCMSCode': item.ConcernedCMSCode,
+        'CreatedBy': item.RequestsDetails.CreatedBy
+       })
+      });
+      $("#RequestList").bootstrapTable('load', { data: req });
+      $("#RequestList").bootstrapTable('hideColumn', "CreatedBy");
+     },
+     error: function (e) {
+     }
+    });
+   },
+   error: function (e) {
+   }
+  });
+
+  $("#btnApproveAll").click(function () {
+   var ids = $.map($("#RequestList").bootstrapTable('getSelections'), function (row) {
+    return row.RequestCode;
+   });
+   if (ids != "") {
+    var requestcode = []
+    for (var i = 0; i < ids.length; i++) {
+     requestcode.push(ids[i])
+    };
+
+    var model = {
+     'pRequestCodeList': requestcode,
+     'pMPersonId': '@Session["UserID"]',
+     'forApproved': true
+    }
+
+    $.ajax({
+     cache: false,
+     type: 'POST',
+     data: JSON.stringify(model),
+     contentType: 'application/json',
+     url: '@Url.Action("ApproveAllRequestByRequestCode", "Home")',
+     success: function (data) {
+      localStorage.setItem("approverequest", "approved")
+      window.location = '@Url.Action("Index","Home")';
+     },
+     error: function (e) {
+     }
+    });
+   } else {
+    Command: toastr["info"]("Select atleast one to approve!")
+   }
+  });
+
+  $("#btnRejectAll").click(function () {
+   var details = [];
+   $.map($("#RequestList").bootstrapTable('getSelections'), function (row) {
+    return details.push({
+     'RequestCode': row.RequestCode,
+     'CMSCode': row.ConcernedCMSCode
+    });
+   });
+
+   if (details != "") {
+    var model = {
+     'pRequestCodeList': details,
+     'pIsForApprover': false,
+     'pIsStatus': false,
+     'pMPersonId': '@Session["UserID"]'
+    }
+
+    $.ajax({
+     cache: false,
+     type: 'POST',
+     data: JSON.stringify(model),
+     contentType: 'application/json',
+     url: '@Url.Action("RejectAllRequestByRequestCode", "Home")',
+     success: function (data) {
+      localStorage.setItem("rejectrequest", "rejected")
+      window.location = '@Url.Action("Index","Home")';
+     },
+     error: function (e) {
+     }
+    });
+   } else {
+    Command: toastr["info"]("Select atleast one to reject!")
+   }
+  });
+
+  $("#btnCancelAll").click(function () {
+   var details = [];
+   $.map($("#RequestList").bootstrapTable('getSelections'), function (row) {
+       return details.push({
+     'RequestCode': row.RequestCode,
+     'CMSCode': row.ConcernedCMSCode
+    });
+   
+   });
+   if (details != "") {
+    var model = {
+     'pRequestCodeList': details,
+    }
+
+    $.ajax({
+     cache: false,
+     type: 'POST',
+     data: JSON.stringify(model),
+     contentType: 'application/json',
+     url: '@Url.Action("CancelAllRequestByRequestCode", "Home")',
+     success: function (data) {
+      localStorage.setItem("rejectrequest", "rejected")
+      window.location = '@Url.Action("Index","Home")';
+     },
+     error: function (e) {
+     }
+    });
+   } else {
+    Command: toastr["info"]("Select atleast one to cancel!")
+   }
+  });
+
+  if (localStorage.getItem("approverequest") == "approved") {
+   Command: toastr["success"]("Approved", "Request was successfully approved.")
+   localStorage.clear();
+  }
+  if (localStorage.getItem("rejectrequest") == "reject") {
+   Command: toastr["success"]("Rejected", "Request was successfully rejected.")
+   localStorage.clear();
+  }
+  if (localStorage.getItem("cancelrequest") == "cancel") {
+   Command: toastr["success"]("Cancelled", "Request was successfully cancelled.")
+   localStorage.clear();
+  }
+  if (localStorage.getItem("saverequest") == "saved") {
+   Command: toastr["success"]("Saved", "Edit of request was successfully saved.")
+   localStorage.clear();
+  }
+ });
+
+ function ActionFormatter(value, row, index) {  
+    if ('@Session["UserType"]' == "1") {
+   return [
+   '<a id="approve" class="approve" href="#" title="Approve" >',
+    '<i class="glyphicon glyphicon-check"></i>',
+   '</a>  ',
+   '<a id="reject" class="reject" href="#" title="Reject">',
+   '<i class="glyphicon glyphicon-remove"></i>',
+   '</a> '
+   ].join('');
+    }
+    else {
+     var IsExist = false;
+     $.each(TerminationCodeList, function (ndx, item) {
+      if (item == row.RequestCode) {
+       IsExist = true;
+      } else { IsExist = IsExist ? true : false }
+     });
+     if (IsExist) {
+      return [
+       '<a id="cancel" class="cancel" href="#" title="Cancel">',
+      '<i class="glyphicon glyphicon-remove"></i>', // cancel glyphicon
+       '</a>',
+      ].join('');
+     } else {
+      return [
+       '<a id="edit" class="edit" href="#" title="Edit">',
+        '<i class="glyphicon glyphicon-edit"></i>', // edit glyphicon
+       '</a>   ',
+       '<a id="cancel" class="cancel" href="#" title="Cancel">',
+      '<i class="glyphicon glyphicon-remove"></i>', // cancel glyphicon
+       '</a> ',
+      ].join('');
+     }
+    }
+ }
+
+ window.actionEvents = {
+  'click .remove': function (e, value, row, index) {
+   bootbox.confirm("Are you sure you want to delete CMSCode and it's details?", function (result) {
+    if (result == true) {
+     removeCMSCode(row.CMSCode);
+    }
+   })
+  },
+  'click .approve': function (e, value, row, index) {
+      bootbox.confirm("Are you sure you want to approve the request?", function (result) {
+          if (result == true) {
+              approve(row.RequestCode, true, row.CreatedBy);
+          }
+          location.reload();
+          location.reload();
+      })
+  },
+  'click .reject': function (e, value, row, index) {
+      bootbox.confirm("Are you sure you want to reject the request?", function(result){
+          if (result == true) {
+              rejectRequest(row.RequestCode, row.ConcernedCMSCode, row.CreatedBy)
+          }
+      });
+  },
+  'click .cancel': function (e, value, row, index) {
+   bootbox.confirm("Are you sure you want to cancel request?", function (result){
+    if (result == true){
+     cancelRequest(row.RequestCode, row.ConcernedCMSCode)
+    }
+    window.location.reload()
+    toastr.success("Successfully deleted!")
+   })
+  
+  },
+  'click .edit': function (e, value, row, index) {
+   editRequest(row.RequestCode);
+  }
+ };
+
+ window.infoEvents = {
+  'click .info': function (e) {
+   showDetailsByRequestListCode($(this).attr('value'));
+   $("#RequestList li").unbind('click').bind('click', function () {    
+    showDetailsByRequestListCode($(this).attr('value'));
+    $(this).unbind();
+   });
+  }
+ }
+
+ function showDetailsByRequestListCode(pRequestListCode)
+ {
+   $.ajax({
+   cache: false,
+   method: 'GET',
+   data: { pRequestListCode: pRequestListCode },
+   url: '@Url.Action("LoadDetailsByRequestListCode","Home")',
+   success: function (data) {
+    var requestd, createdby, createdon, modifiedby, modifiedon, approvedby, approvedon, newvalues = [], action,RequestCode
+
+    for (var i = 0; i < data.length; i++) {
+     requestd = data[i].Remarks
+     createdby = data[i].Request.CreatedBy
+     createdon = moment(data[i].Request.CreatedOn).format("MMM-DD-YYYY")
+     modifiedby = (data[i].Request.ModifiedBy == "" ) ? "N/A" : data[i].Request.ModifiedBy
+     modifiedon = moment(data[i].Request.ModifiedOn).format("MMM-DD-YYYY") == "Jan-01-1753" ? "N/A" : moment(data[i].Request.ModifiedOn).format("MMM-DD-YYYY")
+     approvedby = (data[i].Request.ApprovedBy == "") ? "N/A" : (data[i].Request.ApprovedBy == null) ? "not yet approved" : data[i].Request.ApprovedBy
+     approvedon = moment(data[i].Request.ApprovedOn).format("MMM-DD-YYYY")
+     newvalues = data[i].NewValues
+     action = data[i].Action
+     RequestCode = data[i].Request.RequestCode
+    }
+
+    $('#listHere').empty();
+    if (action != "2") {
+     $('#listHere').append($('<li class="list-group-item" ><strong>Request: </strong><span id="Request">' + requestd + '</span></li>'));
+     $('#listHere').append($('<li class="list-group-item" ><strong>Last Updated By: </strong><span id="ModifiedBy">' + modifiedby + '</span></li>'));
+     $('#listHere').append($('<li class="list-group-item" ><strong>Last Updated On: </strong><span id="ModifiedOn">' + modifiedon + '</span></li>'));
+    } else {
+     $('#listHere').append($('<li class="list-group-item" ><strong>Request: </strong><span id="Request">' + requestd + '</span></li>'));
+     $('#listHere').append($('<li class="list-group-item" ><strong>Requestor: </strong><span id="CreatedBy">' + createdby + '</span></li>'));
+     $('#listHere').append($('<li class="list-group-item" ><strong>Request Date: </strong><span id="CreatedOn">' + createdon + '</span></li>'));
+    }
+
+    $('#details')
+    document.getElementById("Request").innerHTML = requestd;
+    if (action != "2") {
+     document.getElementById("ModifiedBy").innerHTML = modifiedby;
+     document.getElementById("ModifiedOn").innerHTML = modifiedon;
+    } else {
+     document.getElementById("CreatedBy").innerHTML = createdby;
+     document.getElementById("CreatedOn").innerHTML = createdon;
+    }
+    $('#detailsofRequest').empty();
+
+    $.each(newvalues, function (i, p) {
+     if (action == "2")
+     {
+       //if (p.FieldName != "CMSCode" && p.FieldName != "ServiceOptionID" && p.FieldName != "ServiceID" && p.FieldName != "BranchName" && p.FieldName != "ModifiedOn" && p.FieldName != "ModifiedBy" && p.FieldName != "CreatedBy" && p.FieldName != "Status" && p.FieldName != "CreatedOn" && p.FieldName != "RMID") {
+       if (p.FieldName != "CMSCode" && p.FieldName != "ServiceOptionID" && p.FieldName != "ServiceID" && p.FieldName != "BranchName" && p.FieldName != "ModifiedOn" && p.FieldName != "ModifiedBy" && p.FieldName != "CreatedBy" && p.FieldName != "Status" && p.FieldName != "CreatedOn") {
+       if (p.FieldName == "BranchCode") {
+        $.each(BranchList, function (ndx, item) {
+         if (p.Value == item.BranchCode) {
+          $('#detailsofRequest').append($('<li class="list-group-item" ><strong>Servicing Branch: </strong><span>' + item.BranchName + '</span></li>'));
+         }
+        });
+       } else if (p.FieldName == "IsActive") {        
+        var val = "";
+        if (p.Value == "True") {
+         val = "Yes";
+        } else { val = "No"; }
+        $('#detailsofRequest').append($('<li class="list-group-item" ><strong>Active: </strong><span>' + val + '</span></li>'));
+       } else if (p.FieldName == "Description") {
+        $('#detailsofRequest').append($('<li class="list-group-item" ><strong>Company Name: </strong><span>' + p.Value + '</span></li>'));
+       } else if (p.FieldName == "IsAutoDebit") {
+        var val = "";
+        if (p.Value == "True" || p.Value == "true" || p.Value == true) {
+         val = "Yes";
+        } else { val = "No"; }
+        $('#detailsofRequest').append($('<li class="list-group-item" ><strong>Auto-Debit: </strong><span>' + val + '</span></li>'));
+       } else if (p.FieldName == "IsActive") {
+        $('#detailsofRequest').append($('<li class="list-group-item" ><strong>Active(Yes/No): </strong><span>' + p.Value + '</span></li>'));
+       } else if (p.FieldName == "MotherRequiredADB" || p.FieldName == "SubRequiredADB") {
+        $('#detailsofRequest').append($('<li class="list-group-item" ><strong>' + p.FieldName + ': </strong><span>' + Number(p.Value).formatMoney(2, ".", ",").toString() + '</span></li>'));
+       } else if (p.FieldName == "MaxFreeTransaction") {        
+        $('#detailsofRequest').append($('<li class="list-group-item" ><strong>' + p.FieldName + ': </strong><span>' + (p.Value == "-1" ? "Unlimited" : p.Value) + '</span></li>'));
+       }
+       else {
+        $('#detailsofRequest').append($('<li class="list-group-item" ><strong>' + p.FieldName + ': </strong><span>' + p.Value + '</span></li>'));
+       }
+      }
+     } else {
+      if (p.FieldName != "ServiceOptionID" && p.FieldName != "ServiceID" && p.FieldName != "BranchName") {
+       if (p.FieldName == "BranchCode" && p.FieldName != "CreatedBy" && p.FieldName != "Status" && p.FieldName != "CreatedOn") {
+        $.each(BranchList, function (ndx, item) {
+         if(p.Value == item.BranchCode){
+          $('#detailsofRequest').append($('<li class="list-group-item" ><strong>Branch Name: </strong><span>' + item.BranchName + '</span></li>'));
+         }
+        });
+       } else if (p.FieldName == "MotherRequiredADB" || p.FieldName == "SubRequiredADB") {
+        $('#detailsofRequest').append($('<li class="list-group-item" ><strong>' + p.FieldName + ': </strong><span>' + Number(p.Value).formatMoney(2, ".", ",").toString() + '</span></li>'));
+       } else if (p.FieldName == "MaxFreeTransaction") {
+        $('#detailsofRequest').append($('<li class="list-group-item" ><strong>' + p.FieldName + ': </strong><span>' + (p.Value == "-1" ? "Unlimited" : p.Value) + '</span></li>'));
+       } else {
+        $('#detailsofRequest').append($('<li class="list-group-item" ><strong>' + p.FieldName + ': </strong><span>' + p.Value + '</span></li>'));
+       }
+      }
+     }
+    });
+
+    // Show the dialog
+    bootbox
+        .dialog({
+         title: 'Request Details',
+         message: $('#details'),
+         show: false,
+         onEscape: function () { },
+         backdrop: true
+        })
+        .on('shown.bs.modal', function () {
+         $('#details')
+             .show()
+        })
+        .on('hide.bs.modal', function (e) {
+         $('#details').hide().appendTo('body');
+        })
+        .modal('show');
+   },
+   error: function (e) {
+   }
+  });
+ }
+
+  function editRequest(pRequestCode) {
+   var prequest = {
+    'CMSCode': pRequestCode
+   }
+   window.location = '@Url.Action("EditRequest", "Home", new { CMSCode = "token" }) '.replace("token", prequest.CMSCode);
+  }
+
+ function rejectRequest(pRequestCode, pCMSCode, pRequestor) {
+   var IsNew;
+   if (pCMSCode == "New") {
+    IsNew = true;
+   } else {
+    IsNew = false;
+   }
+
+   var model = {
+    'pRequestCode': pRequestCode,
+    'pIsNewCMSCode': IsNew,
+    'pApprover': '@Session["UserID"]',
+    'pIsForApprover': false,
+    'pIsStatus': false,
+    'pMPersonId': pRequestor,
+    'pSPersonId': '@Session["UserID"]'
+   };
+
+   $.ajax({
+    cache: false,
+    type: 'POST',
+    data: model,
+    url: '@Url.Action("RejectRequestByRequestCode","Home")',
+    success: function (data) {
+     localStorage.setItem("rejectrequest", "reject")
+     window.location = '@Url.Action("Index","Home")';
+    },
+    error: function (response) {
+    }
+   });
+  }
+
+  function cancelRequest(pRequestCode,  pCMSCode) {
+   var IsNew;
+   if (pCMSCode == "New") {
+    IsNew = true;
+   } else {
+    IsNew = false; 
+   }
+   $.ajax({
+    cache: false,
+    type: 'GET',
+    data: {
+     'pRequestCode': pRequestCode,
+     'pIsNewCMSCode': IsNew
+    },
+    url: '@Url.Action("CancelRequestByRequestCode","Home")',
+    success: function (data) {
+     localStorage.setItem("cancelrequest", "cancel")
+     window.location = '@Url.Action("Index","Home")';
+    },
+    error: function (response) {
+    }
+   });
+  }
+
+ function approve(pRequestCode, pIsApproved, pRequestor) {
+  var model = {
+   'pRequestCode': pRequestCode,
+   'pIsApproved': pIsApproved,
+   'pApprover': '@Session["UserID"]',
+   'pIsForApprover': false,
+   'pIsStatus': true,
+   'pMPersonId': pRequestor,
+   'pSPersonId': '@Session["UserID"]'
+  };
+
+  $.ajax({
+   cache: false,
+   type: 'GET',
+   data: model,
+   url: '@Url.Action("ApproveRequestByRequestCode","Home")',
+   contentType: 'json/application; charset=utf-8',
+   traditional: true,
+   success: function (data) {
+    localStorage.setItem("approverequest", "approved")
+    window.location = '@Url.Action("Index","Home")';
+   },
+   error: function (e) {
+   }
+  });
+ }
+
+  function stateFormatter(value, row, index) {
+   var html = "";
+   var Description = "";
+   html += '<ul style="list-style-type:none">';
+   for (var i = 0; i < request.length; i++) {
+    if (request[i].RequestCode == row.RequestCode) {
+     html += '<li value="' + request[i].RequestListCode + '"><a><span data-toggle="modal" data-target="#viewinfo" class="info glyphicon glyphicon-info-sign"></span></a> ' + request[i].Remarks + '</li>';
+    }
+   }
+   html += '</ul>';
+   return [
+    html
+   ].join('')
+  }
+
+</script>
+<div class="container">
+ <div class="row">
+  <div class="col-md-12">
+   <h2 class="page-header">
+    Home
+    <small>Request Details</small>
+   </h2>
+  </div>
+ </div>
+ <div class="row">
+  <div class="col-md-12">   
+   <div class="panel panel-primary">
+    <div class="panel-heading">For Approval</div>
+    <div class="panel-body">
+     <div id="toolbar">
+      <a href="#" id="btnApproveAll" class="btn btn-primary"><i class="glyphicon glyphicon-check"></i> Approve </a>
+      <a href="#" id="btnRejectAll" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Reject </a>
+      <a href="#" id="btnCancelAll" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i> Cancel </a>
+     </div>
+     <table id="RequestList" 
+            data-toggle="table"
+            data-toolbar="#toolbar"
+            data-classes="table table-hover table-bordered"
+            data-row-style="rowStyle"
+            data-search="true"
+            data-show-columns="true"
+            data-show-pagination-switch="true"
+            data-show-toggle="true"
+            data-detail-formatter="formatCmsCodeDate"
+            data-unique-id="RequestCode"
+            data-checkbox-header="false"
+            data-click-to-select="true"
+            data-pagination="true"
+            data-page-list="[5, 10, 20]">
+      <thead>
+       <tr>
+        <th data-checkbox="true"></th>
+        <th data-field="RequestCode" data-sortable="true">Request Code</th>
+        <th data-field="ConcernedCMSCode" data-sortable="true">CMS Code</th>
+        <th data-field="Request" data-formatter="stateFormatter" data-events="infoEvents">Request Description</th>
+        <th data-field="CreatedBy">Request By</th>
+        <th data-field="Action" data-formatter="ActionFormatter" data-events="actionEvents">Action</th>
+       </tr>
+      </thead>
+     </table>          
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<form id="details" method="post" class="form-horizontal" style="display: none;" hidden>
+ <div class="row">
+  <div class="col-xs-12">
+   <div class="well">
+    <h4>Requestor Details</h4>
+    <ul id="listHere" class="list-group">
+    </ul>
+    <hr />
+    <h4>Details for Changes</h4>
+    <ul class="list-group" id="detailsofRequest">
+    </ul>
+   </div> 
+  </div>
+ </div> 
+</form>

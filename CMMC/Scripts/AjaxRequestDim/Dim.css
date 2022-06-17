@@ -1,0 +1,20 @@
+<style type="text/css">
+  .loadscreen {
+   display: none;
+   position: fixed;
+   z-index: 1000;
+   top: 0;
+   left: 0;
+   height: 100%;
+   width: 100%;
+   background: rgba( 5, 5, 5, .8 ) url('../../Images/icon-loading.gif') 50% 50% no-repeat;
+  } 
+  
+   body.loading {
+   overflow: hidden;
+  }
+
+   body.loading .loadscreen {
+    display: block;
+   }
+ </style>

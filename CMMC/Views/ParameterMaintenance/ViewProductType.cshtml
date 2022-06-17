@@ -1,0 +1,70 @@
+﻿@using CTBC
+@using CMMC.Models
+
+@model ProductTypes.ProductDetails
+
+@{
+    ViewBag.Title = "View Product Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2 class="page-header">
+ Product Type Details
+ <small></small>
+</h2>
+<div class="col-md-5 col-md-offset-4">
+ <div class="panel panel-primary">
+  <div class="panel-heading">Product Type Details</div>
+  <div class="panel-body">
+   <div class="row">
+    <div class="col-md-4">
+     <label>Product Type Code: </label>
+     <input type="text" name="txtProductCode" id="txtProductCode" class="form-control" value="@Model.ProductCode" readonly />
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <label>Product Type Description:</label>
+     <input type="text" name="txtProductDesc" id="txtProductDesc" class="form-control" value="@Model.ProductDescription" readonly />
+
+     <label>Product Type Currency:</label>
+     <input type="text" name="txtProductCurrency" id="txtProductCurrency" class="form-control" value="@Model.ProductCurrency" readonly />
+
+     <label>Product Type Cost:</label>
+     <input type="text" name="txtProductCost" id="txtProductCost" class="form-control" value="@Model.ProductCost" readonly />
+
+     <label>Product Type Type:</label>
+     <input type="text" name="txtType" id="txtType" class="form-control" value="@Model.Type" readonly />
+
+     <label>Product Type:</label>
+     <input type="text" name="txtProductType" id="txtProductType" class="form-control" value="@Model.ProductType" readonly />
+
+     <label>Product Type Group:</label>
+     <input type="text" name="txtGroup" id="txtGroup" class="form-control" value="@Model.ProductGroup" readonly />
+
+
+     <label>Created By</label>
+     <input type="text" name="txtCreatedBy" id="txtCreatedBy" class="form-control" value="@Model.CreatedBy" readonly />
+
+     <label>Created On</label>
+     <input type="text" name="txtCreatedOn" id="txtCreatedOn" class="form-control" value="@Model.CreatedOn.ToString("MMM dd, yyyy hh:mm tt")" readonly />
+
+     <label>Modified By</label>
+     <input type="text" name="txtModifiedBy" id="txtModifiedBy" class="form-control" value="@Model.ModifiedBy" readonly />
+
+     <label>Modified On</label>
+     <input type="text" name="txtModifiedOn" id="txtModifiedOn" class="form-control" value="@Model.ModifiedOn.ToString().ToDateTime().ToString("MMM dd, yyyy hh:mm tt")" readonly /> <br />
+
+     @*<label class="checkbox-inline">
+      <input type="checkbox" name="chkIsActive" id="chkIsActive" checked="@Model.IsActive" disabled /> Is Active?</label>*@
+    </div>
+   </div>
+   <div class="row  pull-right">
+    <div class="col-md-12">
+     <button type="button" onclick="javascript: window.location='@Url.Action("ProductType", "ParameterMaintenance")'" class="btn btn-primary" name="btnBack" id="btnBack"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>

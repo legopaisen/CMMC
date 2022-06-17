@@ -1,0 +1,80 @@
+﻿@using SYS_MATRIX.Models;
+
+@model SYS_ACCESS_MODEL
+
+@{
+    ViewBag.Title = "AccessView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+ <script type="text/javascript">
+ $(document).ready(function () {
+  var groups = '@Html.Raw(Json.Encode(ViewBag.Groups))';
+  var groupcode = '@Model.GroupCode';
+  var notifygroupcode = '@Model.NotifiedGroupCode';
+     var usertype = '@Html.Raw(Json.Encode(ViewBag.UserTypeList))';
+     @*var type = '@Model.UserType';*@
+  $.each(JSON.parse(groups), function (index, value) {
+
+   $("#cmbGroups").append("<option value='" + value.Group_Code + "'" + (value.Group_Code == groupcode ? 'selected' : '') + ">" + value.Group_Name + "</option>");
+   $("#cmbNotifyGroups").append("<option value='" + value.Group_Code + "'" + (value.Group_Code == notifygroupcode ? 'selected' : '') + ">" + value.Group_Name + "</option>");
+  });
+
+  $.each(JSON.parse(usertype), function (index, value) {
+      $("#selUserType").append("<option value='" + value.UserType + "' " + (value.UserType == '@Model.UserType.UserType' ? 'selected' : '') + ">" + value.UserTypeText + "</option>");
+  });
+ });
+ </script>
+}
+
+<h2 class="page-header">
+ Access Details
+ <small></small>
+</h2>
+<div class="col-md-5 col-md-offset-4">
+ <div class="panel panel-primary">
+  <div class="panel-heading">View Access Details</div>
+  <div class="panel-body">
+   <div class="row">
+    <div class="col-md-12">
+     <label>Access Code</label>
+     <input type="text" class="form-control" id="txtAccessName" value="@Model.AccessCode" name="txtxAccessGroupName" placeholder="Access Group Name" readonly />
+     <label>Access Name</label>
+     <input type="text" class="form-control" id="txtAccessName" value="@Model.AccessName" name="txtxAccessGroupName" placeholder="Access Group Name" readonly />
+     <label>Access Description</label>
+     <input type="text" class="form-control" id="txtDescription" value="@Model.Description" name="txtDescription" placeholder="Description" readonly />
+     <label>Belongs to Group</label>
+     <select id="cmbGroups" class="form-control" name="cmbGroups" disabled></select>
+     <label>Notify this Group</label>
+     <select id="cmbNotifyGroups" class="form-control" name="cmbNotifyGroups" disabled></select>
+     <label>User Type</label>
+     <select id="selUserType" name="selUserType" class="form-control" disabled></select>
+     <label>Created By</label>
+     <input type="text" name="txtCreatedBy" id="txtCreatedBy" class="form-control" value="@Model.CreatedBy" readonly />
+     <label>Created On</label>
+     <input type="text" name="txtCreatedOn" id="txtCreatedOn" class="form-control" value="@Model.CreatedOn.ToString("MMM dd, yyyy hh:mm tt")" readonly />
+     <label>Modified By</label>
+     <input type="text" name="txtModifiedBy" id="txtModifiedBy" class="form-control" value="@Model.ModifiedBy" readonly />
+     <label>Modified On</label>
+     <input type="text" name="txtModifiedOn" id="txtModifiedOn" class="form-control" value="@Model.ModifiedOn.ToString("MMM dd, yyyy hh:mm tt")" readonly />
+     <label class="checkbox-inline">
+      <input type="checkbox" id="chkIsActive" checked="@Model.IsActive" name="chkIsActive" disabled/> Is Active?
+     </label>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <div class="form-inline pull-right">
+      <div class="form-group">
+       <div class="input-group">
+        <button type="button" onclick="javascript: window.location='@Url.Action("Index", "Access")'" id="btnCancel" name="btnCancel" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>

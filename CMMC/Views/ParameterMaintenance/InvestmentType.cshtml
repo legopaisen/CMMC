@@ -1,0 +1,168 @@
+﻿@{
+    ViewBag.Title = "Investment Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+ {
+ <link rel="stylesheet" href="~/Assets/datatable/bootstrap-table.css" type="text/css">
+ <script type="text/javascript" src="~/Assets/datatable/bootstrap-table.js"></script>
+
+ <script type="text/javascript">
+  function CodeFormatter(value) {
+   return PadLeft(value, 8, '0');
+  }
+
+  $(document).ready(function () {
+   var data = @Html.Raw(Json.Encode(Model))
+   $("#tblAccessList").bootstrapTable('load', data);
+
+   $("#btnDeactivate").click(function () {
+    ProcessAction(false);
+   });
+   $("#btnActivate").click(function () {
+    ProcessAction(true);
+   });
+  });
+
+  function removeInvestment(paramID) {
+   var pID = paramID
+   $.ajax({
+    cache: false,
+    url: '@Url.Action("DeleteInvestment", "ParameterMaintenance")',
+    contentType: 'application/json',
+    data: JSON.stringify({
+     'pIDs': pID
+    }),
+    type: 'POST',
+    success: function (data) {
+     toastr.success("Successfully delete the Investment Type!");
+     $("#tblAccessList").bootstrapTable('remove', {
+      field: 'InvestmentCode',
+      values: pID
+     });
+     location.reload();
+    },
+    error: function () {
+     toastr.info("Select atleast one to remove!")
+    }
+   });
+  }
+
+  function actionFormatter(value, row, index) {
+   return [
+      '<a class="edit" href="#" title="Edit">',
+      '<i class="glyphicon glyphicon-edit"></i>',
+      '</a> ', '<a class="view" href="javascript:void(0)" id="view" title="View">',
+      '<i class="glyphicon glyphicon-info-sign"></i>',
+      '</a> ',
+      '<a class="remove" href="javascript:void(0)" id="remove" title="Remove">',
+      '<i class="glyphicon glyphicon-trash"></i>',
+      '</a> '
+   ].join('');
+  }
+
+  window.actionEvents = {
+   'click .remove': function (e, value, row, index) {
+    bootbox.confirm("Are you sure you want to delete investment type and it's details?", function (result) {
+     if (result == true) {
+      removeInvestment(row.InvestmentCode)
+     }
+     toastr.success("Successfully delete the Investment Type!")
+    })
+   },
+   'click .edit': function (e, value, row, index) {
+    window.location = '@Url.Action("UpdateInvestment", "ParameterMaintenance", new { CMSCode = "token" }) '.replace("token", row.InvestmentCode);
+   },
+   'click .view': function (e, value, row, index) {
+    window.location = '@Url.Action("ViewInvestment", "ParameterMaintenance", new { CMSCode = "token" })'.replace("token", row.InvestmentCode);
+   }
+  };
+
+  function ProcessAction(IsActivate)
+   {
+   var $table = $("#tblAccessList");
+   if($table.bootstrapTable('getSelections').length > 0)
+   {
+    eModal.confirm("Are you sure you want to " + (IsActivate ? "activate" : "deactivate") + " selected item(s)?", "Confirmation").then(function () {
+     var ids = $.map($table.bootstrapTable('getSelections'), function (row, index) {
+      return row.InvestmentCode;
+     });
+
+     $.ajax({
+      url: '@Url.Action("InvestmentProcessAction", "ParameterMaintenance")',
+      type: 'POST',
+      data: { IDs: ids, pIsActivate: IsActivate },
+      traditional: true,
+      success: function (data) {
+       if (data.ResponseStatus == 1) {
+        $.each(ids, function (index, value) {
+         $table.bootstrapTable('updateByUniqueId', {
+          id: value,
+          row: {
+           IsActive: (IsActivate ? "1" : "0")
+          }
+         });
+        });
+
+        toastr.success(data.Description, "Information");
+       }
+       else if (data.ResponseStatus == 0) {
+        toastr.info(data.Description, "Information");
+       }
+      },
+      error: function (response) { }
+     });
+    }, null);
+   }
+   else
+   {
+    toastr.info("Select at least 1 item.");
+   }
+  }
+
+  function IsActiveFormatter(pValue) {
+   return "<i class= 'glyphicon " + (pValue == '1' ? "glyphicon-ok text-success" : "glyphicon-remove text-danger") + "' ";
+  }
+
+ </script>
+}
+
+<h2 class="page-header">
+Investment Types
+ <small></small>
+</h2>
+<div id="toolbar">
+ <button class="btn btn-success" id="btnAdd" onclick="window.location = '@Url.Action("AddInvestment", "ParameterMaintenance")'" title="Add New Record"><i class="glyphicon glyphicon-plus-sign"></i> Add Investment</button>
+ <button class="btn btn-success" id="btnActivate" title="Activate Selected Item(s)"><i class="glyphicon glyphicon-ok"></i> Activate Investment Type</button>
+ <button class="btn btn-danger" id="btnDeactivate" title="Deactivate Selected Item(s)"><i class="glyphicon glyphicon-remove"></i>Deactivate Investment Type</button>
+</div>
+<div class="panel panel-primary">
+ <div class="panel-heading">Investment Types</div>
+ <div class="panel-body">
+  <table id='tblAccessList'
+         style="margin:0px;"
+         data-classes="table table-hover table-condensed table-striped"
+         data-row-style="rowStyle"
+         data-toggle="table"
+         data-search="true"
+         data-checkbox-header="false"
+         data-click-to-select="true"
+         data-cache="false"
+         data-unique-id="InvestmentCode"
+         data-toolbar="#toolbar"
+         data-pagination="true"
+         data-page-list="[5, 10, 20]">
+   <thead>
+    <tr>
+     <th data-field="state" data-checkbox="true"></th>
+     <th class="InvestmentCode" data-field="InvestmentCode" data-width="100">Investment Code</th>
+     <th data-field="InvestmentDescription" data-sortable="true">Investment Description</th>
+     <th data-field="IsActive" data-align="center" data-width="100" data-formatter="IsActiveFormatter">Is Active?</th>
+     <th data-field="Action" data-formatter="actionFormatter" data-events="actionEvents" data-width="100" data-align="center">Action</th>
+    </tr>
+   </thead>
+  </table>
+  </div>
+</div>
+

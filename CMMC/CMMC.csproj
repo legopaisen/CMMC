@@ -1,0 +1,1143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BE07EC64-7758-46AB-82C6-1DB49D5FB1F7}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CMMC</RootNamespace>
+    <AssemblyName>CMMC</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort>44300</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <TargetFrameworkProfile />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <FilesToIncludeForPublish>AllFilesInProjectFolder</FilesToIncludeForPublish>
+    <PlatformTarget>x86</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="CTBC-Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\CTBC-Common.dll</HintPath>
+    </Reference>
+    <Reference Include="dotless.Core">
+      <HintPath>..\packages\dotless.1.3.1.0\lib\dotless.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\DMS\DMS\bin\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Owin, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\DMS\DMS\bin\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\DMS\DMS\bin\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Owin">
+      <HintPath>..\..\..\..\DMS\DMS\bin\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\DMS\DMS\bin\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Microsoft Visual Studio 12.0\ReportViewer\Microsoft.ReportViewer.WebForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\DMS\DMS\bin\Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.8\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.30506.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization.Less">
+      <HintPath>..\packages\System.Web.Optimization.Less.1.1.0\lib\net40\System.Web.Optimization.Less.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.30506.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="Controllers\BatchComputationController.cs" />
+    <Compile Include="Controllers\Enrollment\CMS CODE\CMSCodeController.cs" />
+    <Compile Include="Controllers\Enrollment\EnrollmentController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\FAQController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\ParameterMaintenanceController.cs" />
+    <Compile Include="Controllers\RegularBatchRunController.cs" />
+    <Compile Include="Controllers\RelationshipManagerController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
+    <Compile Include="Controllers\SystemSettingsController.cs" />
+    <Compile Include="Controllers\SYS_MATRIX\AccessController.cs" />
+    <Compile Include="Controllers\UserAuthorization.cs" />
+    <Compile Include="Controllers\UserSettingsController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountInformation.cs" />
+    <Compile Include="Models\AccountsMasterList.cs" />
+    <Compile Include="Models\AuditTrail.cs" />
+    <Compile Include="Models\Batch Computation\BatchProcess.cs" />
+    <Compile Include="Models\Batch Computation\BatchRunHistory.cs" />
+    <Compile Include="Models\Batch Computation\BatchSchedule.cs" />
+    <Compile Include="Models\Batch Computation\Functions.cs" />
+    <Compile Include="Models\Batch Computation\ScheduledRun.cs" />
+    <Compile Include="Models\Batch\Account.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\Batch\Customer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\Batch\Functions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\Batch\Holiday.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\Batch\Process.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\Batch\SSIS.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\Branches.cs" />
+    <Compile Include="Models\ChildAccounts.cs" />
+    <Compile Include="Models\CMSCode.cs" />
+    <Compile Include="Models\FAQ.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\InvestmentTypes.cs" />
+    <Compile Include="Models\MotherAccounts.cs" />
+    <Compile Include="Models\PenaltyCharges.cs" />
+    <Compile Include="Models\ProductTypes.cs" />
+    <Compile Include="Models\RelatedAccounts.cs" />
+    <Compile Include="Models\RelationshipManager.cs" />
+    <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\Reports\RptOphanAccounts.cs" />
+    <Compile Include="Models\Reports\RptForeignCIFNumber.cs" />
+    <Compile Include="Models\Reports\RptMonthlyADBPenFee.cs" />
+    <Compile Include="Models\Reports\RptADBPerformance.cs" />
+    <Compile Include="Models\Reports\RptMTDADB.cs" />
+    <Compile Include="Models\Reports\RptATMWithdrawals.cs" />
+    <Compile Include="Models\RequestList.cs" />
+    <Compile Include="Models\Requests.cs" />
+    <Compile Include="Models\Services.cs" />
+    <Compile Include="Models\ServiceOptions.cs" />
+    <Compile Include="Models\Enrollment.cs" />
+    <Compile Include="Models\ServiceTypes.cs" />
+    <Compile Include="Models\SharedFunctions.cs" />
+    <Compile Include="Models\SYS_MATRIX_MODEL\SYS_ACCESS.cs" />
+    <Compile Include="Models\SYS_MATRIX_MODEL\SYS_ACCESS_MODS.cs" />
+    <Compile Include="Models\SYS_MATRIX_MODEL\SYS_GROUP.cs" />
+    <Compile Include="Models\SYS_MATRIX_MODEL\SYS_MODULES.cs" />
+    <Compile Include="Models\SYS_MATRIX_MODEL\SYS_USERS.cs" />
+    <Compile Include="Models\YearHolidays.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReportViewer.aspx.cs">
+      <DependentUpon>ReportViewer.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViewer.aspx.designer.cs">
+      <DependentUpon>ReportViewer.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="SignalR_Hub\OnlineUsers.cs" />
+    <Compile Include="SignalR_Hub\SignalRConnection.cs" />
+    <Compile Include="SignalR_Hub\SignalRHub.cs" />
+    <Compile Include="SignalR_Hub\User.cs" />
+    <Compile Include="Utilities\SystemCore.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="300-text.png" />
+    <Content Include="asas.ico" />
+    <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-grid.rtl.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-grid.rtl.min.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-reboot.rtl.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-reboot.rtl.min.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-utilities.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-utilities.min.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-utilities.rtl.css" />
+    <Content Include="Content\bootstrap\css\bootstrap-utilities.rtl.min.css" />
+    <Content Include="Content\bootstrap\css\bootstrap.css" />
+    <Content Include="Content\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Content\bootstrap\css\bootstrap.rtl.css" />
+    <Content Include="Content\bootstrap\css\bootstrap.rtl.min.css" />
+    <Content Include="Content\bootstrap\js\bootstrap.bundle.js" />
+    <Content Include="Content\bootstrap\js\bootstrap.bundle.min.js" />
+    <Content Include="Content\bootstrap\js\bootstrap.esm.js" />
+    <Content Include="Content\bootstrap\js\bootstrap.esm.min.js" />
+    <Content Include="Content\bootstrap\js\bootstrap.js" />
+    <Content Include="Content\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\jquery.timepicker.css" />
+    <Content Include="Content\jquery.timepicker.js" />
+    <Content Include="Content\Login.css" />
+    <Content Include="Content\Main.css" />
+    <Content Include="Content\Site.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\jquery-ui.css" />
+    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
+    <Content Include="Content\themes\base\jquery.ui.all.css" />
+    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
+    <Content Include="Content\themes\base\jquery.ui.base.css" />
+    <Content Include="Content\themes\base\jquery.ui.button.css" />
+    <Content Include="Content\themes\base\jquery.ui.core.css" />
+    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
+    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
+    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
+    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
+    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
+    <Content Include="Content\themes\base\jquery.ui.slider.css" />
+    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
+    <Content Include="Content\themes\base\jquery.ui.theme.css" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.button.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.datepicker.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
+    <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
+    <Content Include="CTBC New Logo.png" />
+    <Content Include="FAQ.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Ghost-Default-Error-Screen.png" />
+    <Content Include="Global.asax" />
+    <Content Include="Images\generate.jpg" />
+    <Content Include="Images\images.jpg" />
+    <Content Include="Images\login.jpg" />
+    <Content Include="Images\Manual.jpg" />
+    <Content Include="Images\schedule.jpg" />
+    <Content Include="Reports\ReportViewer.aspx" />
+    <Content Include="Scripts\AjaxRequestDim\Dim.css" />
+    <Content Include="Scripts\AjaxRequestDim\Dim.js" />
+    <Content Include="Scripts\app\aes.js" />
+    <Content Include="Scripts\app\DMSFormValidator.js" />
+    <Content Include="Scripts\bootbox.min.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
+    <Content Include="Scripts\bootstrap-vertical-tabs-1.2.1\bootstrap.vertical-tabs.css" />
+    <Content Include="Scripts\bootstrap-vertical-tabs-1.2.1\bootstrap.vertical-tabs.min.css" />
+    <Content Include="Scripts\bootstrap-vertical-tabs-1.2.1\demo.html" />
+    <Content Include="Scripts\bootstrap-vertical-tabs-1.2.1\Gruntfile.js" />
+    <Content Include="Scripts\bootstrap-vertical-tabs-1.2.1\screenshot-v.png" />
+    <Content Include="Scripts\bootstrap-vertical-tabs-1.2.1\screenshot.png" />
+    <Content Include="Scripts\bootstrap-vertical-tabs-1.2.1\src\tabs.css" />
+    <Content Include="Scripts\bootstrap-vertical-tabs-1.2.1\src\tabs.sideways.css" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\css\bootstrap-datepicker.css" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\css\bootstrap-datepicker.min.css" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\css\bootstrap-datepicker.standalone.css" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\css\bootstrap-datepicker.standalone.min.css" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\css\bootstrap-datepicker3.css" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\css\bootstrap-datepicker3.min.css" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\css\bootstrap-datepicker3.standalone.css" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\css\bootstrap-datepicker3.standalone.min.css" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\js\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\js\bootstrap-datepicker.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.ar.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.az.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.bg.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.bs.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.ca.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.cs.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.cy.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.da.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.de.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.el.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.en-AU.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.en-GB.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.eo.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.es.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.et.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.eu.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.fa.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.fi.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.fo.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.fr-CH.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.fr.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.gl.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.he.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.hr.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.hu.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.hy.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.id.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.is.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.it-CH.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.it.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.ja.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.ka.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.kh.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.kk.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.ko.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.kr.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.lt.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.lv.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.me.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.mk.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.mn.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.ms.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.nb.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.nl-BE.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.nl.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.no.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.pl.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.pt-BR.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.pt.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.ro.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.rs-latin.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.rs.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.ru.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.sk.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.sl.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.sq.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.sr-latin.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.sr.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.sv.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.sw.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.th.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.tr.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.uk.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.vi.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.zh-CN.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker-master\dist\locales\bootstrap-datepicker.zh-TW.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap\css\bootstrap-theme.css" />
+    <Content Include="Scripts\bootstrap\css\bootstrap-theme.min.css" />
+    <Content Include="Scripts\bootstrap\css\bootstrap.css" />
+    <Content Include="Scripts\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Scripts\bootstrap\datepicker\bootstrap-datepicker.css" />
+    <Content Include="Scripts\bootstrap\datepicker\bootstrap-datepicker.js" />
+    <Content Include="Scripts\bootstrap\emodal\eModal.js" />
+    <Content Include="Scripts\bootstrap\emodal\eModal.min.js" />
+    <Content Include="Scripts\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Scripts\bootstrap\js\bootstrap.js" />
+    <Content Include="Scripts\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap\js\npm.js" />
+    <Content Include="Scripts\css\DMS.css" />
+    <Content Include="Scripts\datatable\bootstrap-table-locale-all.js" />
+    <Content Include="Scripts\datatable\bootstrap-table-locale-all.min.js" />
+    <Content Include="Scripts\datatable\bootstrap-table.css" />
+    <Content Include="Scripts\datatable\bootstrap-table.js" />
+    <Content Include="Scripts\datatable\bootstrap-table.min.css" />
+    <Content Include="Scripts\datatable\bootstrap-table.min.js" />
+    <Content Include="Scripts\datatable\extensions\accent-neutralise\bootstrap-table-accent-neutralise.js" />
+    <Content Include="Scripts\datatable\extensions\accent-neutralise\bootstrap-table-accent-neutralise.min.js" />
+    <Content Include="Scripts\datatable\extensions\angular\bootstrap-table-angular.js" />
+    <Content Include="Scripts\datatable\extensions\angular\bootstrap-table-angular.min.js" />
+    <Content Include="Scripts\datatable\extensions\cookie\bootstrap-table-cookie.js" />
+    <Content Include="Scripts\datatable\extensions\cookie\bootstrap-table-cookie.min.js" />
+    <Content Include="Scripts\datatable\extensions\copy-rows\bootstrap-table-copy-rows.js" />
+    <Content Include="Scripts\datatable\extensions\copy-rows\bootstrap-table-copy-rows.min.js" />
+    <Content Include="Scripts\datatable\extensions\editable\bootstrap-table-editable.js" />
+    <Content Include="Scripts\datatable\extensions\editable\bootstrap-table-editable.min.js" />
+    <Content Include="Scripts\datatable\extensions\export\bootstrap-table-export.js" />
+    <Content Include="Scripts\datatable\extensions\export\bootstrap-table-export.min.js" />
+    <Content Include="Scripts\datatable\extensions\export\tableExport.js" />
+    <Content Include="Scripts\datatable\extensions\filter-control\bootstrap-table-filter-control.js" />
+    <Content Include="Scripts\datatable\extensions\filter-control\bootstrap-table-filter-control.min.js" />
+    <Content Include="Scripts\datatable\extensions\filtercontrol\bootstrap-table-filtercontrol.js" />
+    <Content Include="Scripts\datatable\extensions\filter\bootstrap-table-filter.js" />
+    <Content Include="Scripts\datatable\extensions\filter\bootstrap-table-filter.min.js" />
+    <Content Include="Scripts\datatable\extensions\flat-json\bootstrap-table-flat-json.js" />
+    <Content Include="Scripts\datatable\extensions\flat-json\bootstrap-table-flat-json.min.js" />
+    <Content Include="Scripts\datatable\extensions\flatJSON\bootstrap-table-flatJSON.js" />
+    <Content Include="Scripts\datatable\extensions\group-by-v2\bootstrap-table-group-by.css" />
+    <Content Include="Scripts\datatable\extensions\group-by-v2\bootstrap-table-group-by.js" />
+    <Content Include="Scripts\datatable\extensions\group-by-v2\bootstrap-table-group-by.min.js" />
+    <Content Include="Scripts\datatable\extensions\group-by\bootstrap-table-group-by.css" />
+    <Content Include="Scripts\datatable\extensions\group-by\bootstrap-table-group-by.js" />
+    <Content Include="Scripts\datatable\extensions\group-by\bootstrap-table-group-by.min.js" />
+    <Content Include="Scripts\datatable\extensions\i18n-enhance\bootstrap-table-i18n-enhance.js" />
+    <Content Include="Scripts\datatable\extensions\i18n-enhance\bootstrap-table-i18n-enhance.min.js" />
+    <Content Include="Scripts\datatable\extensions\key-events\bootstrap-table-key-events.js" />
+    <Content Include="Scripts\datatable\extensions\key-events\bootstrap-table-key-events.min.js" />
+    <Content Include="Scripts\datatable\extensions\keyevents\bootstrap-table-keyevents.js" />
+    <Content Include="Scripts\datatable\extensions\mobile\bootstrap-table-mobile.js" />
+    <Content Include="Scripts\datatable\extensions\mobile\bootstrap-table-mobile.min.js" />
+    <Content Include="Scripts\datatable\extensions\multi-column-toggle\bootstrap-table-multi-toggle.js" />
+    <Content Include="Scripts\datatable\extensions\multi-column-toggle\bootstrap-table-multi-toggle.min.js" />
+    <Content Include="Scripts\datatable\extensions\multiple-search\bootstrap-table-multiple-search.js" />
+    <Content Include="Scripts\datatable\extensions\multiple-search\bootstrap-table-multiple-search.min.js" />
+    <Content Include="Scripts\datatable\extensions\multiple-sort\bootstrap-table-multiple-sort.js" />
+    <Content Include="Scripts\datatable\extensions\multiple-sort\bootstrap-table-multiple-sort.min.js" />
+    <Content Include="Scripts\datatable\extensions\natural-sorting\bootstrap-table-natural-sorting.js" />
+    <Content Include="Scripts\datatable\extensions\natural-sorting\bootstrap-table-natural-sorting.min.js" />
+    <Content Include="Scripts\datatable\extensions\naturalsorting\bootstrap-table-naturalsorting.js" />
+    <Content Include="Scripts\datatable\extensions\reorder-columns\bootstrap-table-reorder-columns.js" />
+    <Content Include="Scripts\datatable\extensions\reorder-columns\bootstrap-table-reorder-columns.min.js" />
+    <Content Include="Scripts\datatable\extensions\reorder-rows\bootstrap-table-reorder-rows.css" />
+    <Content Include="Scripts\datatable\extensions\reorder-rows\bootstrap-table-reorder-rows.js" />
+    <Content Include="Scripts\datatable\extensions\reorder-rows\bootstrap-table-reorder-rows.min.js" />
+    <Content Include="Scripts\datatable\extensions\reorder\bootstrap-table-reorder.js" />
+    <Content Include="Scripts\datatable\extensions\resizable\bootstrap-table-resizable.js" />
+    <Content Include="Scripts\datatable\extensions\resizable\bootstrap-table-resizable.min.js" />
+    <Content Include="Scripts\datatable\extensions\select2-filter\bootstrap-table-select2-filter.js" />
+    <Content Include="Scripts\datatable\extensions\select2-filter\bootstrap-table-select2-filter.min.js" />
+    <Content Include="Scripts\datatable\extensions\sticky-header\bootstrap-table-sticky-header.css" />
+    <Content Include="Scripts\datatable\extensions\sticky-header\bootstrap-table-sticky-header.js" />
+    <Content Include="Scripts\datatable\extensions\sticky-header\bootstrap-table-sticky-header.min.js" />
+    <Content Include="Scripts\datatable\extensions\toolbar\bootstrap-table-toolbar.js" />
+    <Content Include="Scripts\datatable\extensions\toolbar\bootstrap-table-toolbar.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-af-ZA.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-af-ZA.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ar-SA.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ar-SA.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ca-ES.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ca-ES.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-cs-CZ.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-cs-CZ.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-da-DK.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-da-DK.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-de-DE.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-de-DE.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-el-GR.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-el-GR.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-en-US.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-en-US.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-es-AR.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-es-AR.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-es-CR.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-es-CR.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-es-ES.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-es-ES.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-es-MX.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-es-MX.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-es-NI.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-es-NI.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-es-SP.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-es-SP.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-et-EE.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-et-EE.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-fa-IR.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-fa-IR.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-fr-BE.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-fr-BE.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-fr-FR.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-fr-FR.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-he-IL.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-he-IL.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-hr-HR.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-hr-HR.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-hu-HU.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-hu-HU.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-it-IT.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-it-IT.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ja-JP.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ja-JP.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ka-GE.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ka-GE.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ko-KR.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ko-KR.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ms-MY.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ms-MY.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-nb-NO.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-nb-NO.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-nl-NL.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-nl-NL.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-pl-PL.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-pl-PL.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-pt-BR.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-pt-BR.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-pt-PT.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-pt-PT.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ro-RO.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ro-RO.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ru-RU.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ru-RU.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-sk-SK.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-sk-SK.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-sv-SE.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-sv-SE.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-th-TH.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-th-TH.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-tr-TR.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-tr-TR.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-uk-UA.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-uk-UA.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ur-PK.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-ur-PK.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-vi-VN.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-vi-VN.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-zh-CN.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-zh-CN.min.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-zh-TW.js" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-zh-TW.min.js" />
+    <Content Include="Scripts\formValidation\css\formValidation.css" />
+    <Content Include="Scripts\formValidation\css\formValidation.min.css" />
+    <Content Include="Scripts\formValidation\js\formValidation.js" />
+    <Content Include="Scripts\formValidation\js\formValidation.min.js" />
+    <Content Include="Scripts\formValidation\js\framework\bootstrap.js" />
+    <Content Include="Scripts\formValidation\js\framework\bootstrap.min.js" />
+    <Content Include="Scripts\formValidation\js\framework\foundation.js" />
+    <Content Include="Scripts\formValidation\js\framework\foundation.min.js" />
+    <Content Include="Scripts\formValidation\js\framework\pure.js" />
+    <Content Include="Scripts\formValidation\js\framework\pure.min.js" />
+    <Content Include="Scripts\formValidation\js\framework\semantic.js" />
+    <Content Include="Scripts\formValidation\js\framework\semantic.min.js" />
+    <Content Include="Scripts\formValidation\js\framework\uikit.js" />
+    <Content Include="Scripts\formValidation\js\framework\uikit.min.js" />
+    <Content Include="Scripts\formValidation\js\language\ar_MA.js" />
+    <Content Include="Scripts\formValidation\js\language\be_FR.js" />
+    <Content Include="Scripts\formValidation\js\language\be_NL.js" />
+    <Content Include="Scripts\formValidation\js\language\bg_BG.js" />
+    <Content Include="Scripts\formValidation\js\language\ca_ES.js" />
+    <Content Include="Scripts\formValidation\js\language\cs_CZ.js" />
+    <Content Include="Scripts\formValidation\js\language\da_DK.js" />
+    <Content Include="Scripts\formValidation\js\language\de_DE.js" />
+    <Content Include="Scripts\formValidation\js\language\en_US.js" />
+    <Content Include="Scripts\formValidation\js\language\es_CL.js" />
+    <Content Include="Scripts\formValidation\js\language\es_ES.js" />
+    <Content Include="Scripts\formValidation\js\language\eu_ES.js" />
+    <Content Include="Scripts\formValidation\js\language\fa_IR.js" />
+    <Content Include="Scripts\formValidation\js\language\fi_FI.js" />
+    <Content Include="Scripts\formValidation\js\language\fr_FR.js" />
+    <Content Include="Scripts\formValidation\js\language\gr_EL.js" />
+    <Content Include="Scripts\formValidation\js\language\he_IL.js" />
+    <Content Include="Scripts\formValidation\js\language\hi_IN.js" />
+    <Content Include="Scripts\formValidation\js\language\hu_HU.js" />
+    <Content Include="Scripts\formValidation\js\language\id_ID.js" />
+    <Content Include="Scripts\formValidation\js\language\it_IT.js" />
+    <Content Include="Scripts\formValidation\js\language\ja_JP.js" />
+    <Content Include="Scripts\formValidation\js\language\nl_NL.js" />
+    <Content Include="Scripts\formValidation\js\language\no_NO.js" />
+    <Content Include="Scripts\formValidation\js\language\pl_PL.js" />
+    <Content Include="Scripts\formValidation\js\language\pt_BR.js" />
+    <Content Include="Scripts\formValidation\js\language\pt_PT.js" />
+    <Content Include="Scripts\formValidation\js\language\ro_RO.js" />
+    <Content Include="Scripts\formValidation\js\language\ru_RU.js" />
+    <Content Include="Scripts\formValidation\js\language\sk_SK.js" />
+    <Content Include="Scripts\formValidation\js\language\sq_AL.js" />
+    <Content Include="Scripts\formValidation\js\language\sr_RS.js" />
+    <Content Include="Scripts\formValidation\js\language\sv_SE.js" />
+    <Content Include="Scripts\formValidation\js\language\th_TH.js" />
+    <Content Include="Scripts\formValidation\js\language\tr_TR.js" />
+    <Content Include="Scripts\formValidation\js\language\ua_UA.js" />
+    <Content Include="Scripts\formValidation\js\language\vi_VN.js" />
+    <Content Include="Scripts\formValidation\js\language\zh_CN.js" />
+    <Content Include="Scripts\formValidation\js\language\zh_TW.js" />
+    <Content Include="Scripts\IE8Compatibility\es5-shim.min.js" />
+    <Content Include="Scripts\IE8Compatibility\excanvas.js" />
+    <Content Include="Scripts\IE8Compatibility\html5shiv.min.js" />
+    <Content Include="Scripts\IE8Compatibility\respond.min.js" />
+    <Content Include="Scripts\images\folder_home.png" />
+    <Content Include="Scripts\images\icon-loading.gif" />
+    <Content Include="Scripts\images\logo\logo.jpg" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.12.0.min.js" />
+    <Content Include="Scripts\jquery-1.12.3.min.js" />
+    <Content Include="Content\toastr.less" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap\wells.less" />
+    <Content Include="Content\bootstrap\variables.less" />
+    <Content Include="Content\bootstrap\utilities.less" />
+    <Content Include="Content\bootstrap\type.less" />
+    <Content Include="Content\bootstrap\tooltip.less" />
+    <Content Include="Content\bootstrap\thumbnails.less" />
+    <Content Include="Content\bootstrap\theme.less" />
+    <Content Include="Content\bootstrap\tables.less" />
+    <Content Include="Content\bootstrap\scaffolding.less" />
+    <Content Include="Content\bootstrap\responsive-utilities.less" />
+    <Content Include="Content\bootstrap\responsive-embed.less" />
+    <Content Include="Content\bootstrap\progress-bars.less" />
+    <Content Include="Content\bootstrap\print.less" />
+    <Content Include="Content\bootstrap\popovers.less" />
+    <Content Include="Content\bootstrap\panels.less" />
+    <Content Include="Content\bootstrap\pagination.less" />
+    <Content Include="Content\bootstrap\pager.less" />
+    <Content Include="Content\bootstrap\normalize.less" />
+    <Content Include="Content\bootstrap\navs.less" />
+    <Content Include="Content\bootstrap\navbar.less" />
+    <Content Include="Content\bootstrap\modals.less" />
+    <Content Include="Content\bootstrap\mixins\vendor-prefixes.less" />
+    <Content Include="Content\bootstrap\mixins\text-overflow.less" />
+    <Content Include="Content\bootstrap\mixins\text-emphasis.less" />
+    <Content Include="Content\bootstrap\mixins\table-row.less" />
+    <Content Include="Content\bootstrap\mixins\tab-focus.less" />
+    <Content Include="Content\bootstrap\mixins\size.less" />
+    <Content Include="Content\bootstrap\mixins\responsive-visibility.less" />
+    <Content Include="Content\bootstrap\mixins\resize.less" />
+    <Content Include="Content\bootstrap\mixins\reset-text.less" />
+    <Content Include="Content\bootstrap\mixins\reset-filter.less" />
+    <Content Include="Content\bootstrap\mixins\progress-bar.less" />
+    <Content Include="Content\bootstrap\mixins\panels.less" />
+    <Content Include="Content\bootstrap\mixins\pagination.less" />
+    <Content Include="Content\bootstrap\mixins\opacity.less" />
+    <Content Include="Content\bootstrap\mixins\nav-vertical-align.less" />
+    <Content Include="Content\bootstrap\mixins\nav-divider.less" />
+    <Content Include="Content\bootstrap\mixins\list-group.less" />
+    <Content Include="Content\bootstrap\mixins\labels.less" />
+    <Content Include="Content\bootstrap\mixins\image.less" />
+    <Content Include="Content\bootstrap\mixins\hide-text.less" />
+    <Content Include="Content\bootstrap\mixins\grid-framework.less" />
+    <Content Include="Content\bootstrap\mixins\grid.less" />
+    <Content Include="Content\bootstrap\mixins\gradients.less" />
+    <Content Include="Content\bootstrap\mixins\forms.less" />
+    <Content Include="Content\bootstrap\mixins\clearfix.less" />
+    <Content Include="Content\bootstrap\mixins\center-block.less" />
+    <Content Include="Content\bootstrap\mixins\buttons.less" />
+    <Content Include="Content\bootstrap\mixins\border-radius.less" />
+    <Content Include="Content\bootstrap\mixins\background-variant.less" />
+    <Content Include="Content\bootstrap\mixins\alerts.less" />
+    <Content Include="Content\bootstrap\mixins.less" />
+    <Content Include="Content\bootstrap\media.less" />
+    <Content Include="Content\bootstrap\list-group.less" />
+    <Content Include="Content\bootstrap\labels.less" />
+    <Content Include="Content\bootstrap\jumbotron.less" />
+    <Content Include="Content\bootstrap\input-groups.less" />
+    <Content Include="Content\bootstrap\grid.less" />
+    <Content Include="Content\bootstrap\glyphicons.less" />
+    <Content Include="Content\bootstrap\forms.less" />
+    <Content Include="Content\bootstrap\dropdowns.less" />
+    <Content Include="Content\bootstrap\component-animations.less" />
+    <Content Include="Content\bootstrap\code.less" />
+    <Content Include="Content\bootstrap\close.less" />
+    <Content Include="Content\bootstrap\carousel.less" />
+    <Content Include="Content\bootstrap\buttons.less" />
+    <Content Include="Content\bootstrap\button-groups.less" />
+    <Content Include="Content\bootstrap\breadcrumbs.less" />
+    <Content Include="Content\bootstrap\bootstrap.less" />
+    <Content Include="Content\bootstrap\badges.less" />
+    <Content Include="Content\bootstrap\alerts.less" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-datetimepicker-build.less" />
+    <Content Include="Content\_bootstrap-datetimepicker.less" />
+    <Content Include="Child Accounts.xlsx" />
+    <Content Include="libman.json" />
+    <Content Include="Content\bootstrap\css\bootstrap-grid.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap-grid.min.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap-grid.rtl.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap-grid.rtl.min.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap-reboot.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap-reboot.rtl.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap-reboot.rtl.min.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap-utilities.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap-utilities.min.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap-utilities.rtl.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap-utilities.rtl.min.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap.rtl.css.map" />
+    <Content Include="Content\bootstrap\css\bootstrap.rtl.min.css.map" />
+    <Content Include="Content\bootstrap\js\bootstrap.bundle.js.map" />
+    <Content Include="Content\bootstrap\js\bootstrap.bundle.min.js.map" />
+    <Content Include="Content\bootstrap\js\bootstrap.esm.js.map" />
+    <Content Include="Content\bootstrap\js\bootstrap.esm.min.js.map" />
+    <Content Include="Content\bootstrap\js\bootstrap.js.map" />
+    <Content Include="Content\bootstrap\js\bootstrap.min.js.map" />
+    <Content Include="Content\bootstrap\scss\_accordion.scss" />
+    <Content Include="Content\bootstrap\scss\_alert.scss" />
+    <Content Include="Content\bootstrap\scss\_badge.scss" />
+    <Content Include="Content\bootstrap\scss\_breadcrumb.scss" />
+    <Content Include="Content\bootstrap\scss\_button-group.scss" />
+    <Content Include="Content\bootstrap\scss\_buttons.scss" />
+    <Content Include="Content\bootstrap\scss\_card.scss" />
+    <Content Include="Content\bootstrap\scss\_carousel.scss" />
+    <Content Include="Content\bootstrap\scss\_close.scss" />
+    <Content Include="Content\bootstrap\scss\_containers.scss" />
+    <Content Include="Content\bootstrap\scss\_dropdown.scss" />
+    <Content Include="Content\bootstrap\scss\_forms.scss" />
+    <Content Include="Content\bootstrap\scss\_functions.scss" />
+    <Content Include="Content\bootstrap\scss\_grid.scss" />
+    <Content Include="Content\bootstrap\scss\_helpers.scss" />
+    <Content Include="Content\bootstrap\scss\_images.scss" />
+    <Content Include="Content\bootstrap\scss\_list-group.scss" />
+    <Content Include="Content\bootstrap\scss\_mixins.scss" />
+    <Content Include="Content\bootstrap\scss\_modal.scss" />
+    <Content Include="Content\bootstrap\scss\_nav.scss" />
+    <Content Include="Content\bootstrap\scss\_navbar.scss" />
+    <Content Include="Content\bootstrap\scss\_offcanvas.scss" />
+    <Content Include="Content\bootstrap\scss\_pagination.scss" />
+    <Content Include="Content\bootstrap\scss\_placeholders.scss" />
+    <Content Include="Content\bootstrap\scss\_popover.scss" />
+    <Content Include="Content\bootstrap\scss\_progress.scss" />
+    <Content Include="Content\bootstrap\scss\_reboot.scss" />
+    <Content Include="Content\bootstrap\scss\_root.scss" />
+    <Content Include="Content\bootstrap\scss\_spinners.scss" />
+    <Content Include="Content\bootstrap\scss\_tables.scss" />
+    <Content Include="Content\bootstrap\scss\_toasts.scss" />
+    <Content Include="Content\bootstrap\scss\_tooltip.scss" />
+    <Content Include="Content\bootstrap\scss\_transitions.scss" />
+    <Content Include="Content\bootstrap\scss\_type.scss" />
+    <Content Include="Content\bootstrap\scss\_utilities.scss" />
+    <Content Include="Content\bootstrap\scss\_variables.scss" />
+    <Content Include="Content\bootstrap\scss\bootstrap-grid.scss" />
+    <Content Include="Content\bootstrap\scss\bootstrap-reboot.scss" />
+    <Content Include="Content\bootstrap\scss\bootstrap-utilities.scss" />
+    <Content Include="Content\bootstrap\scss\bootstrap.scss" />
+    <Content Include="Content\bootstrap\scss\forms\_floating-labels.scss" />
+    <Content Include="Content\bootstrap\scss\forms\_form-check.scss" />
+    <Content Include="Content\bootstrap\scss\forms\_form-control.scss" />
+    <Content Include="Content\bootstrap\scss\forms\_form-range.scss" />
+    <Content Include="Content\bootstrap\scss\forms\_form-select.scss" />
+    <Content Include="Content\bootstrap\scss\forms\_form-text.scss" />
+    <Content Include="Content\bootstrap\scss\forms\_input-group.scss" />
+    <Content Include="Content\bootstrap\scss\forms\_labels.scss" />
+    <Content Include="Content\bootstrap\scss\forms\_validation.scss" />
+    <Content Include="Content\bootstrap\scss\helpers\_clearfix.scss" />
+    <Content Include="Content\bootstrap\scss\helpers\_colored-links.scss" />
+    <Content Include="Content\bootstrap\scss\helpers\_position.scss" />
+    <Content Include="Content\bootstrap\scss\helpers\_ratio.scss" />
+    <Content Include="Content\bootstrap\scss\helpers\_stacks.scss" />
+    <Content Include="Content\bootstrap\scss\helpers\_stretched-link.scss" />
+    <Content Include="Content\bootstrap\scss\helpers\_text-truncation.scss" />
+    <Content Include="Content\bootstrap\scss\helpers\_visually-hidden.scss" />
+    <Content Include="Content\bootstrap\scss\helpers\_vr.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_alert.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_backdrop.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_border-radius.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_box-shadow.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_breakpoints.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_buttons.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_caret.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_clearfix.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_color-scheme.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_container.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_deprecate.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_forms.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_gradients.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_grid.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_image.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_list-group.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_lists.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_pagination.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_reset-text.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_resize.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_table-variants.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_text-truncate.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_transition.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_utilities.scss" />
+    <Content Include="Content\bootstrap\scss\mixins\_visually-hidden.scss" />
+    <Content Include="Content\bootstrap\scss\utilities\_api.scss" />
+    <Content Include="Content\bootstrap\scss\vendor\_rfs.scss" />
+    <None Include="Properties\PublishProfiles\CMMC.pubxml" />
+    <Content Include="Scripts\bootstrap-vertical-tabs-1.2.1\.gitignore" />
+    <Content Include="Scripts\bootstrap-vertical-tabs-1.2.1\bower.json" />
+    <Content Include="Scripts\bootstrap-vertical-tabs-1.2.1\LICENSE" />
+    <Content Include="Scripts\bootstrap-vertical-tabs-1.2.1\package.json" />
+    <Content Include="Scripts\bootstrap-vertical-tabs-1.2.1\README.md" />
+    <Content Include="Scripts\bootstrap\emodal\eModal.min.js.gzip" />
+    <Content Include="Scripts\bootstrap\emodal\eModal.min.js.map" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Reports\Report\rptAuditTrail.rdl" />
+    <Content Include="Reports\Report\rptUserlisttest.rdl" />
+    <Content Include="Reports\Report\rptUserListReport.rdl" />
+    <Content Include="Reports\Report\rptADBReport.rdl">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Reports\Report\rptUserList.rdl" />
+    <Content Include="Reports\Report\rptApprover.rdl" />
+    <Content Include="Reports\Report\rptDisapproved.rdl" />
+    <Content Include="Reports\Report\rptEnrollment.rdl" />
+    <None Include="Scripts\jquery-1.6.4-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.6.4.js" />
+    <Content Include="Scripts\jquery-1.6.4.min.js" />
+    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.8.2.js" />
+    <Content Include="Scripts\jquery-1.8.2.min.js" />
+    <None Include="Scripts\jquery-1.9.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.8.24.js" />
+    <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
+    <Content Include="Scripts\jquery-ui.css" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Scripts\jquery.cookie-1.4.1.min.js" />
+    <Content Include="Scripts\jquery.cookie.js" />
+    <Content Include="Scripts\jquery.dataTables.min.js" />
+    <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <None Include="Scripts\JSLINQ-vsdoc.js" />
+    <Content Include="Scripts\JSLINQ.js" />
+    <Content Include="Scripts\js\aes-min.js" />
+    <Content Include="Scripts\js\jquery-1.12.0.min.js" />
+    <Content Include="Scripts\js\jQuery.XDomainRequest.js" />
+    <Content Include="Scripts\js\knockout-3.4.0.js" />
+    <Content Include="Scripts\knockout-2.2.0.debug.js" />
+    <Content Include="Scripts\knockout-2.2.0.js" />
+    <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\SignalR\jquery.signalR-1.2.2.js" />
+    <Content Include="Scripts\SignalR\jquery.signalR-1.2.2.min.js" />
+    <Content Include="Scripts\tipsy\docs\src\tipsy-docs.css" />
+    <Content Include="Scripts\tipsy\src\javascripts\jquery.tipsy.js" />
+    <Content Include="Scripts\tipsy\src\stylesheets\tipsy.css" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
+    <Content Include="Scripts\toastr\toastr.min.css" />
+    <Content Include="Scripts\toastr\toastr.min.js" />
+    <None Include="Scripts\_references.js" />
+    <Content Include="Views\Error\PageNotFoundError.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_LoginLayout.cshtml" />
+    <Content Include="Views\Login\Index.cshtml" />
+    <Content Include="Views\Enrollment\Index.cshtml" />
+    <Content Include="Views\Enrollment\CreateCmsCode.cshtml" />
+    <Content Include="Views\Enrollment\EditCmsCode.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\BatchComputation\Index.cshtml" />
+    <Content Include="Views\UserSettings\Index.cshtml" />
+    <Content Include="Views\BatchComputation\Schedule.cshtml" />
+    <Content Include="Views\BatchComputation\Manual.cshtml" />
+    <Content Include="Views\BatchComputation\Generate.cshtml" />
+    <Content Include="Views\SystemSettings\Index.cshtml" />
+    <Content Include="Views\Enrollment\ViewDetails.cshtml" />
+    <Content Include="Views\Access\AccessAddNew.cshtml" />
+    <Content Include="Views\Access\AccessEdit.cshtml" />
+    <Content Include="Views\Access\AccessView.cshtml" />
+    <Content Include="Views\Access\GroupAddNew.cshtml" />
+    <Content Include="Views\Access\GroupEdit.cshtml" />
+    <Content Include="Views\Access\Groups.cshtml" />
+    <Content Include="Views\Access\GroupView.cshtml" />
+    <Content Include="Views\Access\Index.cshtml" />
+    <Content Include="Views\Access\UserAddNew.cshtml" />
+    <Content Include="Views\Access\UserEdit.cshtml" />
+    <Content Include="Views\Access\Users.cshtml" />
+    <Content Include="Views\Access\UserView.cshtml" />
+    <Content Include="Views\Error\AccessDenied.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Home\EditRequest.cshtml" />
+    <Content Include="Views\RelationshipManager\AddRM.cshtml" />
+    <Content Include="Views\RelationshipManager\EditRM.cshtml" />
+    <Content Include="Views\RelationshipManager\Index.cshtml" />
+    <Content Include="Views\BatchComputation\Details.cshtml" />
+    <Content Include="Views\Report\ViewAuditTrailFilter.cshtml" />
+    <Content Include="Views\Report\ViewADBReport.cshtml" />
+    <Content Include="Views\ParameterMaintenance\Index.cshtml" />
+    <Content Include="Views\ParameterMaintenance\AddBranches.cshtml" />
+    <Content Include="Views\ParameterMaintenance\ViewBranches.cshtml" />
+    <Content Include="Views\ParameterMaintenance\UpdateBranches.cshtml" />
+    <Content Include="Views\ParameterMaintenance\Services.cshtml" />
+    <Content Include="Views\ParameterMaintenance\ProductType.cshtml" />
+    <Content Include="Views\ParameterMaintenance\AddServices.cshtml" />
+    <Content Include="Views\ParameterMaintenance\InvestmentType.cshtml" />
+    <Content Include="Views\ParameterMaintenance\AddInvestment.cshtml" />
+    <Content Include="Views\ParameterMaintenance\UpdateInvestment.cshtml" />
+    <Content Include="Views\ParameterMaintenance\UpdateServices.cshtml" />
+    <Content Include="Views\ParameterMaintenance\ViewServices.cshtml" />
+    <Content Include="Views\ParameterMaintenance\ViewInvestment.cshtml" />
+    <Content Include="Views\FAQ\Index.cshtml" />
+    <Content Include="Views\ParameterMaintenance\ViewProductType.cshtml" />
+    <Content Include="Views\ParameterMaintenance\UpdateProduct.cshtml" />
+    <Content Include="Views\ParameterMaintenance\AddProduct.cshtml" />
+    <Content Include="Views\RegularBatchRun\Index.cshtml" />
+    <Content Include="Views\ParameterMaintenance\Holidays.cshtml" />
+    <Content Include="Views\Report\ViewApprove.cshtml" />
+    <Content Include="Views\Report\ViewDisapproved.cshtml" />
+    <Content Include="Views\Report\ViewTransactionalReports.cshtml" />
+    <Content Include="Views\Report\ViewEnrollment.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\bootstrap\css\bootstrap-theme.css.map" />
+    <Content Include="Scripts\bootstrap\css\bootstrap-theme.min.css.map" />
+    <Content Include="Scripts\bootstrap\css\bootstrap.css.map" />
+    <Content Include="Scripts\bootstrap\css\bootstrap.min.css.map" />
+    <Content Include="Scripts\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Scripts\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Scripts\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Scripts\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Scripts\datatable\extensions\accent-neutralise\extension.json" />
+    <Content Include="Scripts\datatable\extensions\accent-neutralise\README.md" />
+    <Content Include="Scripts\datatable\extensions\cookie\extension.json" />
+    <Content Include="Scripts\datatable\extensions\cookie\README.md" />
+    <Content Include="Scripts\datatable\extensions\editable\extension.json" />
+    <Content Include="Scripts\datatable\extensions\editable\README.md" />
+    <Content Include="Scripts\datatable\extensions\export\extension.json" />
+    <Content Include="Scripts\datatable\extensions\export\README.md" />
+    <Content Include="Scripts\datatable\extensions\filter-control\extension.json" />
+    <Content Include="Scripts\datatable\extensions\filter-control\README.md" />
+    <Content Include="Scripts\datatable\extensions\filtercontrol\README.md" />
+    <Content Include="Scripts\datatable\extensions\filter\extension.json" />
+    <Content Include="Scripts\datatable\extensions\filter\README.md" />
+    <Content Include="Scripts\datatable\extensions\flat-json\extension.json" />
+    <Content Include="Scripts\datatable\extensions\flat-json\README.md" />
+    <Content Include="Scripts\datatable\extensions\flatJSON\README.md" />
+    <Content Include="Scripts\datatable\extensions\group-by-v2\extension.json" />
+    <Content Include="Scripts\datatable\extensions\group-by-v2\README.md" />
+    <Content Include="Scripts\datatable\extensions\group-by\extension.json" />
+    <Content Include="Scripts\datatable\extensions\group-by\README.md" />
+    <Content Include="Scripts\datatable\extensions\key-events\extension.json" />
+    <Content Include="Scripts\datatable\extensions\key-events\README.md" />
+    <Content Include="Scripts\datatable\extensions\keyevents\README.md" />
+    <Content Include="Scripts\datatable\extensions\mobile\extension.json" />
+    <Content Include="Scripts\datatable\extensions\mobile\README.md" />
+    <Content Include="Scripts\datatable\extensions\multiple-search\extension.json" />
+    <Content Include="Scripts\datatable\extensions\multiple-search\README.md" />
+    <Content Include="Scripts\datatable\extensions\multiple-sort\extension.json" />
+    <Content Include="Scripts\datatable\extensions\multiple-sort\README.md" />
+    <Content Include="Scripts\datatable\extensions\natural-sorting\extension.json" />
+    <Content Include="Scripts\datatable\extensions\natural-sorting\README.md" />
+    <Content Include="Scripts\datatable\extensions\naturalsorting\README.md" />
+    <Content Include="Scripts\datatable\extensions\reorder-columns\extension.json" />
+    <Content Include="Scripts\datatable\extensions\reorder-columns\README.md" />
+    <Content Include="Scripts\datatable\extensions\reorder-rows\extension.json" />
+    <Content Include="Scripts\datatable\extensions\reorder-rows\README.md" />
+    <Content Include="Scripts\datatable\extensions\reorder\README.md" />
+    <Content Include="Scripts\datatable\extensions\resizable\extension.json" />
+    <Content Include="Scripts\datatable\extensions\resizable\README.md" />
+    <Content Include="Scripts\datatable\extensions\sticky-header\extension.json" />
+    <Content Include="Scripts\datatable\extensions\sticky-header\README.md" />
+    <Content Include="Scripts\datatable\extensions\toolbar\extension.json" />
+    <Content Include="Scripts\datatable\extensions\toolbar\README.md" />
+    <Content Include="Scripts\datatable\locale\bootstrap-table-en-US.js.template" />
+    <Content Include="Scripts\datatable\locale\README.md" />
+    <Content Include="Scripts\tipsy\.gitignore" />
+    <Content Include="Scripts\tipsy\docs\.gitignore" />
+    <Content Include="Scripts\tipsy\docs\src\index.html.erb" />
+    <Content Include="Scripts\tipsy\docs\src\javascripts" />
+    <Content Include="Scripts\tipsy\docs\src\project.yml" />
+    <Content Include="Scripts\tipsy\docs\src\stylesheets" />
+    <Content Include="Scripts\tipsy\LICENSE" />
+    <Content Include="Scripts\tipsy\Rakefile" />
+    <Content Include="Scripts\tipsy\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>62642</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:62526/CMMC</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

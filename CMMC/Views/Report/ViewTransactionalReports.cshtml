@@ -1,0 +1,67 @@
+﻿<link href="~/Scripts/bootstrap/datepicker/bootstrap-datepicker.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap/datepicker/bootstrap-datepicker.js"></script>
+<script src="~/Scripts/bootstrap/emodal/eModal.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var title = JSON.parse('@Html.Raw(Json.Encode(ViewBag.title))');
+        var module = JSON.parse('@Html.Raw(Json.Encode(ViewBag.Modules))');
+
+        $(function () {
+            $("#txtStartDate").datepicker({ format: 'M dd, yyyy', autoclose: true }).css("background-color", "aliceblue").css("cursor", "pointer");
+            $("#txtEndDate").datepicker({ format: 'M dd, yyyy', autoclose: true }).css("background-color", "aliceblue").css("cursor", "pointer");
+        });
+
+
+        $("#txtModule").val();
+
+        $("#btnFilter").on('click', function () {
+            var strUrl = "@Url.Content("~/Reports/Reportviewer.aspx")?ReportName=Transactional Report&Module=" + module
+                      + "&StartDate=" + $("#txtStartDate").val()
+                      + "&EndDate=" + $("#txtEndDate").val() + "";
+            window.open(strUrl, "_blank");
+        });
+    });
+</script>
+
+
+<div class="form-group">
+ <div class="input-group">
+  <span class="input-group-addon">Module</span>
+  @*<div class="col-md-7">*@
+  <input type="text" class="form-control" value='@ViewBag.Title' readonly />
+  @*</div>*@
+ </div>
+</div>
+
+<div class="form-group">
+ <div class="input-group">
+  <span class="input-group-addon">Start Date</span>
+  <input type="text" class="form-control datepicker-months" id="txtStartDate" placeholder="Select a Start Date" />
+ </div>
+</div>
+
+<div class="form-group">
+ <div class="input-group">
+  <span class="input-group-addon">End Date</span>
+  <input type="text" class="form-control datepicker-months" id="txtEndDate" placeholder="Select an End Date" />
+ </div>
+</div>
+
+
+
+<style>
+ .filter .input-group-addon {
+  min-width: 100px;
+  text-align: left;
+ }
+
+ .filter .row {
+  margin-bottom: 10px;
+ }
+
+ .datepicker {
+  z-index: 999999 !important;
+ }
+</style>

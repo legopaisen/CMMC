@@ -1,0 +1,59 @@
+﻿@using CMMC.Models
+
+@model List<FAQModel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="page-header">
+ Frequently Asked Questions
+ <small></small>
+</h2>
+
+<div class="panel panel-primary">
+ <div class="panel-heading">@*Frequently Asked Questions*@</div>
+
+
+ <div class="panel-group">
+  <div class="row">
+   <div class="col-md-3">
+    <div class="list-group" style="position:inherit; margin-left: 20px; margin-top: 20px">
+     @foreach (FAQModel faq in Model.GroupBy(x => x.Module).Select(x => x.First()).ToList())
+     {
+      <a class="list-group-item" href="#tag_@faq.TagIndex">@faq.Module</a>
+     }
+    </div>
+   </div>
+
+   <div class="col-md-7">
+    @foreach (FAQModel faq in Model.GroupBy(x => x.Module).Select(x => x.First()).ToList())
+    {
+     <h3 id="tag_@faq.TagIndex">@faq.Module</h3>
+
+     foreach (FAQModel item in Model.Where(x => x.Module.Equals(faq.Module)))
+     {
+      <div class='panel panel-info'>
+       <div class='panel-heading'><h4 class='panel-title'><a data-toggle='collapse' href='#@faq.TagIndex@item.ItemIndex'>@item.Question</a></h4></div>
+       <div id="@faq.TagIndex@item.ItemIndex" class='panel-collapse collapse'>
+        <div class='panel-body'>
+         <ul>
+          @foreach (string answer in item.Answers)
+          {
+           <li>@answer</li>
+          }
+         </ul>
+        </div>
+       </div>
+      </div>
+     }
+
+    }
+   </div>
+
+   <div class="col-md-2">&nbsp;</div>
+  </div>
+ </div>
+</div>
+

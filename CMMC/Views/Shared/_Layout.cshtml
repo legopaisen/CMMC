@@ -1,0 +1,518 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="IE=8,IE=9, IE=edge,CHROME =1" http-equiv="X-UA-Compatible" />
+    <title>@ViewBag.Title</title>
+    <link href="~/asas.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale= 1" />
+    <script src="~/Scripts/jquery-1.12.0.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <link href="~/Scripts/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/Scripts/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Scripts/datatable/bootstrap-table.css" rel="stylesheet" />
+    <link href="~/Scripts/AjaxRequestDim/Dim.css" rel="stylesheet" />
+    <link href="~/Scripts/toastr/toastr.min.css" rel=" stylesheet" />
+    <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+    @*<link href="~/Scripts/datatable/bootstrap-table.min.css" rel="stylesheet" />*@
+    <link href="~/Content/Main.css" rel="stylesheet" />
+    <link href="~/Scripts/formValidation/css/formValidation.min.css" rel="stylesheet" />
+    <script src="~/Scripts/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/Scripts/bootstrap/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/JSLINQ.js"></script>
+    <script src="~/Scripts/datatable/bootstrap-table.js"></script>
+    @*<script src="~/Scripts/datatable/bootstrap-table.min.js"></script>*@
+    <script src="~/Scripts/formValidation/js/formValidation.min.js"></script>
+    <script src="~/Scripts/AjaxRequestDim/Dim.js"></script>
+    <script src="~/Scripts/toastr/toastr.min.js"></script>
+    <script src="~/Scripts/moment.js"></script>
+    <script src="~/Scripts/IE8Compatibility/respond.min.js"></script>
+    <script src="~/Scripts/IE8Compatibility/html5shiv.min.js"></script>
+    <script src="~/Scripts/IE8Compatibility/excanvas.js"></script>
+    <script src="~/Scripts/moment-with-locales.js"></script>
+    <script src="~/Scripts/moment-with-locales.min.js"></script>
+    <script src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/formValidation/js/formValidation.min.js"></script>
+    <script src="~/Scripts/formValidation/js/framework/bootstrap.min.js"></script>
+    <script src="~/Scripts/app/DMSFormValidator.js"></script>
+    <script src="~/Scripts/bootstrap/emodal/eModal.js"></script>
+    <script src="~/Scripts/IE8Compatibility/es5-shim.min.js"></script>
+    <script src="~/Scripts/SignalR/jquery.signalR-1.2.2.js"></script>
+    <script src="~/signalr/hubs"></script>
+    @*<link href="~/Scripts/tipsy/src/stylesheets/tipsy.css" rel="stylesheet" />*@
+
+    <script>moment().format();</script>
+
+    <script>
+        $(document).ready(function () {
+            $('.row').fadeIn(1000);
+            $('.panel').fadeIn(1000);
+        });
+    </script>
+
+    <script type="text/javascript">
+  var seconds = 0;
+  $(document).ready(function () {
+
+   var modulelist = JSON.parse('@Html.Raw(Json.Encode(Session["ModuleList"]))');
+        var NavBarMenu = "";
+
+        $.each(modulelist, function (ndx, item) {
+            switch (item.ModuleCode) {
+
+             case "Enrollment":
+                    NavBarMenu += "<li class=dropdown'>";
+                    NavBarMenu += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><i class='glyphicon glyphicon-credit-card'></i> Customer Profile Management<b class='caret'></b> </a>";
+                    NavBarMenu += "<ul class='dropdown-menu'>";
+                    NavBarMenu += "<li><a href='@Url.Action("Index","Enrollment")'><i class='glyphicon glyphicon-education'></i> CMS Code Maintenance</a></li>";
+                    NavBarMenu += "<li><a href='@Url.Action("Index","RelationshipManager")'><i class='glyphicon glyphicon-tag'></i> Relationship Manager Maintenance</a></li>";
+                    NavBarMenu += "</ul>";
+                    NavBarMenu += "</li>";
+                    break;
+
+             case "Report":
+                    NavBarMenu += "<li class=dropdown'>";
+                    NavBarMenu += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><i class='glyphicon glyphicon-list-alt'></i> Report<b class='caret'></b> </a>";
+                    NavBarMenu += "<ul class='dropdown-menu'>";
+
+                    if ('@Session["UserType"]' == '0' || '@Session["UserType"]' == '1' || '@Session["UserType"]' == '3') // 0 - Maker , 1 - Approver, 3 - Auditor
+                    {
+                         NavBarMenu += " <li><a id='idADBReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> Monthly ADB Penalty Fee Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idNoLinkedAccountsReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> No Linked Accounts Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idClientAccountTypeReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> Client-Accounts Type Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idTotalADBRequirementReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> Total ADB Requirement Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><b class='caret-left'></b> Transactional Report </a>";
+                         NavBarMenu += "<ul class='dropdown-menu'>";
+                         NavBarMenu += "<li><a id='idViewTransactionalRM' href='javascript:void(0)' data-title='Relationship Manager' data-module='RelationshipManager' ><i class='glyphicon glyphicon-user'></i> Relationship Manager</a> </li>";
+                         NavBarMenu += "<li><a id='idViewEnrollment' href='javascript:void(0)' data-title='Enrollment' data-module='Enrollment'><i class='glyphicon glyphicon-wrench'></i> CMS Code Enrollment</a> </li>";
+                         NavBarMenu += "</ul>";
+                         NavBarMenu += "</li>";
+                     }
+
+                 @*NavBarMenu += "<li><a href='@Url.Action("Index","Report")'><i class='glyphicon glyphicon-book'></i> Audit Trail Report</a></li>";*@
+                 if ('@Session["UserType"]' == '2' || '@Session["UserType"]' == '4' || '@Session["UserType"]' == '3') // 2- User Administrator, 4-System Administrator
+                 {
+                  NavBarMenu += "<li class='dropdown-submenu'>";
+                  NavBarMenu += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><b class='caret-left'></b> Audit Trail Report </a>";
+                  NavBarMenu += "<ul class='dropdown-menu'>";
+
+                  if ('@Session["UserType"]' == '2' || '@Session["UserType"]' == '3') { // 2 - User Administrator
+                   NavBarMenu += "<li><a id='idViewAuditTrailReport' href='javascript:void(0)' data-title='Log In/Logout' data-module='LogIn' ><i class='glyphicon glyphicon-user'></i> Log In/ Logout</a> </li>";
+                   NavBarMenu += "<li><a id='idViewAuditTrailReport' href='javascript:void(0)' data-title='User Maintenance' data-module='Access'><i class='glyphicon glyphicon-wrench'></i> User Maintenance</a> </li>";
+                   NavBarMenu += "<li><a id='idViewAuditTrailReport' href='javascript:void(0)' data-title='Parameter Maintenance' data-module='SystemParameter'><i class='glyphicon glyphicon-cog'></i> Parameter Maintenance</a> </li>"; //
+                   NavBarMenu += "<li><a id='idUserList'  href= 'javascript:void(0)' ><i class='glyphicon glyphicon-user'></i> User List Report </a> </li>";
+                   NavBarMenu += "<li><a id='idApprove' href ='javascript:void(0)'><i class='glyphicon glyphicon-th-list'></i> Approval Tracking </a> </li> ";
+                  }
+
+                     if ('@Session["UserType"]' == '4' || '@Session["UserType"]' == '3') { // 4 - System Administrator
+                   NavBarMenu += "<li><a id='idViewAuditTrailReport' href='javascript:void(0)' data-title='System Settings' data-module='SystemSettings'><i class='glyphicon glyphicon-cog'></i> System Settings</a> </li>";
+                   NavBarMenu += "<li><a id='idViewAuditTrailReport' href='javascript:void(0)' data-title='Parameter Maintenance' data-module='SystemParameter'><i class='glyphicon glyphicon-cog'></i> Parameter Maintenance</a> </li>"; //
+                  }
+
+                  NavBarMenu += "</ul>";
+                  NavBarMenu += "</li>";
+
+                  //add
+
+                  NavBarMenu += "<li class='dropdown-submenu'>";
+                  NavBarMenu += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><b class='caret-left'></b> Transactional Report </a>";
+                  NavBarMenu += "<ul class='dropdown-menu'>";
+
+                  if ('@Session["UserType"]' == '2' || '@Session["UserType"]' == '3') { // 2 - User Administrator
+                   NavBarMenu += "<li><a id='idViewTransactionalRM' href='javascript:void(0)' data-title='Relationship Manager' data-module='RelationshipManager' ><i class='glyphicon glyphicon-user'></i> Relationship Manager</a> </li>";
+                   NavBarMenu += "<li><a id='idViewEnrollment' href='javascript:void(0)' data-title='Enrollment' data-module='Enrollment'><i class='glyphicon glyphicon-wrench'></i> CMS Code Enrollment</a> </li>";
+                  }
+
+                  NavBarMenu += "</ul>";
+                  NavBarMenu += "</li>";
+                  //add
+                 }
+                    NavBarMenu += "</ul>";
+                    NavBarMenu += "</li>";
+                    break;
+                    break;
+
+             case "BatchComputation":
+                    NavBarMenu += "<li class=dropdown'>";
+                    NavBarMenu += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><i class='glyphicon glyphicon-credit-card'></i> Batch Computation <b class='caret'></b></a>";
+                    NavBarMenu += "<ul class='dropdown-menu'>";
+                    NavBarMenu += "<li><a href='@Url.Action("Schedule","BatchComputation")' ><i class='glyphicon glyphicon-tasks'></i>  Schedule Run</a></li>";
+                    NavBarMenu += "<li><a href='@Url.Action("Index", "RegularBatchRun")' ><i class='glyphicon glyphicon-folder-open'></i>  Manual Run</a></li>";
+                    NavBarMenu += "</ul>";
+                    NavBarMenu += "</li>";
+                    break;
+
+             case "SystemParameter":
+                    NavBarMenu += "<li class=dropdown'>";
+                    NavBarMenu += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><i class='glyphicon glyphicon-cog'></i> Parameter Maintenance <b class='caret'></b></a>";
+                    NavBarMenu += "<ul class='dropdown-menu'>";
+                    NavBarMenu += "<li><a href='@Url.Action("Index","ParameterMaintenance")'><i class='glyphicon glyphicon-map-marker'></i> CTBC Branches</a></li>";
+                    NavBarMenu += "<li><a href='@Url.Action("Services", "ParameterMaintenance")'><i class='glyphicon glyphicon-wrench'></i> Service Types</a></li>";
+                    NavBarMenu += "<li><a href='@Url.Action("ProductType", "ParameterMaintenance")'><i class='glyphicon glyphicon-usd'></i> Product Types</a></li>";
+                    NavBarMenu += "<li><a href='@Url.Action("InvestmentType", "ParameterMaintenance")'><i class='glyphicon glyphicon-credit-card'></i> Investment Types</a></li>";
+                    NavBarMenu += "<li><a href='@Url.Action("Holidays", "ParameterMaintenance")'><i class='glyphicon glyphicon-calendar'></i> Holidays</a></li>";
+                    NavBarMenu += "</ul>";
+                    NavBarMenu += "</li>";
+                    break;
+
+             case "SystemSettings":
+             case "UserSettings":
+                    NavBarMenu += "<li class='dropdown'>";
+                    NavBarMenu += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><i class='glyphicon glyphicon-wrench'></i> Settings <b class='caret'></b></a>";
+                    NavBarMenu += "<ul class='dropdown-menu'>";
+                    NavBarMenu += "<li><a id='navSysSettings' href='@Url.Action("Index","SystemSettings")'><i class='glyphicon glyphicon-wrench'></i> System Settings </a> </li>";
+                    @*NavBarMenu += "<li><a id='navSysSettings' href='@Url.Action("Index","SystemSettings")'><i class='glyphicon glyphicon-wrench'></i> System Parameters </a> </li>";*@
+                    //NavBarMenu += "<!--<li><a href="Url.Action("Index","UserSettings")"><i class="glyphicon glyphicon-user"></i> </a></li>-->
+                    NavBarMenu += "<li class='dropdown-submenu'>";
+                    NavBarMenu += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><b class='caret-left'></b> User Settings </a>";
+                    NavBarMenu += "<ul class='dropdown-menu'>";
+                    NavBarMenu += "<li><a id='navSysSettings' href='@Url.Action("Users","Access")'><i class='glyphicon glyphicon-user'></i> User Maintenance </a> </li>";
+                    NavBarMenu += "<li><a href='@Url.Action("Index","Access")'><i class='glyphicon glyphicon-qrcode'></i> Access Maintenance </a></li>";
+                    NavBarMenu += "<li><a href='@Url.Action("Groups","Access")' id='logout'><i class='glyphicon glyphicon-tag'></i> Groups Maintenance </a></li>";
+                    NavBarMenu += "</ul>";
+                    NavBarMenu += "</li>";
+                    NavBarMenu += "</ul>";
+                    NavBarMenu += "</li>";
+                    break;
+                default:
+            }
+        });
+
+   $('body').on('click', '#idViewAuditTrailReport', function () {
+       var title = $(this).data("title");
+       var module = $(this).data("module");
+       var caption = $(this).text();
+       var options = {
+           url: "@Url.Action("ViewAuditTrailFilter", "Report")?pModule=" + module + "&Title=" + title,
+           title: 'Audit Trail Report-' + caption,
+           size: eModal.size.lg,
+           buttons: [{
+            text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+            }, {
+             text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function ()
+             {
+           $().AbortAjaxRequest();
+           }
+       }]
+   };
+   eModal.ajax(options);
+   });
+
+
+   $('body').on('click', '#idViewTransactionalRM', function () {
+    var title = $(this).data("title");
+    var module = $(this).data("module");
+    var caption = $(this).text();
+    var options = {
+     url: "@Url.Action("ViewAuditTrailFilter", "Report")?pModule=" + module + "&Title=" + title,
+     title: 'Audit Trail Report-' + caption,
+    size: eModal.size.lg,
+    buttons: [{
+     text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+    }, {
+     text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function ()
+     {
+      $().AbortAjaxRequest();
+     }
+    }]
+   };
+   eModal.ajax(options);
+   });
+
+   $('body').on('click', '#idViewEnrollment', function () {
+    var title = $(this).data("title");
+    var module = $(this).data("module");
+    var caption = $(this).text();
+    var options = {
+     url: "@Url.Action("ViewEnrollment", "Report")",
+     title: 'Audit Trail Report-' + caption,
+    size: eModal.size.lg,
+    buttons: [{
+     text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+    }, {
+     text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function ()
+     {
+      $().AbortAjaxRequest();
+     }
+    }]
+   };
+   eModal.ajax(options);
+  });
+
+
+
+   $('body').on('click', '#idApprove', function () {
+    var options = {
+     url: "@Url.Action("ViewApprove", "Report")",
+     title: 'Approval Tracking',
+    size: eModal.size.lg,
+    buttons: [{
+     text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+    }, {
+     text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function () {
+      $().AbortAjaxRequest();
+     }
+    }]
+   };
+   eModal.ajax(options);
+   });
+
+   $('body').on('click', '#idDisapprove', function () {
+    var options = {
+     url: "@Url.Action("ViewDisapproved", "Report")",
+     title: 'Disapprove Enrollment',
+    size: eModal.size.lg,
+    buttons: [{
+     text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+    }, {
+     text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function () {
+      $().AbortAjaxRequest();
+     }
+    }]
+   };
+   eModal.ajax(options);
+  });
+
+
+      $('body').on('click', '#idADBReport', function () {
+          var title = $(this).data("title");
+          var module = $(this).data("module");
+          var caption = $(this).text();
+          var options = {
+              url: "@Url.Action("ViewADBReport", "Report")?pModule=" + module + "&Title=" + title,
+              title: caption,
+          size: eModal.size.lg,
+          buttons: [{
+              text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+          }, {
+              text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function () {
+                  $().AbortAjaxRequest();
+              }
+          }]
+      };
+      eModal.ajax(options);
+      });
+
+      $('body').on('click', '#idNoLinkedAccountsReport', function () {
+          var title = $(this).data("title");
+          var module = $(this).data("module");
+          var caption = $(this).text();
+          var options = {
+              url: "@Url.Action("ViewNoLinkedAccountsReport", "Report")?pModule=" + module + "&Title=" + title,
+              title: caption,
+          size: eModal.size.lg,
+          buttons: [{
+              text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+          }, {
+              text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function () {
+                  $().AbortAjaxRequest();
+              }
+          }]
+      };
+      eModal.ajax(options);
+      });
+
+       $('body').on('click', '#idClientAccountTypeReport', function () {
+          var title = $(this).data("title");
+          var module = $(this).data("module");
+          var caption = $(this).text();
+          var options = {
+              url: "@Url.Action("ViewClientAccountTypeReport", "Report")?pModule=" + module + "&Title=" + title,
+              title: caption,
+          size: eModal.size.lg,
+          buttons: [{
+              text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+          }, {
+              text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function () {
+                  $().AbortAjaxRequest();
+              }
+          }]
+      };
+      eModal.ajax(options);
+       });
+
+      $('body').on('click', '#idTotalADBRequirementReport', function () {
+          var title = $(this).data("title");
+          var module = $(this).data("module");
+          var caption = $(this).text();
+          var options = {
+              url: "@Url.Action("ViewTotalADBRequirementReport", "Report")?pModule=" + module + "&Title=" + title,
+              title: caption,
+          size: eModal.size.lg,
+          buttons: [{
+              text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+          }, {
+              text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function () {
+                  $().AbortAjaxRequest();
+              }
+          }]
+      };
+      eModal.ajax(options);
+  });
+
+        $('body').on('click', '#idUserList', function () {
+            var strUrl = "@Url.Content("~/Reports/Reportviewer.aspx")?ReportName=User";
+            window.open(strUrl, "_blank");
+        });
+
+
+   $("#nav_setup").append(NavBarMenu);
+
+   $(this).mousemove(function (e) {
+    seconds = 0;
+   });
+   $(this).keypress(function (e) {
+    seconds = 0;
+   });
+
+    });
+    </script>
+
+
+    <script type="text/javascript">
+  countdown();
+  function countdown() {
+   seconds++;
+   if (seconds == 60 * parseInt('10')) {
+    $.ajax({
+     url: '@Url.Action("SessionTimeout", "Login")',
+     type: 'POST',
+     success: function (data) { },
+     error: function (response) { }
+    });
+
+    var options = {
+     label: 'OK',
+     title: 'Session Timeout',
+     message: 'Your session has expired due to inactivity.<br>You will be signed-out and redirected to login page.',
+     buttons: [{
+      close: true, click: function () {
+       window.location = '@Url.Action("SignOut", "Login")';
+      },
+      text: 'OK'
+     }],
+    };
+    eModal.alert(options);
+   } else {
+    setTimeout('countdown()', 1000);
+
+   }
+  }
+    </script>
+
+    <script type="text/javascript">
+ $(function () {
+  var notificationClient = $.connection.signalRHub;
+
+  // Start the connection
+  $.connection.hub.start().done(function () {
+   var myClientId = $.connection.hub.id;
+   setCookie("srconnectionid", myClientId);
+  })
+  .fail(function (e) {
+   eModal.alert(e, "Oops! Something went wrong.");
+  });
+
+  //WHEN MULTIPLE LOGIN
+  notificationClient.client.securityErrorMessage = function (message) {
+   $.ajax({
+    url: '@Url.Action("ForceLogout", "Login")',
+    type: 'POST',
+    success: function (data) {
+
+    },
+    error: function (response) { }
+   });
+
+   var options = {
+    label: 'OK',
+    title: 'Force Logout',
+    message: message,
+    buttons: [{
+     close: true, click: function () {
+      window.location = '@Url.Action("SignOut", "Login")';
+      },
+      text: 'OK'
+     }],
+    };
+    eModal.alert(options);
+   };
+   //END OF MULTIPLE LOGIN
+
+   function setCookie(cName, value, exdays) {
+    var exdate = new Date();
+    exdate.setDate(exdate.getDate() + exdays);
+
+    var c_value = escape(value) + ((exdays == null) ? "" : "; expires=" + exdate.toUTCString()) + " ;secure;";
+    //alert(c_value);
+    document.cookie = cName + "=" + c_value;
+   }
+ });
+
+
+    </script>
+
+    @RenderSection("head", false)
+
+</head>
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        @*<div class="container">*@
+        <div class="navbar-header">
+            @*<button type="button" data-target="#myNavbar" data-toggle="collapse" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>*@
+
+            <a id="logo" href="@Url.Action("Index","Home")"><img src="~/CTBC%20New%20Logo.png" style="width:220px;height:70px; padding-top:0;"></a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class='nav navbar-nav navbar-right' style='padding-top:20px;' id="nav_setup">
+                <li><a href='@Url.Action("Index","Home")'><i class='glyphicon glyphicon-home'></i> Home</a></li>
+
+                <ul class='dropdown nav navbar-nav navbar-right'>
+                    <li style="margin-right: 20px" class="dropdown">
+                        <a href='#' class='dropdown-toggle' data-toggle='dropdown' role="button" aria-haspopup="true" aria-expanded="false"><i class='glyphicon glyphicon-user'></i> @Session["FullName"] <span class='caret'></span></a>
+                        <ul class='dropdown-menu'>
+                            <li><a href='@Url.Action("SignOut","Login")' id='logout'><i class='glyphicon glyphicon-log-out'></i> Logout</a></li>
+                            <li><a href="@Url.Action("Index", "FAQ")"><i class="glyphicon glyphicon-question-sign" aria-hidden="true"></i> FAQ</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </ul>
+        </div>
+        @*</div>*@
+    </nav>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            <div class="row">
+                <div class="col-md-12">
+                    @RenderBody()
+                </div>
+            </div>
+        </section>
+    </div><br />
+
+    @*<script src="~/Scripts/tipsy/src/javascripts/jquery.tipsy.js"></script>
+        @RenderSection("scripts", false)
+        <script>
+         $("[title]").tipsy({ gravity: "s" });
+        </script>*@
+
+    <footer class="footer navbar-fixed-bottom">
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p>&copy; @DateTime.Now.Year - CTBC BANK (PHILIPPINES) CORP.</p>
+            </div>
+        </div>
+    </footer>
+    <div id="loadscreen" class="loadscreen"><!-- Place at bottom of page --></div>
+</body>
+</html>
