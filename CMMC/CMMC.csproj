@@ -222,6 +222,17 @@
     <Compile Include="Models\RelatedAccounts.cs" />
     <Compile Include="Models\RelationshipManager.cs" />
     <Compile Include="Models\Report.cs" />
+    <Compile Include="Models\Reports\RptClientAccountsType.cs" />
+    <Compile Include="Models\Reports\RptNoLinkedAccounts.cs" />
+    <Compile Include="Models\Reports\RptInsufficientFundPenFee.cs" />
+    <Compile Include="Models\Reports\RptUncollectedPenFee.cs" />
+    <Compile Include="Models\Reports\RptTotADBRequirement.cs" />
+    <Compile Include="Models\Reports\RptClosureCharges.cs" />
+    <Compile Include="Models\Reports\RptCMSDeals.cs" />
+    <Compile Include="Models\Reports\RptCustomerProfile.cs" />
+    <Compile Include="Models\Reports\RptSubAccountsCount.cs" />
+    <Compile Include="Models\Reports\RptCMSAccounts.cs" />
+    <Compile Include="Models\Reports\RptAlienSubAccounts.cs" />
     <Compile Include="Models\Reports\RptOphanAccounts.cs" />
     <Compile Include="Models\Reports\RptForeignCIFNumber.cs" />
     <Compile Include="Models\Reports\RptMonthlyADBPenFee.cs" />
