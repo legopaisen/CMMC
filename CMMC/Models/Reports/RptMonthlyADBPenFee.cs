@@ -12,6 +12,8 @@ namespace CMMC.Models.Reports
         public string CustomerName { get; set; }
         public string AccountNumber { get; set; }
         public decimal RequiredADB { get; set; }
+        public decimal MTDADBAccount { get; set; }
+        public decimal AggregateADBAccounts { get; set; }
         public string SubAccounts { get; set; }
         public decimal RequiredSubAccountADB { get; set; }
         public decimal TotRequiredFixedADB { get; set; }

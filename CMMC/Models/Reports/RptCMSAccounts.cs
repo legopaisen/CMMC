@@ -9,6 +9,7 @@ namespace CMMC.Models.Reports
     {
         public int PCCC { get; set; }
         public string Branch { get; set; }
+        public int CMSCode { get; set; }
         public string InvestorType { get; set; }
         public string CIFNumber { get; set; }
         public string AccountNumber { get; set; }

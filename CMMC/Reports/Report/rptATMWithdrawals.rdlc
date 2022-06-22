@@ -23,7 +23,7 @@
     </DataSource>
   </DataSources>
   <DataSets>
-    <DataSet Name="DataSet1">
+    <DataSet Name="RptATMWithdrawalsModel">
       <Query>
         <DataSourceName>CMMCModelsReports</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
@@ -39,45 +39,49 @@
         </Field>
         <Field Name="CardNumber">
           <DataField>CardNumber</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
-        <Field Name="ChildAcctName">
-          <DataField>ChildAcctName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="ChildAcctNo">
-          <DataField>ChildAcctNo</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
+        <Field Name="ChildAccount">
+          <DataField>ChildAccount</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ChildAccountName">
+          <DataField>ChildAccountName</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="CMSCode">
           <DataField>CMSCode</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="CMSCustName">
-          <DataField>CMSCustName</DataField>
+        <Field Name="CustomerName">
+          <DataField>CustomerName</DataField>
           <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="NoOfFreeWithdrawals">
+          <DataField>NoOfFreeWithdrawals</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="PCCC">
           <DataField>PCCC</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="TransAmount">
-          <DataField>TransAmount</DataField>
-          <rd:TypeName>System.Double</rd:TypeName>
+        <Field Name="TransactionAmount">
+          <DataField>TransactionAmount</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="TransCodeDesc">
-          <DataField>TransCodeDesc</DataField>
+        <Field Name="TransactionCodeDesc">
+          <DataField>TransactionCodeDesc</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="TransDate">
-          <DataField>TransDate</DataField>
+        <Field Name="TransactionDateTime">
+          <DataField>TransactionDateTime</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>CMMC.Models.Reports</rd:DataSetName>
-        <rd:TableName>RptATMWithdrawalModel</rd:TableName>
-        <rd:ObjectDataSourceType>CMMC.Models.Reports.RptATMWithdrawalModel, CMMC, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+        <rd:TableName>RptATMWithdrawalsModel</rd:TableName>
+        <rd:ObjectDataSourceType>CMMC.Models.Reports.RptATMWithdrawalsModel, CMMC, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
@@ -89,37 +93,37 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>1.0095in</Width>
+                  <Width>1.03623in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.08333in</Width>
+                  <Width>1.11006in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.04131in</Width>
+                  <Width>1.06804in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.54129in</Width>
+                  <Width>0.56802in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.88542in</Width>
+                  <Width>0.91215in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.81286in</Width>
+                  <Width>0.83959in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.96656in</Width>
+                  <Width>0.99329in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.13304in</Width>
+                  <Width>1.15977in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.82639in</Width>
+                  <Width>0.85312in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.02673in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1in</Width>
+                  <Width>1.02673in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -507,14 +511,14 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="pt_AccountNo">
+                        <Textbox Name="ChildAccount">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!pt_AccountNo.Value</Value>
+                                  <Value>=Fields!ChildAccount.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                   </Style>
@@ -525,7 +529,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>pt_AccountNo</rd:DefaultName>
+                          <rd:DefaultName>ChildAccount</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -538,14 +542,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="pt_PayCode">
+                        <Textbox Name="ChildAccountName">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!pt_PayCode.Value</Value>
+                                  <Value>=Fields!ChildAccountName.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                   </Style>
@@ -556,7 +560,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>pt_PayCode</rd:DefaultName>
+                          <rd:DefaultName>ChildAccountName</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -569,14 +573,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Description">
+                        <Textbox Name="CardNumber">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Description.Value</Value>
+                                  <Value>=Fields!CardNumber.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                   </Style>
@@ -587,7 +591,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Description</rd:DefaultName>
+                          <rd:DefaultName>CardNumber</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -600,14 +604,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Year">
+                        <Textbox Name="PCCC">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Year.Value</Value>
+                                  <Value>=Fields!PCCC.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                   </Style>
@@ -618,7 +622,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Year</rd:DefaultName>
+                          <rd:DefaultName>PCCC</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -631,14 +635,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Month">
+                        <Textbox Name="Branch">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!Month.Value</Value>
+                                  <Value>=Fields!Branch.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                   </Style>
@@ -649,7 +653,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Month</rd:DefaultName>
+                          <rd:DefaultName>Branch</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -662,14 +666,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="pt_RequiredADB">
+                        <Textbox Name="CMSCode">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!pt_RequiredADB.Value</Value>
+                                  <Value>=Fields!CMSCode.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                   </Style>
@@ -680,7 +684,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>pt_RequiredADB</rd:DefaultName>
+                          <rd:DefaultName>CMSCode</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -693,14 +697,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="pt_ActualADB">
+                        <Textbox Name="CustomerName">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!pt_ActualADB.Value</Value>
+                                  <Value>=Fields!CustomerName.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                   </Style>
@@ -711,7 +715,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>pt_ActualADB</rd:DefaultName>
+                          <rd:DefaultName>CustomerName</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -724,14 +728,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="pt_Amount">
+                        <Textbox Name="TransactionCodeDesc">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!pt_Amount.Value</Value>
+                                  <Value>=Fields!TransactionCodeDesc.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                   </Style>
@@ -742,7 +746,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>pt_Amount</rd:DefaultName>
+                          <rd:DefaultName>TransactionCodeDesc</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -755,14 +759,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox35">
+                        <Textbox Name="TransactionAmount">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!TransactionAmount.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                   </Style>
@@ -773,7 +777,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox35</rd:DefaultName>
+                          <rd:DefaultName>TransactionAmount</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -786,14 +790,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox37">
+                        <Textbox Name="TransactionDateTime">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!TransactionDateTime.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                   </Style>
@@ -804,7 +808,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox37</rd:DefaultName>
+                          <rd:DefaultName>TransactionDateTime</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -817,14 +821,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox41">
+                        <Textbox Name="ATMTerminalIDDesc">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!ATMTerminalIDDesc.Value</Value>
                                   <Style>
                                     <FontFamily>Tahoma</FontFamily>
                                   </Style>
@@ -835,7 +839,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox41</rd:DefaultName>
+                          <rd:DefaultName>ATMTerminalIDDesc</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -885,10 +889,10 @@
                 </TablixMember>
               </TablixMembers>
             </TablixRowHierarchy>
-            <DataSetName>CMMC</DataSetName>
-            <Top>1.25812in</Top>
+            <DataSetName>RptATMWithdrawalsModel</DataSetName>
+            <Top>0.06944in</Top>
             <Height>1.05939in</Height>
-            <Width>10.2997in</Width>
+            <Width>10.59376in</Width>
             <Style />
           </Tablix>
         </ReportItems>
@@ -898,7 +902,7 @@
       <Width>10.59376in</Width>
       <Page>
         <PageHeader>
-          <Height>1.68055in</Height>
+          <Height>1.56485in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -921,7 +925,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>CMMC -- Monthly ADB Penalty Fee Report</Value>
+                      <Value>CMMC -- ATM Withdrawals Report</Value>
                       <Style>
                         <FontFamily>Tahoma</FontFamily>
                         <FontSize>20pt</FontSize>

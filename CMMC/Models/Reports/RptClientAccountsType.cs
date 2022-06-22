@@ -12,6 +12,7 @@ namespace CMMC.Models.Reports
         public string Branch { get; set; }
         public string AccountType { get; set; }
         public string AccountNo { get; set; }
+        public string AutoDebit { get; set; }
     }
 
     public class RptClientAccountsType

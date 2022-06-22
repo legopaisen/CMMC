@@ -12,7 +12,7 @@ namespace CMMC.Models.Reports
         public string AggregateFlag{ get; set; }
         public decimal TotalRequiredFixedADB { get; set; }
         public decimal RequiredSubAccountADB { get; set; }
-        public int CMSCode { get; set; }
+        public decimal TotalRequiredSubAccountADB { get; set; }
         public string DebitAccountNo { get; set; }
         public string HigherFlag { get; set; }
         public string AutoDebit { get; set; }

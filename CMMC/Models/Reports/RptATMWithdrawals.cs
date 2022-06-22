@@ -15,6 +15,7 @@ namespace CMMC.Models.Reports
         public int CMSCode { get; set; }
         public string CustomerName { get; set; }
         public string TransactionCodeDesc { get; set; }
+        public int TransactionAmount { get; set; }
         public DateTime TransactionDateTime { get; set; }
         public string ATMTerminalIDDesc{ get; set; }
         public int NoOfFreeWithdrawals { get; set; }
