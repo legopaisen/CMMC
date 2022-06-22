@@ -91,7 +91,7 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptATMWithdrawals.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptATMWithdrawals.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "ATM Withdrawals";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
@@ -101,7 +101,7 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptMTDADBReport.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptMTDADBReport.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "MTD ADB";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
@@ -111,7 +111,7 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptADBPerformanceReport.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptADBPerformanceReport.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "ADB Performance";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
@@ -121,7 +121,7 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptMonthlyADBPenFee.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptMonthlyADBPenFee.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Monthly ADB Penalty Fee";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
@@ -131,7 +131,7 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptForeignCIFNumber.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptForeignCIFNumber.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Foreign CIF Number";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
@@ -141,7 +141,7 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptOprhanAccounts.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptOprhanAccounts.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Orphan Accounts Exception";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
@@ -151,7 +151,7 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptAlienSubAccounts.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptAlienSubAccounts.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Alien Sub Accounts Exception";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
@@ -161,7 +161,7 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptCMSAccounts.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptCMSAccounts.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "CMS Accounts";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
@@ -171,7 +171,7 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptSubAccountsCount.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptSubAccountsCount.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Sub Accounts Count";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
@@ -181,7 +181,7 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptCustomerProfile.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptCustomerProfile.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Customer Profile";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
@@ -191,7 +191,7 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptCMSDeals.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptCMSDeals.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "CMS Deals";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
@@ -201,19 +201,19 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptClosureCharges.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptClosureCharges.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Closure/Accumulated Charges";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
                             else if (strReportName.Equals("TotalADBRequirement"))
                             {
+                                string strBranch = Request.QueryString["Branch"] != null ? Request.QueryString["Branch"] : "";
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
-                                string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptTotalADBRequirement.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptTotalADBRequirement.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Total ADB Requirement";
-                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
+                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptTotalADBRequirementDtSet", this.GetTotalADBRequirement(strBranch, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
                             else if (strReportName.Equals("UncollectedCMSADBPenFee"))
@@ -221,7 +221,7 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptUncollectedCMSADBPenFee.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptUncollectedCMSADBPenFee.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Uncollected CMS ADB Penalty Fee";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
@@ -231,29 +231,29 @@ namespace CMMC.Reports
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptInsufficientFundCMSADBPenFee.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptInsufficientFundCMSADBPenFee.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Insufficient Fund CMS ADB Penalty Fee";
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
                             else if (strReportName.Equals("NoLinkedAccounts"))
                             {
+                                string strBranch = Request.QueryString["Branch"] != null ? Request.QueryString["Branch"] : "";
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
-                                string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptNoLinkedAccounts.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptNoLinkedAccounts.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "No Linked Accounts";
-                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
+                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptNoLinkedAccountsDtSet", this.GetNoLinkedAccounts(strBranch, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
                             else if (strReportName.Equals("ClientAccountsType"))
                             {
+                                string strClientType = Request.QueryString["ClientType"] != null ? Request.QueryString["ClientType"] : "";
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
-                                string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptClientAccountsType.rdl";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptClientAccountsType.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Client-Accounts Type";
-                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("CMMC", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
+                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptClientAccountsTypeDtSet", this.GetClientAccountsType(strClientType, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
                             else
@@ -291,6 +291,28 @@ namespace CMMC.Reports
         {
             DataTable tblReturn = new DataTable("CMMC");
             tblReturn = new Branches().GetADBReport(pBranch, pStartDate, pEndDate);//.ToDataTable();
+            tblReturn.TableName = "CMMC";
+            return tblReturn;
+        }
+        private DataTable GetNoLinkedAccounts(string pBranch, DateTime? pStartDate = null, DateTime? pEndDate = null)
+        {
+            DataTable tblReturn = new DataTable("CMMC");
+            tblReturn = new Models.Reports.RptNoLinkedAccounts().GetNoLinkedAccountsList(pBranch, pStartDate, pEndDate).ToDataTable();
+            tblReturn.TableName = "CMMC";
+            return tblReturn;
+        }
+        private DataTable GetTotalADBRequirement(string pBranch, DateTime? pStartDate = null, DateTime? pEndDate = null)
+        {
+            DataTable tblReturn = new DataTable("CMMC");
+            tblReturn = new Models.Reports.RptTotADBRequirement().GetTotADBRequirementList(pBranch, pStartDate, pEndDate).ToDataTable();
+            tblReturn.TableName = "CMMC";
+            return tblReturn;
+        }
+
+        private DataTable GetClientAccountsType(string pClientsAccountType, DateTime? pStartDate = null, DateTime? pEndDate = null)
+        {
+            DataTable tblReturn = new DataTable("CMMC");
+            tblReturn = new Models.Reports.RptClientAccountsType().GetClientAccountsList(pClientsAccountType, pStartDate, pEndDate).ToDataTable();
             tblReturn.TableName = "CMMC";
             return tblReturn;
         }

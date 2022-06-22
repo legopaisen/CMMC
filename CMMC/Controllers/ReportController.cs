@@ -40,6 +40,21 @@ namespace CMMC.Controllers
             return PartialView();
         }
 
+        public ActionResult ViewNoLinkedAccountsReport()
+        {
+            ViewBag.BranchName = new Branches().GetBranchesName();
+            return PartialView();
+        }
+        public ActionResult ViewClientAccountsTypeReport()
+        {
+            return PartialView();
+        }
+        public ActionResult ViewTotalADBRequirementReport()
+        {
+            ViewBag.BranchName = new Branches().GetBranchesName();
+            return PartialView();
+        }
+
         public ActionResult ViewApprove()
         {
             ViewBag.ApproverList = new SYS_MATRIX.Models.SYS_USERS().GetApproverDetails();

@@ -1038,6 +1038,9 @@
     <Content Include="Views\Report\ViewDisapproved.cshtml" />
     <Content Include="Views\Report\ViewTransactionalReports.cshtml" />
     <Content Include="Views\Report\ViewEnrollment.cshtml" />
+    <Content Include="Views\Report\ViewNoLinkedAccountsReport.cshtml" />
+    <Content Include="Views\Report\ViewClientAccountsTypeReport.cshtml" />
+    <Content Include="Views\Report\ViewTotalADBRequirementReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1154,7 +1157,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>62642</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/CMMC</IISUrl>
+          <IISUrl>http://localhost:44300/CMMC</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

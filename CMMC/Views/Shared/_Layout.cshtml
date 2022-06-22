@@ -321,7 +321,7 @@
           var module = $(this).data("module");
           var caption = $(this).text();
           var options = {
-              url: "@Url.Action("ViewClientAccountTypeReport", "Report")?pModule=" + module + "&Title=" + title,
+              url: "@Url.Action("ViewClientAccountsTypeReport", "Report")?pModule=" + module + "&Title=" + title,
               title: caption,
           size: eModal.size.lg,
           buttons: [{
