@@ -136,24 +136,24 @@ namespace CMMC.Reports
                                 rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptForeignCIFNumberDtSet", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
-                            else if (strReportName.Equals("OprhanAccounts"))
+                            else if (strReportName.Equals("OrphanAccounts"))
                             {
+                                string strBranch = Request.QueryString["Branch"] != null ? Request.QueryString["Branch"] : "";
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
-                                string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptOprhanAccounts.rdlc";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptOrphanAccounts.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Orphan Accounts Exception";
-                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptOprhanAccountsDtSet", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
+                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptOrphanAccountsDtSet", this.GetOrphanAccounts(strBranch, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
                             else if (strReportName.Equals("AlienSubAccounts"))
                             {
+                                string strBranch = Request.QueryString["Branch"] != null ? Request.QueryString["Branch"] : "";
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
-                                string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
                                 rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptAlienSubAccounts.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Alien Sub Accounts Exception";
-                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptAlienSubAccountsDtSet", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
+                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptAlienSubAccountsDtSet", this.GetAlienSubAccounts(strBranch, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
                             else if (strReportName.Equals("CMSAccounts"))
@@ -305,6 +305,20 @@ namespace CMMC.Reports
         {
             DataTable tblReturn = new DataTable("CMMC");
             tblReturn = new Models.Reports.RptTotADBRequirement().GetTotADBRequirementList(pBranch, pStartDate, pEndDate).ToDataTable();
+            tblReturn.TableName = "CMMC";
+            return tblReturn;
+        }
+        private DataTable GetOrphanAccounts(string pBranch, DateTime? pStartDate = null, DateTime? pEndDate = null)
+        {
+            DataTable tblReturn = new DataTable("CMMC");
+            tblReturn = new Models.Reports.RptOrphanAccounts().GetOrphanAccountsList(pBranch, pStartDate, pEndDate).ToDataTable();
+            tblReturn.TableName = "CMMC";
+            return tblReturn;
+        }
+        private DataTable GetAlienSubAccounts(string pBranch, DateTime? pStartDate = null, DateTime? pEndDate = null)
+        {
+            DataTable tblReturn = new DataTable("CMMC");
+            tblReturn = new Models.Reports.RptAlienSubAccounts().GetAlienSubAccountsList(pBranch, pStartDate, pEndDate).ToDataTable();
             tblReturn.TableName = "CMMC";
             return tblReturn;
         }

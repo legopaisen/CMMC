@@ -54,6 +54,16 @@ namespace CMMC.Controllers
             ViewBag.BranchName = new Branches().GetBranchesName();
             return PartialView();
         }
+        public ActionResult ViewOrphanAccounts()
+        {
+            ViewBag.BranchName = new Branches().GetBranchesName();
+            return PartialView();
+        }
+        public ActionResult ViewAlienSubAccounts()
+        {
+            ViewBag.BranchName = new Branches().GetBranchesName();
+            return PartialView();
+        }
 
         public ActionResult ViewApprove()
         {

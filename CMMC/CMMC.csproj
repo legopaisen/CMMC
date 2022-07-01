@@ -53,6 +53,7 @@
     <Reference Include="CTBC-Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\CTBC-Common.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="dotless.Core">
       <HintPath>..\packages\dotless.1.3.1.0\lib\dotless.Core.dll</HintPath>
@@ -60,10 +61,12 @@
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\DMS\DMS\bin\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Owin, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\DMS\DMS\bin\Microsoft.AspNet.SignalR.Owin.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -96,9 +99,8 @@
     <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.8.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.8\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
@@ -106,9 +108,11 @@
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.4.0.30506.0\lib\net40\System.Web.Http.dll</HintPath>
+    <Reference Include="System.Web.Http, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.9\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.9\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
@@ -134,9 +138,6 @@
     <Reference Include="System.Web.Helpers, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.2.0.30506.0\lib\net40\System.Web.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.30506.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -233,7 +234,7 @@
     <Compile Include="Models\Reports\RptSubAccountsCount.cs" />
     <Compile Include="Models\Reports\RptCMSAccounts.cs" />
     <Compile Include="Models\Reports\RptAlienSubAccounts.cs" />
-    <Compile Include="Models\Reports\RptOphanAccounts.cs" />
+    <Compile Include="Models\Reports\RptOrphanAccounts.cs" />
     <Compile Include="Models\Reports\RptForeignCIFNumber.cs" />
     <Compile Include="Models\Reports\RptMonthlyADBPenFee.cs" />
     <Compile Include="Models\Reports\RptADBPerformance.cs" />
@@ -1041,6 +1042,8 @@
     <Content Include="Views\Report\ViewNoLinkedAccountsReport.cshtml" />
     <Content Include="Views\Report\ViewClientAccountsTypeReport.cshtml" />
     <Content Include="Views\Report\ViewTotalADBRequirementReport.cshtml" />
+    <Content Include="Views\Report\ViewOrphanAccounts.cshtml" />
+    <Content Include="Views\Report\ViewAlienSubAccounts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1134,7 +1137,7 @@
     <EmbeddedResource Include="Reports\Report\rptMonthlyADBPenFee.rdlc" />
     <EmbeddedResource Include="Reports\Report\rptMTDADB.rdlc" />
     <EmbeddedResource Include="Reports\Report\rptNoLinkedAccounts.rdlc" />
-    <EmbeddedResource Include="Reports\Report\rptOphanAccounts.rdlc" />
+    <EmbeddedResource Include="Reports\Report\rptOrphanAccounts.rdlc" />
     <EmbeddedResource Include="Reports\Report\rptSubAccounts.rdlc" />
     <EmbeddedResource Include="Reports\Report\rptTotalADBRequirement.rdlc" />
     <EmbeddedResource Include="Reports\Report\rptUncollectedPenFee.rdlc" />
