@@ -128,12 +128,12 @@ namespace CMMC.Reports
                             }
                             else if (strReportName.Equals("ForeignCIFNumber"))
                             {
+                                string strBranch = Request.QueryString["Branch"] != null ? Request.QueryString["Branch"] : "";
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
-                                string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
                                 rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptForeignCIFNumber.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Foreign CIF Number";
-                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptForeignCIFNumberDtSet", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
+                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptForeignCIFNumberDtSet", this.GetForeignCIFNumberList(strBranch, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
                             else if (strReportName.Equals("OrphanAccounts"))
@@ -327,6 +327,13 @@ namespace CMMC.Reports
         {
             DataTable tblReturn = new DataTable("CMMC");
             tblReturn = new Models.Reports.RptClientAccountsType().GetClientAccountsList(pClientsAccountType, pStartDate, pEndDate).ToDataTable();
+            tblReturn.TableName = "CMMC";
+            return tblReturn;
+        }
+        private DataTable GetForeignCIFNumberList(string pBranch, DateTime? pStartDate = null, DateTime? pEndDate = null)
+        {
+            DataTable tblReturn = new DataTable("CMMC");
+            tblReturn = new Models.Reports.RptForeignCIFNumber().GetForeignCIFNumberList(pBranch, pStartDate, pEndDate).ToDataTable();
             tblReturn.TableName = "CMMC";
             return tblReturn;
         }

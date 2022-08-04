@@ -25,6 +25,7 @@
     <script src="~/Scripts/formValidation/js/formValidation.min.js"></script>
     <script src="~/Scripts/AjaxRequestDim/Dim.js"></script>
     <script src="~/Scripts/toastr/toastr.min.js"></script>
+    <script src="~/Content/sweetalert/sweetalert.min.js"></script>
     <script src="~/Scripts/moment.js"></script>
     <script src="~/Scripts/IE8Compatibility/respond.min.js"></script>
     <script src="~/Scripts/IE8Compatibility/html5shiv.min.js"></script>
@@ -88,6 +89,8 @@
                         NavBarMenu += " <li><a id='idOrphanAccountReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> Orphan Account Report</a></li>";
                         NavBarMenu += "<li class='dropdown-submenu'>";
                         NavBarMenu += " <li><a id='idAlienSubAccountsReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> Alien Sub-Accounts Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idForeignCIFNumberReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> Foreign CIF Number Report</a></li>";
                         NavBarMenu += "<li class='dropdown-submenu'>";
                         NavBarMenu += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><b class='caret-left'></b> Transactional Report </a>";
                          NavBarMenu += "<ul class='dropdown-menu'>";
@@ -382,6 +385,25 @@
           var caption = $(this).text();
           var options = {
               url: "@Url.Action("ViewAlienSubAccounts", "Report")?pModule=" + module + "&Title=" + title,
+              title: caption,
+              size: eModal.size.lg,
+              buttons: [{
+                  text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+              }, {
+                  text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function () {
+                      $().AbortAjaxRequest();
+                  }
+              }]
+          };
+          eModal.ajax(options);
+      });
+
+       $('body').on('click', '#idForeignCIFNumberReport', function () {
+          var title = $(this).data("title");
+          var module = $(this).data("module");
+          var caption = $(this).text();
+          var options = {
+              url: "@Url.Action("ViewForeignCIFNumber", "Report")?pModule=" + module + "&Title=" + title,
               title: caption,
               size: eModal.size.lg,
               buttons: [{

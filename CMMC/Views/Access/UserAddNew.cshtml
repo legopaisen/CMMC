@@ -93,7 +93,7 @@
     $.ajax({
      url: '@Url.Action("SearchEmployee", "Access")',
      data: { pEmployeeID: $("#txtUserID").val() },
-     success: function (data) {
+    success: function (data) {
       if (data.Username == null) {
        hasRecord = false;
        toastr.error("Invalid Employee ID", "Error");

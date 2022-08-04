@@ -36,12 +36,13 @@
     }),
     type: 'POST',
     success: function (data) {
-     toastr.success("Successfully delete the Investment Type!");
      $("#tblAccessList").bootstrapTable('remove', {
       field: 'InvestmentCode',
       values: pID
      });
-     location.reload();
+    swal("Success!", "Successfully deleted the Investment Type", "success").then((value) => {
+        location.reload();
+    });
     },
     error: function () {
      toastr.info("Select atleast one to remove!")
@@ -68,7 +69,6 @@
      if (result == true) {
       removeInvestment(row.InvestmentCode)
      }
-     toastr.success("Successfully delete the Investment Type!")
     })
    },
    'click .edit': function (e, value, row, index) {

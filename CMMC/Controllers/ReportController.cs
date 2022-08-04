@@ -64,6 +64,11 @@ namespace CMMC.Controllers
             ViewBag.BranchName = new Branches().GetBranchesName();
             return PartialView();
         }
+        public ActionResult ViewForeignCIFNumber()
+        {
+            ViewBag.BranchName = new Branches().GetBranchesName();
+            return PartialView();
+        }
 
         public ActionResult ViewApprove()
         {

@@ -271,161 +271,183 @@
 </script>
 
 <div class="container" id="sysDetails">
- <div class="row">
-  <h2 class="page-header">
-   System Settings
-  </h2>
-  <div class="row">
-   <div class="col-lg-12">
-    <div class="well">
-     <h3>
-      File and Batch Program Settings
-      <small> -- Used for file directory setup</small>
-      <span class="pull-right">
-       <button id="EditFileAndBatch" data-toggle="modal" data-target="#EditFileAndBatchModal" class="btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
-      </span>
-     </h3>
-     <hr />
-     <ul class="list-group">
-      <li class="list-group-item"><strong>File Name: </strong> @Model.FileAndBatch.FileName</li>
-      <li class="list-group-item"><strong>File Load Path: </strong> @Model.FileAndBatch.FileLoadPath</li>
-      <li class="list-group-item"><strong>FMT Files Path: </strong> @Model.FileAndBatch.FMTFilesPath</li>
-      <li class="list-group-item"><strong>INVV Path: </strong> @Model.FileAndBatch.InvvPath</li>
-      <li class="list-group-item"><strong>Account Path: </strong> @Model.FileAndBatch.AcctPath</li>
-      <li class="list-group-item"><strong>Customer Path: </strong> @Model.FileAndBatch.CustPath</li>
-      <li class="list-group-item"><strong>ADB CASA Path:</strong> @Model.FileAndBatch.ADBCasaPath</li>
-      <li class="list-group-item"><strong>Back Up: </strong> @Model.FileAndBatch.BackUp</li>
-      <li class="list-group-item"><strong>Back Up Path: </strong> @Model.FileAndBatch.BackUpPath</li>
-      <li class="list-group-item"><strong>Bulk Insert Folder: </strong> @Model.FileAndBatch.BulkInsert</li>
-      <li class="list-group-item"><strong>Dump INVV Path: </strong> @Model.FileAndBatch.DumpinInvvPath</li>
-      <li class="list-group-item"><strong>Program Name: </strong> @Model.FileAndBatch.ProgramName</li>
-      <li class="list-group-item"><strong>FNS ADB File: </strong> @Model.FileAndBatch.FNSAdbFile</li>
-      <li class="list-group-item"><strong>Charging File Path:</strong> @Model.FileAndBatch.ChargingFilePath</li>
-      <li class="list-group-item"><strong>Update Account: </strong> @Model.FileAndBatch.UpdateAcct</li>
-      <li class="list-group-item"><strong>Account One Path: </strong> @Model.FileAndBatch.AcctOnePath</li>
-      <li class="list-group-item"><strong>Update Customer: </strong> @Model.FileAndBatch.UpdateCust</li>
-      <li class="list-group-item"><strong>Customer One Path:</strong> @Model.FileAndBatch.CustOnePath</li>
-      <li class="list-group-item"><strong>Maintenance Email Subject: </strong> @Model.FileAndBatch.MaintenanceSubject</li>
-      <li class="list-group-item"><strong>Maintenance Email Recipients: </strong> @Model.FileAndBatch.MaintenanceRecipient</li>
-     </ul>
-     <hr />
+    <div class="row">
+        <h2 class="page-header">
+            System Settings
+        </h2>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="well">
+                    <h3>
+                        File and Batch Program Settings
+                        <small> -- Used for file directory setup</small>
+                        <span class="pull-right">
+                            <button id="EditFileAndBatch" data-toggle="modal" data-target="#EditFileAndBatchModal" class="btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
+                        </span>
+                    </h3>
+                    <hr />
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>File Name: </strong> @Model.FileAndBatch.FileName</li>
+                        <li class="list-group-item"><strong>File Load Path: </strong> @Model.FileAndBatch.FileLoadPath</li>
+                        <li class="list-group-item"><strong>FMT Files Path: </strong> @Model.FileAndBatch.FMTFilesPath</li>
+                        <li class="list-group-item"><strong>INVV Path: </strong> @Model.FileAndBatch.InvvPath</li>
+                        <li class="list-group-item"><strong>Account Path: </strong> @Model.FileAndBatch.AcctPath</li>
+                        <li class="list-group-item"><strong>Customer Path: </strong> @Model.FileAndBatch.CustPath</li>
+                        <li class="list-group-item"><strong>ADB CASA Path:</strong> @Model.FileAndBatch.ADBCasaPath</li>
+                        <li class="list-group-item"><strong>Back Up: </strong> @Model.FileAndBatch.BackUp</li>
+                        <li class="list-group-item"><strong>Back Up Path: </strong> @Model.FileAndBatch.BackUpPath</li>
+                        <li class="list-group-item"><strong>Bulk Insert Folder: </strong> @Model.FileAndBatch.BulkInsert</li>
+                        <li class="list-group-item"><strong>Dump INVV Path: </strong> @Model.FileAndBatch.DumpinInvvPath</li>
+                        <li class="list-group-item"><strong>Program Name: </strong> @Model.FileAndBatch.ProgramName</li>
+                        <li class="list-group-item"><strong>FNS ADB File: </strong> @Model.FileAndBatch.FNSAdbFile</li>
+                        <li class="list-group-item"><strong>Charging File Path:</strong> @Model.FileAndBatch.ChargingFilePath</li>
+                        <li class="list-group-item"><strong>Update Account: </strong> @Model.FileAndBatch.UpdateAcct</li>
+                        <li class="list-group-item"><strong>Account One Path: </strong> @Model.FileAndBatch.AcctOnePath</li>
+                        <li class="list-group-item"><strong>Update Customer: </strong> @Model.FileAndBatch.UpdateCust</li>
+                        <li class="list-group-item"><strong>Customer One Path:</strong> @Model.FileAndBatch.CustOnePath</li>
+                        <li class="list-group-item"><strong>Maintenance Email Subject: </strong> @Model.FileAndBatch.MaintenanceSubject</li>
+                        <li class="list-group-item"><strong>Maintenance Email Recipients: </strong> @Model.FileAndBatch.MaintenanceRecipient</li>
+                    </ul>
+                    <hr />
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="well">
+                    <h3>
+                        ATM System (Powercard) Database Connection Settings
+                        <small> -- For updating of CMS codes in Powercard Database</small>
+                        <span class="pull-right">
+                            <button id="EditATMSettings" data-toggle="modal" data-target="#EditATMModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
+                        </span>
+                    </h3>
+                    <hr />
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Powercard Server: </strong> @Model.ATMSystemConnection.PowercardServer</li>
+                        <li class="list-group-item"><strong>Powercard Port: </strong> @Model.ATMSystemConnection.PowercardPort</li>
+                        <li class="list-group-item"><strong>Powercard Service Name: </strong> @Model.ATMSystemConnection.PowercardServiceName</li>
+                        <li class="list-group-item"><strong>Powercard User ID: </strong> @Model.ATMSystemConnection.PowercardUserID</li>
+                    </ul>
+                    <hr />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="well">
+                    <h3>
+                        FTP Connection Settings
+                        <small> -- Used for file transfer of CMMC Charging File to BANCS</small>
+                        <span class="pull-right">
+                            <button id="EditFTPConSettings" data-toggle="modal" data-target="#EditFTPModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
+                        </span>
+                    </h3>
+                    <hr />
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>FTP IP ADDRESS: </strong> @Model.FTPConSettings.FTPIPAddress</li>
+                        <li class="list-group-item"><strong>FTP Timeout: </strong> @Model.FTPConSettings.FTPTimeout</li>
+                        <li class="list-group-item"><strong>FTP Destination: </strong> @Model.FTPConSettings.FTPDestination</li>
+                        <li class="list-group-item"><strong>FTP User ID: </strong> @Model.FTPConSettings.FTPUserID</li>
+                        @*<li class="list-group-item"><strong>FTP Password:</strong> @Model.FTPConSettings.FTPPassword</li>*@
+                        <li class="list-group-item"><strong>FTP Destination File Name:</strong> @Model.FTPConSettings.FTPDestinationFileName</li>
+                    </ul>
+                    <hr />
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="well">
+                    <h3>
+                        Notification Settings
+                        <small> -- Email Notification Parameters</small>
+                        <span class="pull-right">
+                            <button id="EditNotificationSettings" data-toggle="modal" data-target="#EditNotificationModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
+                        </span>
+                    </h3>
+                    <hr />
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>SMTP Server: </strong> @Model.NotificationSettings.SMPTPServer</li>
+                        <li class="list-group-item"><strong>Sender: </strong> @Model.NotificationSettings.Sender</li>
+                        <li class="list-group-item"><strong>Subject Error: </strong> @Model.NotificationSettings.SubjectError</li>
+                        <li class="list-group-item"><strong>Subject Success: </strong> @Model.NotificationSettings.SubjectSuccess</li>
+                        <li class="list-group-item"><strong>Body Error:</strong> @Model.NotificationSettings.BodyError</li>
+                        <li class="list-group-item"><strong>Body Success:</strong> @Model.NotificationSettings.BodySuccess</li>
+                        <li class="list-group-item"><strong>Log File Path:</strong> @Model.NotificationSettings.LogFilePath</li>
+                        <li class="list-group-item"><strong>E- Mail:</strong> @Model.NotificationSettings.Email</li>
+                        <li class="list-group-item"><strong>Account Email Recipients: </strong> @Model.NotificationSettings.AccountEmailRecipient</li>
+                        <li class="list-group-item"><strong>Account Email Subject: </strong> @Model.NotificationSettings.AccountEmailSubject</li>
+                    </ul>
+                    <hr />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="well">
+                    <h3>
+                        General System Settings
+                        <span class="pull-right">
+                            <button id="EditConnection" data-toggle="modal" data-target="#EditConnectionModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
+                        </span>
+                    </h3>
+                    <hr />
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Server Name: </strong> @Model.Settings.SQLServer</li>
+                        <li class="list-group-item"><strong>Database: </strong> @Model.Settings.SQLDatabase</li>
+                        <li class="list-group-item"><strong>Database ID: </strong> @Model.Settings.SQLUserID</li>
+                        @*<li class="list-group-item"><strong>Password: </strong>@Model.Settings.SQLPassword</li>*@
+                        <li class="list-group-item"><strong>Security Key: </strong> @Model.Settings.SecurityKey</li>
+                        <li class="list-group-item"><strong>User ID: </strong> @Model.Settings.UserID</li>
+                        <li class="list-group-item"><strong>Schedule Day: </strong> @Model.Settings.Schedule</li>
+                        <li class="list-group-item"><strong>Withdrawal Fee: </strong> @Model.Settings.Fee</li>
+                        <li class="list-group-item"><strong>Investment Mother Account: </strong> @Model.Settings.INVTYPE_MOTHER</li>
+                        <li class="list-group-item"><strong>Investment Child Account: </strong> @Model.Settings.INVTYPE_CHILD</li>
+                    </ul>
+                    <hr />
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="well">
+                    <h3>
+                        ADB DTS Connection Settings
+                        <small> -- Used for FNS_ADB bulk loading on month-end processing</small>
+                        <span class="pull-right">
+                            <button id="EditADB" data-toggle="modal" data-target="#EditADBModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
+                        </span>
+                    </h3>
+                    <hr />
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Server: </strong> @Model.ADBTransferFile.ADBServer</li>
+                        <li class="list-group-item"><strong>ADB Database: </strong> @Model.ADBTransferFile.ADBDatabase</li>
+                        <li class="list-group-item"><strong>Database ID: </strong> @Model.ADBTransferFile.DBID</li>
+                        @*<li class="list-group-item"><strong>Password: </strong> @Model.ADBTransferFile.ADBPassword</li>*@
+                        <li class="list-group-item"><strong>ADB Jobname: </strong> @Model.ADBTransferFile.JobName</li>
+                    </ul>
+                    <hr />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="well">
+                    <h3>
+                        ODS Connection Settings
+                        <span class="pull-right">
+                            <button id="EditODSConnection" data-toggle="modal" data-target="#EditODSConnectionModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
+                        </span>
+                    </h3>
+                    <hr />
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Server Name: </strong> @Model.ODSConnectionSetting.ODSServerIP</li>
+                        <li class="list-group-item"><strong>Database: </strong> @Model.ODSConnectionSetting.ODSDatabase</li>
+                        <li class="list-group-item"><strong>User ID: </strong> @Model.ODSConnectionSetting.ODSUserID</li>
+                        <li class="list-group-item"><strong>Password: </strong>@Model.ODSConnectionSetting.ODSPassword</li>
+                        <li class="list-group-item"><strong>Port: </strong>@Model.ODSConnectionSetting.ODSPort</li>
+                        <li class="list-group-item"><strong>Service Name: </strong>@Model.ODSConnectionSetting.ODSServiceName</li>
+                    </ul>
+                    <hr />
+                </div>
+            </div>
+        </div>
     </div>
-   </div>
-   <div class="col-lg-12">
-    <div class="well">
-     <h3>
-      ATM System (Powercard) Database Connection Settings
-      <small> -- For updating of CMS codes in Powercard Database</small>
-      <span class="pull-right">
-       <button id="EditATMSettings" data-toggle="modal" data-target="#EditATMModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
-      </span>
-     </h3>
-     <hr />
-     <ul class="list-group">
-      <li class="list-group-item"><strong>Powercard Server: </strong> @Model.ATMSystemConnection.PowercardServer</li>
-      <li class="list-group-item"><strong>Powercard Port: </strong> @Model.ATMSystemConnection.PowercardPort</li>
-      <li class="list-group-item"><strong>Powercard Service Name: </strong> @Model.ATMSystemConnection.PowercardServiceName</li>
-      <li class="list-group-item"><strong>Powercard User ID: </strong> @Model.ATMSystemConnection.PowercardUserID</li>
-     </ul>
-     <hr />
-    </div>
-   </div>
-  </div>
-  <div class="row">
-   <div class="col-lg-12">
-    <div class="well">
-     <h3>
-     FTP Connection Settings
-      <small> -- Used for file transfer of CMMC Charging File to BANCS</small>
-      <span class="pull-right">
-       <button id="EditFTPConSettings" data-toggle="modal" data-target="#EditFTPModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
-      </span>
-     </h3>
-     <hr />
-     <ul class="list-group">
-      <li class="list-group-item"><strong>FTP IP ADDRESS: </strong> @Model.FTPConSettings.FTPIPAddress</li>
-      <li class="list-group-item"><strong>FTP Timeout: </strong> @Model.FTPConSettings.FTPTimeout</li>
-      <li class="list-group-item"><strong>FTP Destination: </strong> @Model.FTPConSettings.FTPDestination</li>
-      <li class="list-group-item"><strong>FTP User ID: </strong> @Model.FTPConSettings.FTPUserID</li>
-      @*<li class="list-group-item"><strong>FTP Password:</strong> @Model.FTPConSettings.FTPPassword</li>*@
-      <li class="list-group-item"><strong>FTP Destination File Name:</strong> @Model.FTPConSettings.FTPDestinationFileName</li>
-     </ul>
-     <hr />
-    </div>
-   </div>
-   <div class="col-lg-12">
-    <div class="well">
-     <h3>
-      Notification Settings
-      <small> -- Email Notification Parameters</small>
-      <span class="pull-right">
-       <button id="EditNotificationSettings" data-toggle="modal" data-target="#EditNotificationModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
-      </span>
-     </h3>
-     <hr />
-     <ul class="list-group">
-      <li class="list-group-item"><strong>SMTP Server: </strong> @Model.NotificationSettings.SMPTPServer</li>
-      <li class="list-group-item"><strong>Sender: </strong> @Model.NotificationSettings.Sender</li>
-      <li class="list-group-item"><strong>Subject Error: </strong> @Model.NotificationSettings.SubjectError</li>
-      <li class="list-group-item"><strong>Subject Success: </strong> @Model.NotificationSettings.SubjectSuccess</li>
-      <li class="list-group-item"><strong>Body Error:</strong> @Model.NotificationSettings.BodyError</li>
-      <li class="list-group-item"><strong>Body Success:</strong> @Model.NotificationSettings.BodySuccess</li>
-      <li class="list-group-item"><strong>Log File Path:</strong> @Model.NotificationSettings.LogFilePath</li>
-      <li class="list-group-item"><strong>E- Mail:</strong> @Model.NotificationSettings.Email</li>
-      <li class="list-group-item"><strong>Account Email Recipients: </strong> @Model.NotificationSettings.AccountEmailRecipient</li>
-      <li class="list-group-item"><strong>Account Email Subject: </strong> @Model.NotificationSettings.AccountEmailSubject</li>
-     </ul>
-     <hr />
-    </div>
-   </div>
-   </div>
-   <div class="row">
-    <div class="col-lg-12">
-     <div class="well">
-      <h3>
-       General System Settings
-       <span class="pull-right">
-        <button id="EditConnection" data-toggle="modal" data-target="#EditConnectionModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
-       </span>
-      </h3>
-      <hr />
-      <ul class="list-group">
-       <li class="list-group-item"><strong>Server Name: </strong> @Model.Settings.SQLServer</li>
-       <li class="list-group-item"><strong>Database: </strong> @Model.Settings.SQLDatabase</li>
-       <li class="list-group-item"><strong>Database ID: </strong> @Model.Settings.SQLUserID</li>
-       @*<li class="list-group-item"><strong>Password: </strong>@Model.Settings.SQLPassword</li>*@
-       <li class="list-group-item"><strong>Security Key: </strong> @Model.Settings.SecurityKey</li>
-       <li class="list-group-item"><strong>User ID: </strong> @Model.Settings.UserID</li>
-       <li class="list-group-item"><strong>Schedule Day: </strong> @Model.Settings.Schedule</li>
-       <li class="list-group-item"><strong>Withdrawal Fee: </strong> @Model.Settings.Fee</li>
-       <li class="list-group-item"><strong>Investment Mother Account: </strong> @Model.Settings.INVTYPE_MOTHER</li>
-       <li class="list-group-item"><strong>Investment Child Account: </strong> @Model.Settings.INVTYPE_CHILD</li>
-      </ul>
-      <hr />
-     </div>
-    </div>
-    <div class="col-lg-12">
-     <div class="well">
-      <h3>
-       ADB DTS Connection Settings
-       <small> -- Used for FNS_ADB bulk loading on month-end processing</small>
-       <span class="pull-right">
-        <button id="EditADB" data-toggle="modal" data-target="#EditADBModal" class=" btn btn-success btn-sm glyphicon glyphicon-pencil"></button>
-       </span>
-      </h3>
-      <hr />
-      <ul class="list-group">
-       <li class="list-group-item"><strong>Server: </strong> @Model.ADBTransferFile.ADBServer</li>
-       <li class="list-group-item"><strong>ADB Database: </strong> @Model.ADBTransferFile.ADBDatabase</li>
-       <li class="list-group-item"><strong>Database ID: </strong> @Model.ADBTransferFile.DBID</li>
-       @*<li class="list-group-item"><strong>Password: </strong> @Model.ADBTransferFile.ADBPassword</li>*@
-       <li class="list-group-item"><strong>ADB Jobname: </strong> @Model.ADBTransferFile.JobName</li>
-      </ul>
-      <hr />
-     </div>
-    </div>
-   </div>
-  </div>
 </div>
 <!----------------->
 <!--Modal-->

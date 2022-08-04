@@ -48,13 +48,14 @@
      'pIDs': pID
     }),
     type: 'POST',
-    success: function (data){
-     toastr.success("Successfull delete the User!");
+       success: function (data) {
+           swal("Success!", "Successfully deleted the User!", "success").then((value) => {
+               location.reload();
+            });
      $("#tblUserList").bootstrapTable('remove', {
       field: 'UserID',
       values: pID
      });
-     location.reload();
     },
     error: function() {
      toastr.info("Select atleast one to remove!")
@@ -81,7 +82,6 @@
      if (result == true) {
       removeUsers(row.UserID)
      }
-     toastr.success("Successfully delete the User!")
     })
    },
    'click .edit': function (e, value, row, index) {

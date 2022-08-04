@@ -116,7 +116,7 @@ namespace CMMC.Controllers
             });
            }
            response.ResponseStatus = SystemCore.ResponseStatus.SUCCESS;
-           response.Description = "Group Successfully updated";
+           response.Description = "Branch Successfully updated";
           }
           else
           {
@@ -146,7 +146,7 @@ namespace CMMC.Controllers
            });
           }
           response.ResponseStatus = SystemCore.ResponseStatus.SUCCESS;
-          response.Description = intReturn.ToString() + " has been " + (pIsActivate ? "activated" : "deactivated") + ".";
+          response.Description = "Selected item(s) has been " + (pIsActivate ? "activated" : "deactivated") + ".";
          }
          else
          {
@@ -220,7 +220,7 @@ namespace CMMC.Controllers
             });
            }
            response.ResponseStatus = SystemCore.ResponseStatus.SUCCESS;
-           response.Description = "Group Successfully updated";
+           response.Description = "Service Successfully updated";
           }
           else
           {
@@ -248,22 +248,22 @@ namespace CMMC.Controllers
             {
              UserID = Session["UserID"].ToString()
              ,Module = "SystemParameter"
-             ,NewValues = "Added New Investment Code: " + model.ServiceName + " Investment Description: " + model.ServiceName
+             ,NewValues = "Added New Service Type: " + model.ServiceName
              ,IPAddress = SystemCore.GetIPAddress()
             });
            }
            response.ResponseStatus = SystemCore.ResponseStatus.SUCCESS;
-           response.Description = "New Investment Type Added";
+           response.Description = "New Service Type Added";
           }
           else if (services.IsExist(model.ServiceName))
           {
            response.ResponseStatus = SystemCore.ResponseStatus.FAILED;
-           response.Description = "Investment Type already exist.";
+           response.Description = "Service Type already exist.";
           }
           else
           {
            response.ResponseStatus = SystemCore.ResponseStatus.FAILED;
-           response.Description = "Unable to add Investment Type";
+           response.Description = "Unable to add Service Type";
           }
          }
          return Json(response, JsonRequestBehavior.DenyGet);
@@ -288,7 +288,7 @@ namespace CMMC.Controllers
            });
           }
           response.ResponseStatus = SystemCore.ResponseStatus.SUCCESS;
-          response.Description = intReturn.ToString() + " has been " + (pIsActivate ? "activated" : "deactivated") + ".";
+          response.Description = "Selected item(s) has been " + (pIsActivate ? "activated" : "deactivated") + ".";
          }
          else
          {
@@ -342,17 +342,17 @@ namespace CMMC.Controllers
             });
            }
            response.ResponseStatus = SystemCore.ResponseStatus.SUCCESS;
-           response.Description = "New Investment Type Added";
+           response.Description = "New Product Code Added";
           }
           else if (productType.IsExist(model.ProductCode))
           {
            response.ResponseStatus = SystemCore.ResponseStatus.FAILED;
-           response.Description = "Investment Type already exist.";
+           response.Description = "Product Code already exist.";
           }
           else
           {
            response.ResponseStatus = SystemCore.ResponseStatus.FAILED;
-           response.Description = "Unable to add Investment Type";
+           response.Description = "Unable to add Product Code";
           }
          }
          return Json(response, JsonRequestBehavior.DenyGet);
@@ -383,12 +383,12 @@ namespace CMMC.Controllers
             });
            }
            response.ResponseStatus = SystemCore.ResponseStatus.SUCCESS;
-           response.Description = "Group Successfully updated";
+           response.Description = "Product Successfully updated";
           }
           else
           {
            response.ResponseStatus = SystemCore.ResponseStatus.FAILED;
-           response.Description = "Unable to update group details";
+           response.Description = "Unable to update Product details";
           }
          }
          return Json(response, JsonRequestBehavior.DenyGet);
@@ -500,12 +500,12 @@ namespace CMMC.Controllers
             });
            }
            response.ResponseStatus = SystemCore.ResponseStatus.SUCCESS;
-           response.Description = "Group Successfully updated";
+           response.Description = "Investment Type Successfully updated";
           }
           else
           {
            response.ResponseStatus = SystemCore.ResponseStatus.FAILED;
-           response.Description = "Unable to update group details";
+           response.Description = "Unable to update Investment Type details";
           }
          }
          return Json(response, JsonRequestBehavior.DenyGet);
@@ -531,7 +531,7 @@ namespace CMMC.Controllers
            });
           }
           response.ResponseStatus = SystemCore.ResponseStatus.SUCCESS;
-          response.Description = intReturn.ToString() + " has been " + (pIsActivate ? "activated" : "deactivated") + ".";
+          response.Description = "Selected item(s) has been " + (pIsActivate ? "activated" : "deactivated") + ".";
          }
          else
          {

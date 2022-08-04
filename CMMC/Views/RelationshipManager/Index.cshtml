@@ -23,8 +23,10 @@
     });
    });
 
- if (localStorage.getItem("deleteRM") == "") {
-  command: toastr["Success"]("Success", "Successfully deleted in the list of Relationship Manager")
+    if (localStorage.getItem("deleteRM") == "") {
+        swal("Success!", "Successfully deleted in the list of Relationship Manager", "success").then((value) => {
+            location.reload();
+           });
  }
  localStorage.clear();
 
@@ -44,7 +46,6 @@ function removeRM(paramID){
      field: 'ID',
      values: pID
     });
-    location.reload();
    },
    error: function () {
        toastr.info("Select atleast one to remove!")
@@ -68,8 +69,10 @@ function removeRM(paramID){
     bootbox.confirm("Are you sure you want to delete RM and it's details?", function (result) {
      if (result == true) {
        removeRM(row.ID)
-     }
-     toastr.success("Successfully delete the RM!")
+        }
+        swal("Success!", "Successfully deleted in the list of Relationship Manager", "success").then((value) => {
+            location.reload();
+        });
     })
   },
   'click .edit': function (e, value, row, index) {

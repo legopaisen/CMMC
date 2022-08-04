@@ -35,8 +35,8 @@
      toastr.error("Error in Employee ID Search ");
     }
    });
-  });*@   
-  //$("#btnSave").on('click', function () { 
+  });*@
+  //$("#btnSave").on('click', function () {
 
   //});
 
@@ -91,7 +91,7 @@
   SaveDetails();
  });
  });
-     
+
  function SaveDetails() {
   var model = {
    //'RMNetworkID': $('#txtNetworkID').val(),
@@ -107,10 +107,14 @@
    url: '@Url.Action("SaveNewRecord", "RelationshipManager")',
    type: 'POST',
    success: function (data) {
-    if (data == 2) {
-     Command: toastr["info"]("Information", "RM already exist in the branch. Process terminated!")
-    } else if (data == 1) {
-     window.location = '@Url.Action("Index","RelationshipManager")'
+       if (data == 2) {
+           swal("Oops!", "RM already exists in the branch", "error").then((value) => {
+               location.reload();
+           });
+       } else if (data == 1) {
+           swal("Success", "RM successfully saved", "success").then((value) => {
+                    window.location = '@Url.Action("Index","RelationshipManager")'
+           });
     }
    },
    error: function (e) {
@@ -124,46 +128,46 @@
 </script>
 
 <h2 class="page-header">
- Add Relationship Manager
+    Add Relationship Manager
 </h2>
 <form id="rmDetails">
- <div class="panel panel-primary">
-  <div class="panel-heading">Relationship Manager Details</div>
-  <div class="panel-body">
-   <div class="col-lg-5">
-    @*<div class="form-group">
-     <div class="input-group">
-      <div class="input-group-addon">Network ID</div>
-      <input class="form-control" type="text" placeholder="NetworkID" id="txtNetworkID" name="networkid" />
-      <span class="input-group-btn">
-       <button class="btn btn-default" type="button" id="btnSearch">
-        <span class="glyphicon glyphicon-search"></span>
-       </button>
-      </span>
-     </div>
-    </div>*@
-    <div class="form-group">
-     <div class="input-group">
-      <div class="input-group-addon">Fullname</div>
-      <input class="form-control" type="text" placeholder="Input FullName" id="txtFullName" name="txtFullName" autocomplete="off" onblur="caps(this.id);" />
-     </div>
-    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Relationship Manager Details</div>
+        <div class="panel-body">
+            <div class="col-lg-5">
+                @*<div class="form-group">
+                     <div class="input-group">
+                      <div class="input-group-addon">Network ID</div>
+                      <input class="form-control" type="text" placeholder="NetworkID" id="txtNetworkID" name="networkid" />
+                      <span class="input-group-btn">
+                       <button class="btn btn-default" type="button" id="btnSearch">
+                        <span class="glyphicon glyphicon-search"></span>
+                       </button>
+                      </span>
+                     </div>
+                    </div>*@
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">Fullname</div>
+                        <input class="form-control" type="text" placeholder="Input FullName" id="txtFullName" name="txtFullName" autocomplete="off" onblur="caps(this.id);" />
+                    </div>
+                </div>
 
-    <div class="form-group">
-     <div class="input-group">
-      <div class="input-group-addon">Branch Assigned</div>
-      <select class="form-control" id="branchList" name="branchassigned">
-       <option disabled selected value>-------- select branch --------</option>
-      </select>
-     </div>
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">Branch Assigned</div>
+                        <select class="form-control" id="branchList" name="branchassigned">
+                            <option disabled selected value>-------- select branch --------</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer">
+            <button class="btn btn-primary" type="submit" id="btnSave"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
+            <button type="button" onclick="javascript: window.location='@Url.Action("Index", "RelationshipManager")'" id="btnSave" name="btnSave" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
+        </div>
     </div>
-   </div>
-  </div>
-  <div class="panel-footer">
-   <button class="btn btn-primary" type="submit" id="btnSave"><i class="glyphicon glyphicon-floppy-save"></i> Save</button>
-   <button type="button" onclick="javascript: window.location='@Url.Action("Index", "RelationshipManager")'" id="btnSave" name="btnSave" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
-  </div>
- </div>
 </form>
 
 

@@ -313,6 +313,7 @@
     <Content Include="Content\Login.css" />
     <Content Include="Content\Main.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="Content\sweetalert\sweetalert.min.js" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -1044,6 +1045,7 @@
     <Content Include="Views\Report\ViewTotalADBRequirementReport.cshtml" />
     <Content Include="Views\Report\ViewOrphanAccounts.cshtml" />
     <Content Include="Views\Report\ViewAlienSubAccounts.cshtml" />
+    <Content Include="Views\Report\ViewForeignCIFNumber.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1124,22 +1126,22 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Reports\Report\CMSDeals.rdlc" />
-    <EmbeddedResource Include="Reports\Report\rptADBPerformance.rdlc" />
-    <EmbeddedResource Include="Reports\Report\rptAlienSubAccounts.rdlc" />
-    <EmbeddedResource Include="Reports\Report\rptATMWithdrawals.rdlc" />
-    <EmbeddedResource Include="Reports\Report\rptClientAccountsType.rdlc" />
-    <EmbeddedResource Include="Reports\Report\rptClosureCharges.rdlc" />
-    <EmbeddedResource Include="Reports\Report\rptCMSAccounts.rdlc" />
-    <EmbeddedResource Include="Reports\Report\rptCustomerProfile.rdlc" />
+    <Content Include="Reports\Report\CMSDeals.rdlc" />
+    <Content Include="Reports\Report\rptADBPerformance.rdlc" />
+    <Content Include="Reports\Report\rptAlienSubAccounts.rdlc" />
+    <Content Include="Reports\Report\rptATMWithdrawals.rdlc" />
+    <Content Include="Reports\Report\rptClientAccountsType.rdlc" />
+    <Content Include="Reports\Report\rptClosureCharges.rdlc" />
+    <Content Include="Reports\Report\rptCMSAccounts.rdlc" />
+    <Content Include="Reports\Report\rptCustomerProfile.rdlc" />
     <EmbeddedResource Include="Reports\Report\rptForeignCIFNumber.rdlc" />
     <EmbeddedResource Include="Reports\Report\rptInsufficientFundPenFee.rdlc" />
     <EmbeddedResource Include="Reports\Report\rptMonthlyADBPenFee.rdlc" />
     <EmbeddedResource Include="Reports\Report\rptMTDADB.rdlc" />
-    <EmbeddedResource Include="Reports\Report\rptNoLinkedAccounts.rdlc" />
-    <EmbeddedResource Include="Reports\Report\rptOrphanAccounts.rdlc" />
-    <EmbeddedResource Include="Reports\Report\rptSubAccounts.rdlc" />
-    <EmbeddedResource Include="Reports\Report\rptTotalADBRequirement.rdlc" />
+    <Content Include="Reports\Report\rptNoLinkedAccounts.rdlc" />
+    <Content Include="Reports\Report\rptOrphanAccounts.rdlc" />
+    <Content Include="Reports\Report\rptSubAccounts.rdlc" />
+    <Content Include="Reports\Report\rptTotalADBRequirement.rdlc" />
     <EmbeddedResource Include="Reports\Report\rptUncollectedPenFee.rdlc" />
   </ItemGroup>
   <PropertyGroup>

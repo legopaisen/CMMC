@@ -109,10 +109,12 @@
    url: '@Url.Action("SaveUpdate", "RelationshipManager")',
    type: 'POST',
    success: function (data) {
-    if(data == 2){
-     Command: toastr["info"]("Information","RM branch assigned already exist. Process terminated!")
-    } else if (data = 1) {
-     window.location = '@Url.Action("Index","RelationshipManager")'
+       if (data == 2) {
+           swal("Oops!", "RM branch assigned already exist", "error")
+       } else if (data = 1) {
+           swal("Success!", "RM successfully updated", "success").then((value) => {
+                window.location = '@Url.Action("Index","RelationshipManager")'
+           });
     }
    },
    error: function (e) {

@@ -14,18 +14,18 @@
 <script type="text/javascript" src="~/Assets/datatable/bootstrap-table.js"></script>
 <script src="~/Assets/datatable/extensions/flatJSON/bootstrap-table-flatJSON.js"></script>
 
- <script type="text/javascript">
+<script type="text/javascript">
  $(document).ready(function () {
   var access = '@Html.Raw(Json.Encode(ViewBag.AccessList))';
- 
+
   var usercode = '@Model.Access_Code';
-  
-  
+
+
   $.each(JSON.parse(access), function(index, value){
    $("#selAccessName").append("<option value='" + value.AccessCode + "' " + (value.AccessCode ==  usercode? 'selected' : '') + ">" + value.AccessName + "</option>");
   });
 
- 
+
 
   //save
   $('body').on('click', '#btnSave', function(){
@@ -50,17 +50,20 @@
      contentType: 'application/json',
      traditional: true,
      success: function(data){
-      if(data.ResponseStatus != 1){
-       toastr.error(data.Description, "Information");
+        if (data.ResponseStatus == "FAILED") {
+            swal("Oops!", data.Description, "error").then((value) => {
+            window.location = '@Url.Action("Users", "Access")';
+            });
       }
       else
-      {
-       toastr.success(data.Description, "Information");
+         {
+            swal("Success!", data.Description, "success").then((value) => {
+            window.location = '@Url.Action("Users", "Access")';
+            });
       }
      },
      error: function (response){     }
     });
-    window.location = '@Url.Action("Users", "Access")';
    }, null);
   });
 
@@ -79,7 +82,7 @@
   return "<a href='javascript:void(0)' class='Delete' title='Delete'><span class='glyphicon glyphicon-trash'></span></a>";
  }
 
- </script>
+</script>
 }
 <h2 class="page-header">
  Edit User

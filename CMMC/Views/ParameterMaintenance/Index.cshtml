@@ -6,10 +6,10 @@
 @*<h2>Index</h2>*@
 @section head
  {
- <link rel="stylesheet" href="~/Assets/datatable/bootstrap-table.css" type="text/css">
- <script type="text/javascript" src="~/Assets/datatable/bootstrap-table.js"></script>
+    <link rel="stylesheet" href="~/Assets/datatable/bootstrap-table.css" type="text/css">
+    <script type="text/javascript" src="~/Assets/datatable/bootstrap-table.js"></script>
 
- <script type="text/javascript">
+    <script type="text/javascript">
   function CodeFormatter(value) {
    return PadLeft(value, 8, '0');
   }
@@ -137,45 +137,45 @@
    }
   }
 
- </script>
+    </script>
 }
 <h2 class="page-header">
- CTBC Branches
- <small></small>
+    CTBC Branches
+    <small></small>
 </h2>
 <div id="toolbar">
- <button class="btn btn-success" id="btnAdd" onclick="window.location = '@Url.Action("AddBranches", "ParameterMaintenance")'" title="Add New Record"><i class="glyphicon glyphicon-plus-sign"></i> Add Branches</button>
- <button class="btn btn-success" id="btnActivate" title="Activate Selected Item(s)"><i class="glyphicon glyphicon-ok"></i> Activate Branch</button>
- <button class="btn btn-danger" id="btnDeactivate" title="Deactivate Selected Item(s)"><i class="glyphicon glyphicon-remove"></i> Deactivate Branch </button>
+    <button class="btn btn-success" id="btnAdd" onclick="window.location = '@Url.Action("AddBranches", "ParameterMaintenance")'" title="Add New Record"><i class="glyphicon glyphicon-plus-sign"></i> Add Branches</button>
+    <button class="btn btn-success" id="btnActivate" title="Activate Selected Item(s)"><i class="glyphicon glyphicon-ok"></i> Activate Branch</button>
+    <button class="btn btn-danger" id="btnDeactivate" title="Deactivate Selected Item(s)"><i class="glyphicon glyphicon-remove"></i> Deactivate Branch </button>
 </div>
 <div class="panel panel-primary">
- <div class="panel-heading">CTBC Branches</div>
- <div class="panel-body">
-  <table id='tblAccessList'
-         style="margin:0px;"
-         data-classes="table table-hover table-condensed table-striped"
-         data-row-style="rowStyle"
-         data-toggle="table"
-         data-search="true"
-         data-cache="false"
-         data-unique-id="BranchCode"
-         data-toolbar="#toolbar"
-         data-checkbox-header="false"
-         data-click-to-select="true"
-         data-pagination="true"
-         data-page-list="[5, 10, 20]">
-   <thead>
-    <tr>
-     <th data-field="state" data-checkbox="true"></th>
-     <th class="BranchCode" data-field="BranchCode" data-width="100">Branch Code</th>
-     <th data-field="BranchName" data-sortable="true">Branch Name</th>
-     <th data-field="Cluster" data-sortable="true">Cluster</th>
-     <th data-field="Email">E-mail </th>
-     <th data-field="BhossEmail">BHOSS E-mail </th>
-     <th data-field="IsActive" data-align="center" data-width="100" data-formatter="IsActiveFormatter">Is Active?</th>
-     <th data-field="Action" data-formatter="actionFormatter" data-events="actionEvents" data-width="100" data-align="center">Action</th>
-    </tr>
-   </thead>
-  </table>
- </div>
+    <div class="panel-heading">CTBC Branches</div>
+    <div class="panel-body">
+        <table id='tblAccessList'
+               style="margin:0px;"
+               data-classes="table table-hover table-condensed table-striped"
+               data-row-style="rowStyle"
+               data-toggle="table"
+               data-search="true"
+               data-cache="false"
+               data-unique-id="BranchCode"
+               data-toolbar="#toolbar"
+               data-checkbox-header="false"
+               data-click-to-select="true"
+               data-pagination="true"
+               data-page-list="[5, 10, 20]">
+            <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th class="BranchCode" data-field="BranchCode" data-width="100">Branch Code</th>
+                    <th data-field="BranchName" data-sortable="true">Branch Name</th>
+                    <th data-field="Cluster" data-sortable="true">Cluster</th>
+                    <th data-field="Email">E-mail </th>
+                    <th data-field="BhossEmail">BHOSS E-mail </th>
+                    <th data-field="IsActive" data-align="center" data-width="100" data-formatter="IsActiveFormatter">Is Active?</th>
+                    <th data-field="Action" data-formatter="actionFormatter" data-events="actionEvents" data-width="100" data-align="center">Action</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
 </div>

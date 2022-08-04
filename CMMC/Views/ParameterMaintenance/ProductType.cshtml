@@ -37,13 +37,15 @@
      'pIDs': pID
     }),
     type: 'POST',
-    success: function (data) {
-     toastr.success("Successfully delete the Product Type!");
+       success: function (data) {
+
      $("#tblAccessList").bootstrapTable('remove', {
       field: 'ProductCode',
       values: pID
      });
-     location.reload();
+        swal("Success!", "Selected item(s) successfully deleted!", "success").then((value) => {
+            location.reload();
+        });
     },
     error: function () {
      toastr.info("Select atleast one to remove!")
@@ -70,7 +72,6 @@
      if (result == true) {
       removeProduct(row.ProductCode)
      }
-     toastr.success("Successfully delete the Product!")
     })
    },
    'click .edit': function (e, value, row, index) {

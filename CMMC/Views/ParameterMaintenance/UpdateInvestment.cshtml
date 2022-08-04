@@ -10,7 +10,7 @@
 
 @section head
 {
- <script type="text/javascript">
+    <script type="text/javascript">
   $(document).ready(function () {
    var model = [];
 
@@ -35,20 +35,23 @@
       traditional: true,
       success: function (data) {
        if (data.ResponseStatus != 1) {
-        toastr.error(data.Description, "Information");
+        swal("Oops!", data.Description, "error").then((value) => {
+               window.location = '@Url.Action("InvestmentType", "ParameterMaintenance")';
+           });
        }
        else {
-        toastr.success(data.Description, "Information");
+        swal("Saved!", data.Description, "success").then((value) => {
+               window.location = '@Url.Action("InvestmentType", "ParameterMaintenance")';
+           });
        }
       },
       error: function (response) { }
      });
-     window.location = '@Url.Action("InvestmentType", "ParameterMaintenance")';
     }, null);
    });
 
   });
- </script>
+    </script>
 }
 
 <h2 class="page-header">
@@ -88,7 +91,6 @@
     <div class="row">
      <div class="col-md-12 text-right">
       <button type="submit" id="btnSave" name="btnSave" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
-      <button type="button" onclick="javascript: window.location='@Url.Action("InvestmentType", "ParameterMaintenance")'" id="btnSave" name="btnSave" class="btn btn-danger"><i class="glyphicon glyphicon-floppy-remove"></i> Cancel</button>
      </div>
     </div>
    </div>
