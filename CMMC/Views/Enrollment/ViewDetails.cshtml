@@ -144,12 +144,15 @@
   }
 
 
-  var AccountList = EnrollmentDetails.AccountInformationList,
+  //var AccountList = EnrollmentDetails.AccountInformationList,
+   var AccountList = EnrollmentDetails.BancsAccounts,
    AvailedList = EnrollmentDetails.AvailedDetailsList,
    RelatedList = EnrollmentDetails.RelatedAccountList,
+   ChildAccountsList = EnrollmentDetails.ChildAccountListODS,
    $AccountInfoTable = $("#AccountInformation"),
    $AvailedServicesTable = $("#ServiceList"),
-   $RelatedAccountsTable = $("#RelatedAccountList");
+   $RelatedAccountsTable = $("#RelatedAccountList"),
+   $ChildAccountsTable = $("#ChildAccountsList");
 
   
   for (var i = 0; i < AvailedList.length; i++) {
@@ -160,6 +163,7 @@
   $AccountInfoTable.bootstrapTable('load', AccountList);
   $AvailedServicesTable.bootstrapTable('load', AvailedList);
   $RelatedAccountsTable.bootstrapTable('load', RelatedList);
+  $ChildAccountsTable.bootstrapTable('load', ChildAccountsList);
   $AvailedServicesTable.bootstrapTable('hideColumn', 'ServiceID');
   //var acc = [];
 
@@ -263,119 +267,141 @@
    <small>CMS Details</small>
   </h2>
   <div class="panel panel-default">
-   <div class="panel-heading">
-    <div class="row" id="BasicCMSdetails">
-     <div class="col-lg-8">
-      <div class="col-sm-4">
-       <figure>
-        <img class="img-circle img-responsive" alt="" src="~/300-text.png">
-       </figure>
+      <div class="panel-heading">
+          <div class="row" id="BasicCMSdetails">
+              <div class="col-lg-8">
+                  <div class="col-sm-4">
+                      <figure>
+                          <img class="img-circle img-responsive" alt="" src="~/300-text.png">
+                      </figure>
+                  </div>
+                  <div class="col-sm-8">
+                      <header>
+                          <div class="input-group">
+                              <h2>
+                                  @Model.GeneralDetails.Description
+                              </h2>
+                              @if (Model.GeneralDetails.ModifiedBy != "N/A")
+                              {
+                                  <small><i class="glyphicon glyphicon-time"></i> Last Updated on: <time>@Model.GeneralDetails.ModifiedOn</time>; by: @Model.GeneralDetails.ModifiedBy</small><br /><br />
+                              }
+                              <input type="button" class="btn btn-success btn-xs" value=" Edit " id="edit" />
+                              <input type="button" class="btn btn-danger btn-xs" value=" Cancel " id="cancel" />
+                              <input type="button" class="btn btn-info btn-xs" value=" Approve " id="approve" />
+                              <input type="button" class="btn btn-danger btn-xs" value=" Remove " id="remove" />
+                          </div>
+                      </header>
+                      <hr />
+                      <ul class="list-group">
+                          <li class="list-group-item"><strong>Created By: </strong> @Model.GeneralDetails.CreatedBy</li>
+                          <li class="list-group-item"><strong>Created On: </strong>@Model.GeneralDetails.CreatedOn</li>
+                          <li class="list-group-item" id="active">
+                          <script>$("#active").append("<strong>Is Active: </strong>" + ('@Model.GeneralDetails.IsActive' == "True" ? "Yes" : "No"))</script></li>
+                          <li class="list-group-item" id="status"></li>
+                          <li class="list-group-item"><strong>Tagging: </strong>@Model.GeneralDetails.Tagging</li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
       </div>
-      <div class="col-sm-8">
-       <header>
-        <div class="input-group">
-         <h2>
-          @Model.GeneralDetails.Description
-         </h2>
-          @if (Model.GeneralDetails.ModifiedBy != "N/A") { 
-         <small><i class="glyphicon glyphicon-time"></i> Last Updated on: <time>@Model.GeneralDetails.ModifiedOn</time>; by: @Model.GeneralDetails.ModifiedBy</small><br /><br />
-          }
-         <input type="button" class="btn btn-success btn-xs" value=" Edit " id="edit" />
-         <input type="button" class="btn btn-danger btn-xs" value=" Cancel " id="cancel" />
-         <input type="button" class="btn btn-info btn-xs" value=" Approve " id="approve" />
-         <input type="button" class="btn btn-danger btn-xs" value=" Remove " id="remove" />
-        </div>
-       </header>
-       <hr />
-       <ul class="list-group">
-        <li class="list-group-item"><strong>Created By: </strong> @Model.GeneralDetails.CreatedBy</li>
-        <li class="list-group-item"><strong>Created On: </strong>@Model.GeneralDetails.CreatedOn</li>
-        <li class="list-group-item" id="active"><script>$("#active").append("<strong>Is Active: </strong>" + ('@Model.GeneralDetails.IsActive' == "True" ? "Yes" : "No"))</script></li>
-        <li class="list-group-item" id="status"></li>
-        <li class="list-group-item"><strong>Tagging: </strong>@Model.GeneralDetails.Tagging</li>
-       </ul>
+      <div class="bs-callout bs-callout-danger">
+          <h4>Account Information</h4>
+          <table id="AccountInformation" class="table table-hover table-striped table-bordered" cellpadding="0" style="width:100%"
+                 data-toggle="table"
+                 data-pagination="true"
+                 data-search="true"
+                 data-detail-formatter="detailAccountInfo"
+                 data-unique-id="AccountNumber"
+                 data-row-style="rowStyle"
+                 data-page-list="[5, 10, 20]">
+              <thead>
+                  <tr>
+                      <th data-field="AccountNumber" data-sortable="true">Account No</th>
+                      <th data-field="AccountName" data-sortable="true">Account Name</th>
+                      <th data-field="BranchName" data-sortable="true">Branch Name</th>
+                      <th data-field="DateEnrolled" data-sortable="true" data-formatter="dateFormatter">Date Enrolled</th>
+                      <th data-field="InvestmentDesc" data-sortable="true">Product Type</th>
+                      <th data-field="Status">Status</th>
+                  </tr>
+              </thead>
+          </table>
       </div>
-     </div>
-    </div>   
-   </div> 
-    <div class="bs-callout bs-callout-danger">
-     <h4>Account Information</h4>
-        <table id="AccountInformation" class="table table-hover table-striped table-bordered" cellpadding="0" style="width:100%"
-               data-toggle="table"
-               data-pagination="true"
-               data-search="true"
-               data-detail-formatter="detailAccountInfo"
-               data-unique-id="AccountNumber"
-               data-row-style="rowStyle"
-               data-page-list="[5, 10, 20]">
-            <thead>
-                <tr>
-                    <th data-field="AccountNumber" data-sortable="true">Account No</th>
-                    <th data-field="AccountName" data-sortable="true">Account Name</th>
-                    <th data-field="BranchName" data-sortable="true">Branch Name</th> 
-                    <th data-field="DateEnrolled" data-sortable="true" data-formatter="dateFormatter">Date Enrolled</th>
-                    <th data-field="InvestmentDesc" data-sortable="true">Investment Type</th>
-                    <th data-field="Status">Status</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
 
 
-   <div class="bs-callout bs-callout-danger">
-    <h4>Services Availed</h4>
-       <table id="ServiceList" class="table table-hover table-bordered" cellpadding="0" style="width:100%"
-              data-toggle="table"
-              data-pagination="true"
-              data-search="true"
-              data-detail-formatter="detailFormatter"
-              data-unique-id="ServiceName"
-              data-row-style="rowStyle"
-              data-page-list="[5, 10, 20]">
-           <thead>
-               <tr>
-                <th data-field="ServiceID" data-unique-id @*quirra*@ data-sortable="true">Service ID</th>
-                <th data-field="ServiceName" @*quirra*@ data-sortable="true">Availed Service</th>
-                <th data-field="MotherRequiredADB" data-align="right">Mother Required ADB</th>
-                <th data-field="SubRequiredADB" data-align="right">Sub-Account Required ADB</th>
-                <th data-field="MinNumberEmployee" data-align="right">Minimum Number of Employee</th>
-                <th data-field="RMID" data-formatter="RMFormatter">Relationship Manager</th>
-                <th data-field="EnrolledOn" data-formatter="dateFormatter" @*quirra*@ data-sortable="true">Date Enrolled</th>
-                <th data-field="EnrolledBy">Enrolled By</th>
-                <th data-field="ModifiedOn" data-formatter="dateFormatter" @*quirra*@ data-sortable="true">Date Modified</th>
-                <th data-field="ModifiedBy">Modified By</th>
-                <th data-field="Status" data-formatter="statusFormatter">Status</th>
-               </tr>
-           </thead>
-       </table>
-   </div>
-   <div class="bs-callout bs-callout-danger">
-    <h4>Penalty Charges</h4>
-    <ul class="list-group" id="PCharges" style="width: 30%;">
-     <li class="list-group-item" style="height: auto;"><strong>Base Penalty: </strong> Php @Model.GeneralDetails.BasePenalty</li>
-     <li class="list-group-item" style="height: auto;"><strong>Penalty Fee:</strong> Php @Model.GeneralDetails.PenaltyFee</li>     
-    </ul>
-   </div>
-   <div class="bs-callout bs-callout-danger">
-    <h4>Related Accounts</h4>
-    <table id="RelatedAccountList" class="table table-hover table-bordered" cellpadding="0" style="width:100%"
-           data-toggle="table"
-           data-pagination="true"
-           data-search="true"
-           data-detail-formatter="detailRelatedAccounts"
-           data-unique-id="AccountName"
-           data-row-style="rowStyle">
-     <thead>
-      <tr>
-       <th data-field="AccountID" @*quirra*@ data-sortable="true">Account ID</th>
-       <th data-field="AccountName" @*quirra*@ data-sortable="true">Account Name</th>
-       <th data-field="DateAdded" data-formatter="dateFormatter" @*quirra*@ data-sortable="true">Date Added</th>
-       <th data-field="AddedBy">Added By</th>
-       <th data-field="Status" data-formatter="statusFormatter">Status</th>
-      </tr>
-     </thead>
-    </table>
-   </div>
+      <div class="bs-callout bs-callout-danger">
+          <h4>Services Availed</h4>
+          <table id="ServiceList" class="table table-hover table-bordered" cellpadding="0" style="width:100%"
+                 data-toggle="table"
+                 data-pagination="true"
+                 data-search="true"
+                 data-detail-formatter="detailFormatter"
+                 data-unique-id="ServiceName"
+                 data-row-style="rowStyle"
+                 data-page-list="[5, 10, 20]">
+              <thead>
+                  <tr>
+                      <th data-field="ServiceID" data-unique-id @*quirra*@ data-sortable="true">Service ID</th>
+                      <th data-field="ServiceName" @*quirra*@ data-sortable="true">Availed Service</th>
+                      <th data-field="MotherRequiredADB" data-align="right">Mother Required ADB</th>
+                      <th data-field="SubRequiredADB" data-align="right">Sub-Account Required ADB</th>
+                      <th data-field="MinNumberEmployee" data-align="right">Minimum Number of Employee</th>
+                      <th data-field="RMID" data-formatter="RMFormatter">Relationship Manager</th>
+                      <th data-field="EnrolledOn" data-formatter="dateFormatter" @*quirra*@ data-sortable="true">Date Enrolled</th>
+                      <th data-field="EnrolledBy">Enrolled By</th>
+                      <th data-field="ModifiedOn" data-formatter="dateFormatter" @*quirra*@ data-sortable="true">Date Modified</th>
+                      <th data-field="ModifiedBy">Modified By</th>
+                      <th data-field="Status" data-formatter="statusFormatter">Status</th>
+                  </tr>
+              </thead>
+          </table>
+      </div>
+      <div class="bs-callout bs-callout-danger">
+          <h4>Penalty Charges</h4>
+          <ul class="list-group" id="PCharges" style="width: 30%;">
+              <li class="list-group-item" style="height: auto;"><strong>Base Penalty: </strong> Php @Model.GeneralDetails.BasePenalty</li>
+              <li class="list-group-item" style="height: auto;"><strong>Penalty Fee:</strong> Php @Model.GeneralDetails.PenaltyFee</li>
+          </ul>
+      </div>
+      <div class="bs-callout bs-callout-danger">
+          <h4>Related Accounts</h4>
+          <table id="RelatedAccountList" class="table table-hover table-bordered" cellpadding="0" style="width:100%"
+                 data-toggle="table"
+                 data-pagination="true"
+                 data-search="true"
+                 data-detail-formatter="detailRelatedAccounts"
+                 data-unique-id="AccountName"
+                 data-row-style="rowStyle">
+              <thead>
+                  <tr>
+                      <th data-field="AccountID" @*quirra*@ data-sortable="true">Account ID</th>
+                      <th data-field="AccountName" @*quirra*@ data-sortable="true">Account Name</th>
+                      <th data-field="DateAdded" data-formatter="dateFormatter" @*quirra*@ data-sortable="true">Date Added</th>
+                      <th data-field="AddedBy">Added By</th>
+                      <th data-field="Status" data-formatter="statusFormatter">Status</th>
+                  </tr>
+              </thead>
+          </table>
+      </div>
+      <div class="bs-callout bs-callout-danger">
+          <h4>Child Accounts</h4>
+          <table id="ChildAccountsList" class="table table-hover table-bordered" cellpadding="0" style="width:100%"
+                 data-toggle="table"
+                 data-pagination="true"
+                 data-search="true"
+                 data-detail-formatter="detailChildAccounts"
+                 data-unique-id="AccountNo"
+                 data-row-style="rowStyle">
+              <thead>
+                  <tr>
+                      <th data-field="AccountNo" data-sortable="true">Account ID</th>
+                      <th data-field="AccountName" data-sortable="true">Account Name</th>
+                      <th data-field="BranchCode">Branch Name</th>
+                      <th data-field="DateEnrolled" data-formatter="dateFormatter">Date Opened</th>
+                      <th data-field="ProductType">Product Type</th>
+                  </tr>
+              </thead>
+          </table>
+      </div>
   </div>
  </div>
 </div>

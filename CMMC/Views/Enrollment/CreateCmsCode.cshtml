@@ -104,38 +104,45 @@
       $AddSaveAccountInfo = $("#AccountInfoAddbtnSave"),
       $DeleteAccountInfo = $("#btnDeleteAccountInfo"),
       $ApproveAccountInfo = $("#btnApproveAccountInfo"),
-      $SearchAccount = $("#btnAccountSearch")
+      $SearchAccount = $("#btnCIFSearch")
 
   var gbpRestBaseURL = "https://ctbchopdappsit.chinatrust.com.ph:55051/gbprest/"; //BANCS API
 
-  //AFM 20220429
-  //MOTHER ACCOUNT validation GBP
-  $("#btnAccountSearch").click(function (e) {
+  //AFM 20220805
+  //CIF validation ODS
+     $("#btnCIFSearch").click(function (e) {
       e.preventDefault();
-      var urlQuery = $("#MotherAccountNo").val();
-      if ($("#btnAccountSearch").hasClass('btn btn-primary'))
+      var CIFNo = $("#CIFNo").val();
+        if ($("#btnCIFSearch").hasClass('btn btn-primary'))
       {
-          $.ajax({
-              beforeSend: function(request) {
-                  request.setRequestHeader("languageCode", "1");
-                  request.setRequestHeader("userId", "1");
-                  request.setRequestHeader("entity", "GCTBCPH001");
-              },
-              dataType: "json",
-              type: "GET",
-              url: gbpRestBaseURL + "accountManagement/account/details/" + urlQuery,
-              contentType: "application/json",
-              success: function (data) {
-                  $("#CmsCodeDescription").val(data.accountDetail.account.accountSchema.name).change();
-                  $("#CMSDetails")
-                    .formValidation("revalidateField", "companyname") //validate company field
+            $.ajax({
+                //beforeSend: function(request) {
+                //    request.setRequestHeader("languageCode", "1");
+                //    request.setRequestHeader("userId", "1");
+                //    request.setRequestHeader("entity", "GCTBCPH001");
+                //},
+                dataType: "json",
+                type: "GET",
+                //url: gbpRestBaseURL + "accountManagement/account/details/" + urlQuery,
+                url: "@Url.Action("GetCIFDetails", "Enrollment")",
+                contentType: "application/json",
+                data: {
+                    'sCIFNo': CIFNo
+                },
+                success: function (data) {
+                    if (data.Name != null) {
+                        $("#CmsCodeDescription").val(data.Name).change();
+                        $("#CMSDetails")
+                        .formValidation("revalidateField", "companyname") //validate company field
+                        Command: toastr["success"]("Success", "Account No. Found!");
+                        CheckExistingCMS();
+                    }
+                    else {
+                        Command: toastr["error"]("Failed", "Business Partner does not exist");
+                    }
 
-                  Command: toastr["success"]("Success", "Account No. Found!");
-                  CheckExistingCMS();
               },
               error: function (response) {
-                  if (response.data == undefined)
-                      Command: toastr["error"]("Failed", "Business Partner does not exist");
               }
           });
       }
@@ -143,10 +150,10 @@
           $("#btnReset").trigger("click");
   });
 
-  function ChangeMotherControls() {
-      $("#MotherAccountNo").attr('disabled', 'disabled');
-      $("#btnAccountSearch").attr('class', 'btn btn-danger');
-      $("#btnAccountSearch").find('#btnSearchIcon').attr('class', 'glyphicon glyphicon-remove');
+  function ChangeCIFControls() {
+      $("#CIFNo").attr('disabled', 'disabled');
+      $("#btnCIFSearch").attr('class', 'btn btn-danger');
+      $("#btnCIFSearch").find('#btnSearchIcon').attr('class', 'glyphicon glyphicon-remove');
   }
 
   function CheckCMSName() {
@@ -157,8 +164,9 @@
             data: {
                 sCompanyName: $("#CmsCodeDescription").val()
             },
+            contentType: "application/json",
             success: function (data) {
-                if (data)
+                if (data == "True")
                     Command: toastr["warning"]("NOTICE", "Similar company name found.");
             },
             error: function (response) {
@@ -173,7 +181,7 @@
             type: "GET",
             url: "@Url.Action("CheckExistingCMS", "Enrollment")",
             data: {
-                sAcctNo: $("#MotherAccountNo").val()
+                sAcctNo: $("#CIFNo").val()
             },
             success: function (data) {
                 if (data == true) {
@@ -182,7 +190,7 @@
                 else
                 {
                     CheckCMSName();
-                    ChangeMotherControls();
+                    ChangeCIFControls();
                 }
             },
             error: function (response) {
@@ -191,11 +199,11 @@
     }
 
      //AFM 202205
-     $('#MotherAccountNo').keyup(function () {
-      if ($("#MotherAccountNo").val().length != 0)
-          $("#btnAccountSearch").attr('disabled', false)
+     $('#CIFNo').keyup(function () {
+      if ($("#CIFNo").val().length != 0)
+          $("#btnCIFSearch").attr('disabled', false)
       else
-          $("#btnAccountSearch").attr('disabled', true)
+          $("#btnCIFSearch").attr('disabled', true)
     });
 
   //AVAILED SERVICES
@@ -715,10 +723,10 @@
     validating: "glyphicon glyphicon-refresh"
    },
    fields: {
-    accountno: {
+    cifno: {
         validators: {
             notEmpty: {
-                message: "Account no. is required"
+                message: "CIF no. is required"
             }
         }
     },
@@ -854,12 +862,12 @@
     });
     AvailedDetailsList = [];
     $("#CMSDetails").trigger("reset")
-    $("#MotherAccountNo").removeAttr('disabled');
+    $("#CIFNo").removeAttr('disabled');
     $("#CMSDetails").data("formValidation").resetForm();
     sortSelect("#ServiceAddtxtServiceName", "text", "asc");
-    $("#btnAccountSearch").attr('class', 'btn btn-primary');
-    $("#btnAccountSearch").find('#btnSearchIcon').attr('class', 'glyphicon glyphicon-search');
-    $("#btnAccountSearch").attr('disabled', true);
+    $("#btnCIFSearch").attr('class', 'btn btn-primary');
+    $("#btnCIFSearch").find('#btnSearchIcon').attr('class', 'glyphicon glyphicon-search');
+    $("#btnCIFSearch").attr('disabled', true);
    }
   });
  });
@@ -903,11 +911,11 @@
         <div class="panel-heading">General Information</div>
         <div class="panel-body">
          <div class="col-xs-6" id="frstGroup">
-             <div class="form-group" id="motheraccount">
+             <div class="form-group" id="cifno">
                  <div class="input-group">
-                     <span class="input-group-addon">Account No.</span>
-                     <input type="text" id="MotherAccountNo" class=" form-control" placeholder="Type account no. here" name="accountno" autocomplete="off" style="width:80%" />
-                     <button type="button" disabled id="btnAccountSearch" class="btn btn-primary"><i id="btnSearchIcon" class="glyphicon glyphicon-search"></i></button>
+                     <span class="input-group-addon">CIF No.</span>
+                     <input type="text" id="CIFNo" class=" form-control" placeholder="Type CIF no. here" name="cifno" autocomplete="off" style="width:80%" />
+                     <button type="button" disabled id="btnCIFSearch" class="btn btn-primary"><i id="btnSearchIcon" class="glyphicon glyphicon-search"></i></button>
                  </div>
              </div>
           <div class="form-group" id="cmsdesc">

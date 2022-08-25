@@ -152,5 +152,25 @@ namespace CMMC.Controllers
             }
             return Json("success", JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public JsonResult SaveODSConnectionSettings(Models.SharedFunctions.ODSConnectionSetting sett)
+        {
+            new Models.SharedFunctions().SaveODSConnectionSetting(sett);
+            using (CMMC.Models.AuditTrail audit = new Models.AuditTrail())
+            {
+                audit.Insert(new CMMC.Models.AuditTrailModel()
+                {
+                    UserID = Session["UserID"] == null ? "" : Session["UserID"].ToString()
+                 ,
+                    Module = "SystemSettings"
+                 ,
+                    NewValues = "Connection Setting saved successfully"
+                 ,
+                    IPAddress = SystemCore.GetIPAddress()
+                });
+            }
+            return Json("success", JsonRequestBehavior.AllowGet);
+        }
     }
 }

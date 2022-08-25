@@ -31,7 +31,7 @@
 
  function activeFormatter(value) {
   if(value){ return "Active"; }
-  else{ return "InActive";}  
+  else{ return "InActive";}
  }
 
   function actionFormatter(value, row, index) {
@@ -106,7 +106,7 @@
       '<i class="glyphicon glyphicon-eye-open"></i>',
       '</a> '
      ].join('');
-    }   
+    }
    }
   }
 
@@ -182,7 +182,7 @@
 
    var $CmsTable = $("#CmsCodeList"),
        $btnAdd = $("#btnAdd");
-   moment().format();      
+   moment().format();
    var params = {
     "pPaycode": $('#Paycode').val()
    };
@@ -198,11 +198,11 @@
        method: 'GET',
        contentType: 'application/json',
        success: function (data) {
-           console.log(data);
            $UnmanagedCmsTable.bootstrapTable('load', { data: data });
+           $('#loader').hide();
        },
        error: function (response) {
-           console.log(JSON.stringify(response))
+           $('#loader').hide();
        }
    });
       //Approved
@@ -215,7 +215,6 @@
             $CmsTable.bootstrapTable('load', { data: data });
         },
         error: function (response) {
-            console.log(JSON.stringify(response))
         }
     });
 
@@ -227,7 +226,7 @@
     success: function (data) {
      $("#CmsCodeListPending").bootstrapTable('load', { data: data });
     },
-    error: function (response) {     
+    error: function (response) {
     }
    });
 
@@ -241,7 +240,7 @@
    }
    if(localStorage.getItem("Status") == "approved"){
     Command: toastr['success']('Success', 'Successfully approved CMSCode!');
-    localStorage.clear();   
+    localStorage.clear();
    }
    if (localStorage.getItem("Status") == "savenewrecord") {
     Command: toastr['success']('Success', 'Successfully saved new record!');
@@ -249,7 +248,7 @@
    }
    if (localStorage.getItem("Status") == "savechanges") {
     Command: toastr['success']('Success', 'Successfully saved changes!');
-    localStorage.clear();    
+    localStorage.clear();
    }
 
    window.actionEvents = {
@@ -273,7 +272,7 @@
       if (item == row.CMSCode) {
        IsExist = true;
       } else { IsExist = IsExist ? true : false }
-     });     
+     });
      if (!IsExist) {
       getCMSCode(row.CMSCode);
      } else {
@@ -291,7 +290,7 @@
     'click .view': function (e, value, row, index) {
      viewDetails(row.CMSCode);
     },
-    'click .terminate': function (e, value, row, index) {     
+    'click .terminate': function (e, value, row, index) {
      var IsExist = false;
      $.each(TerminationCMSCodeList, function (ndx, item) {
       if (item == row.CMSCode) {
@@ -323,7 +322,7 @@
             terminate(row.CMSCode, $(".app").val(), row.Description);
             TerminationCMSCodeList.push(row.CMSCode);
            }
-          }         
+          }
          }
         });
 
@@ -353,13 +352,13 @@
    'Module':'Home',
    'Action':1,
    'NewValues':'IsActive::2|ModifiedOn::' + new Date() + "|" + "ModifiedBy" + '@Session["UserID"]',
-   'OldValues':'', 
-   'WhereValues':'CMSCode::' + pCMSCode, 
+   'OldValues':'',
+   'WhereValues':'CMSCode::' + pCMSCode,
    'AffectedTable':'CMSCodes',
    'Remarks': 'Request to terminate [' + pCMSCode + "] " + pCompanyName,
-   'Status':1, 
+   'Status':1,
    'RequestsDetails': RequestsDetails
-  }  
+  }
   $.ajax({
    cache: false,
    type: "POST",
@@ -388,7 +387,7 @@
    }
    else if (row.Status == 1) {
     return { classes: 'active' };
-   } 
+   }
    else if (row.Status == 4 || row.Status == 5) {
     return {
      classes: 'danger',
@@ -435,9 +434,9 @@
      Command: toastr['error']('Error', e)
     }
    });
-  } 
+  }
 
-  function deleteCMSCode(pCMSCode) {  
+  function deleteCMSCode(pCMSCode) {
    var details = {
     'CMSCode': pCMSCode,
     'Status': 4,
@@ -484,7 +483,7 @@
     //AFM 202205
     function openTab(event, name) {
         var tabcontent;
-        
+
         tabcontent = document.getElementsByClassName("tab-content");
         for (var i = 0; i < tabcontent.length; i++) {
             tabcontent[i].style.display = "none";
@@ -495,94 +494,98 @@
 
 </script>
 <div class="container">
- <div class="row">
-  <div class="col-md-12">
-   <h2 class="page-header">Enrollment
-   <small>CMS Code Details</small>
-   </h2>
-  <div class="panel panel-primary">
-   <div class="panel-heading">CMS Code Information</div>
-    <div class="panel-body">   
-     <ul class="nav nav-tabs" id="myTab">
-         <li class="active" onclick="openTab(event,'approved')" data-toggle="tab" data-target="#approved"><a href="#approved">Approved</a></li>
-         <li class="" data-toggle="tab" onclick="openTab(event,'unmanaged')" data-target="#unmanaged"><a href="#unmanaged">Unmanaged Accounts</a></li>
-     </ul>
-     <div id="approved" class="tab-content">
-      <div class="tab-pane active" id="approved">
-       <div id="toolbarCreate">
-        <a href="Enrollment/CreateCmsCode" id="btnAdd" class="btn btn-primary" style="display:none;"><i class="glyphicon glyphicon-plus"></i> New CMS Code</a>
-       </div>
-       <table id="CmsCodeList" class="" cellpadding="0" style="width:100%"
-              data-toggle="table"
-              data-pagination="true"
-              data-page-list="[5, 10, 20]"
-              data-toolbar="#toolbarCreate"
-              data-classes="table table-hover table-bordered"
-              data-row-style="rowStyle"
-              data-search="true"
-              data-show-columns="true"
-              data-show-pagination-switch="true"
-              data-show-toggle="true"
-              data-detail-formatter="formatCmsCodeDate"
-              data-unique-id="CmsCode">
-        <thead>
-         <tr>
-          <th data-field="CMSCode" @*quirra*@ data-sortable="true">CMS Code</th>
-          <th data-field="Description" @*quirra*@ data-sortable="true">CMS Description</th>
-          <th data-field="BranchName" @*quirra*@ data-sortable="true">Branch</th>
-          <th data-field="Status" data-formatter="statusformatter">Status</th>
-          <th data-field="IsActive" data-formatter="activeFormatter">Company Status</th>
-          <th data-field="CreatedBy">Created By</th>
-          <th data-field="CreatedOn" data-formatter="dateFormatter" @*quirra*@ data-sortable="true">Created On</th>
-          <th data-field="ModifiedBy">Modified By</th>
-          <th data-field="ModifiedOn" data-formatter="dateFormatter">Last Modified</th>
-          <th data-field="Action" data-formatter="actionFormatter" data-events="actionEvents">Action</th>
-         </tr>
-        </thead>
-       </table>
-      </div>
-     </div>
-    <div id="unmanaged" class="tab-content" style="display: none;">
-        <div class="tab-pane active" id="unmanaged">
-            <div id="toolbarSend">
-                <a href="#" id="btnSend" class="btn btn-primary" style="display:none;"><i class="glyphicon glyphicon-send"></i> Send Email</a>
+    <div class="lds-roller" id="loader">
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="page-header">
+                Enrollment
+                <small>CMS Code Details</small>
+            </h2>
+            <div class="panel panel-primary">
+                <div class="panel-heading">CMS Code Information</div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li class="active" onclick="openTab(event,'approved')" data-toggle="tab" data-target="#approved"><a href="#approved">Approved</a></li>
+                        <li class="" data-toggle="tab" onclick="openTab(event,'unmanaged')" data-target="#unmanaged"><a href="#unmanaged">Unmanaged Accounts</a></li>
+                    </ul>
+                    <div id="approved" class="tab-content">
+                        <div class="tab-pane active" id="approved">
+                            <div id="toolbarCreate">
+                                <a href="Enrollment/CreateCmsCode" id="btnAdd" class="btn btn-primary" style="display:none;"><i class="glyphicon glyphicon-plus"></i> New CMS Code</a>
+                            </div>
+                            <table id="CmsCodeList" class="" cellpadding="0" style="width:100%"
+                                   data-toggle="table"
+                                   data-pagination="true"
+                                   data-page-list="[5, 10, 20]"
+                                   data-toolbar="#toolbarCreate"
+                                   data-classes="table table-hover table-bordered"
+                                   data-row-style="rowStyle"
+                                   data-search="true"
+                                   data-show-columns="true"
+                                   data-show-pagination-switch="true"
+                                   data-show-toggle="true"
+                                   data-detail-formatter="formatCmsCodeDate"
+                                   data-unique-id="CmsCode">
+                                <thead>
+                                    <tr>
+                                        <th data-field="CMSCode" @*quirra*@ data-sortable="true">CMS Code</th>
+                                        <th data-field="Description" @*quirra*@ data-sortable="true">CMS Description</th>
+                                        <th data-field="BranchName" @*quirra*@ data-sortable="true">Branch</th>
+                                        <th data-field="Status" data-formatter="statusformatter">Status</th>
+                                        <th data-field="IsActive" data-formatter="activeFormatter">Company Status</th>
+                                        <th data-field="CreatedBy">Created By</th>
+                                        <th data-field="CreatedOn" data-formatter="dateFormatter" @*quirra*@ data-sortable="true">Created On</th>
+                                        <th data-field="ModifiedBy">Modified By</th>
+                                        <th data-field="ModifiedOn" data-formatter="dateFormatter">Last Modified</th>
+                                        <th data-field="Action" data-formatter="actionFormatter" data-events="actionEvents">Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="unmanaged" class="tab-content" style="display: none;">
+                        <div class="tab-pane active" id="unmanaged">
+                            <div id="toolbarSend">
+                                <a href="#" id="btnSend" class="btn btn-primary" style="display:none;"><i class="glyphicon glyphicon-send"></i> Send Email</a>
+                            </div>
+                            <table id="UnmanagedCmsCodeList" class="" cellpadding="0" style="width:100%"
+                                   data-toggle="table"
+                                   data-pagination="true"
+                                   data-page-list="[5, 10, 20]"
+                                   data-toolbar="#toolbarSend"
+                                   data-classes="table table-hover table-bordered"
+                                   data-row-style="rowStyleUnmanaged"
+                                   data-search="true"
+                                   data-show-columns="true"
+                                   data-show-pagination-switch="true"
+                                   data-show-toggle="true"
+                                   data-detail-formatter="formatCmsCodeDate"
+                                   data-unique-id="CmsCode"
+                                   data-checkbox-header="true">
+                                <thead>
+                                    <tr>
+                                        <th data-checkbox="true"></th>
+                                        <th data-field="CMSCode" data-sortable="true">CMS Code</th>
+                                        <th data-field="Description" data-sortable="true">CMS Description</th>
+                                        <th data-field="BranchName" data-sortable="true">Branch</th>
+                                        <th data-field="Status" data-formatter="statusformatter">Status</th>
+                                        <th data-field="IsActive" data-formatter="activeFormatter">Company Status</th>
+                                        <th data-field="CreatedBy">Created By</th>
+                                        <th data-field="CreatedOn" data-formatter="dateFormatter" data-sortable="true">Created On</th>
+                                        <th data-field="ModifiedBy">Modified By</th>
+                                        <th data-field="ModifiedOn" data-formatter="dateFormatter">Last Modified</th>
+                                        <th data-field="Action" data-formatter="actionFormatter" data-events="actionEvents">Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <table id="UnmanagedCmsCodeList" class="" cellpadding="0" style="width:100%"
-                   data-toggle="table"
-                   data-pagination="true"
-                   data-page-list="[5, 10, 20]"
-                   data-toolbar="#toolbarSend"
-                   data-classes="table table-hover table-bordered"
-                   data-row-style="rowStyleUnmanaged"
-                   data-search="true"
-                   data-show-columns="true"
-                   data-show-pagination-switch="true"
-                   data-show-toggle="true"
-                   data-detail-formatter="formatCmsCodeDate"
-                   data-unique-id="CmsCode"
-                   data-checkbox-header="true">
-                <thead>
-                    <tr>
-                        <th data-checkbox="true"></th>
-                        <th data-field="CMSCode" data-sortable="true">CMS Code</th>
-                        <th data-field="Description" data-sortable="true">CMS Description</th>
-                        <th data-field="BranchName" data-sortable="true">Branch</th>
-                        <th data-field="Status" data-formatter="statusformatter">Status</th>
-                        <th data-field="IsActive" data-formatter="activeFormatter">Company Status</th>
-                        <th data-field="CreatedBy">Created By</th>
-                        <th data-field="CreatedOn" data-formatter="dateFormatter" data-sortable="true">Created On</th>
-                        <th data-field="ModifiedBy">Modified By</th>
-                        <th data-field="ModifiedOn" data-formatter="dateFormatter">Last Modified</th>
-                        <th data-field="Action" data-formatter="actionFormatter" data-events="actionEvents">Action</th>
-                    </tr>
-                </thead>
-            </table>
         </div>
     </div>
-    </div>
-   </div>
-  </div>
- </div>
 </div>
 <div id="approverBootbox">
 </div>

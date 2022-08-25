@@ -151,8 +151,7 @@ namespace CMMC.Models
                     ODSSetting.ODSPort = registry.Read("ODS_PORT");
                     ODSSetting.ODSServiceName = registry.Read("ODS_SERVICENAME");
                 }
-                return CTBC.SQL.ConnectionStringBuilder.Build(CTBC.SQLDatabases.MS_SQL, ODSSetting.ODSDatabase, ODSSetting.ODSPassword, ODSSetting.ODSUserID, ODSSetting.ODSServerIP, ODSSetting.ODSPort.ToInt());
-
+                return CTBC.SQL.ConnectionStringBuilder.Build(CTBC.SQLDatabases.Oracle, ODSSetting.ODSServerIP, ODSSetting.ODSPort.ToInt(), ODSSetting.ODSServiceName, ODSSetting.ODSUserID, ODSSetting.ODSPassword);
             }
         }
 
@@ -438,6 +437,23 @@ namespace CMMC.Models
                 registry.Write("DEFAULTVALUES_WithdrawalFee", sett.Fee);
                 registry.Write("INVTYPE_MOTHER", sett.INVTYPE_MOTHER);
                 registry.Write("INVTYPE_CHILD", sett.INVTYPE_CHILD);
+            }
+        }
+
+        //Save ODS Connection Settings
+        public void SaveODSConnectionSetting(ODSConnectionSetting sett)
+        {
+            using (CTBC.Utility.Registry registry = new CTBC.Utility.Registry(CTBC.Utility.Registry.RegistryType.LOCAL_MACHINE, @"SOFTWARE\CTBC\CMMC"))
+            {
+                CTBC.Cryptography.AES crypto = new CTBC.Cryptography.AES(registry.Read("SECURITY_Key"));
+                registry.Write("ODS_SERVER", sett.ODSServerIP);
+                //registry.Write("ODS_DATABASE", sett.ODSDatabase);
+                //registry.Write("ODS_USERID", crypto.Encrypt(sett.ODSUserID));
+                //registry.Write("ODS_PASSWORD", crypto.Encrypt(sett.ODSPassword));
+                registry.Write("ODS_USERID", sett.ODSUserID);
+                registry.Write("ODS_PASSWORD", sett.ODSPassword);
+                registry.Write("ODS_PORT", sett.ODSPort);
+                registry.Write("ODS_SERVICENAME", sett.ODSServiceName);
             }
         }
     }

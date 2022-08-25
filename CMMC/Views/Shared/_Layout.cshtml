@@ -13,6 +13,7 @@
     <link href="~/Scripts/AjaxRequestDim/Dim.css" rel="stylesheet" />
     <link href="~/Scripts/toastr/toastr.min.css" rel=" stylesheet" />
     <link href="~/Content/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link href="~/Content/loader.css" rel="stylesheet" />
     @*<link href="~/Scripts/datatable/bootstrap-table.min.css" rel="stylesheet" />*@
     <link href="~/Content/Main.css" rel="stylesheet" />
     <link href="~/Scripts/formValidation/css/formValidation.min.css" rel="stylesheet" />
@@ -523,6 +524,7 @@
 
 </head>
 <body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60">
+
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         @*<div class="container">*@
         <div class="navbar-header">
@@ -537,7 +539,7 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class='nav navbar-nav navbar-right' style='padding-top:20px;' id="nav_setup">
-                <li><a href='@Url.Action("Index","Home")'><i class='glyphicon glyphicon-home'></i> Home</a></li>
+                <li><a href='@Url.Action("Index","Home")'><i class='fa-solid'></i> Home</a></li>
 
                 <ul class='dropdown nav navbar-nav navbar-right'>
                     <li style="margin-right: 20px" class="dropdown">
@@ -568,7 +570,6 @@
         <script>
          $("[title]").tipsy({ gravity: "s" });
         </script>*@
-
     <footer class="footer navbar-fixed-bottom">
         <div class="content-wrapper">
             <div class="float-left">

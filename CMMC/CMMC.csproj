@@ -187,6 +187,8 @@
     <Compile Include="Models\AccountInformation.cs" />
     <Compile Include="Models\AccountsMasterList.cs" />
     <Compile Include="Models\AuditTrail.cs" />
+    <Compile Include="Models\ChildAccountsODS.cs" />
+    <Compile Include="Models\BANCS_ACCOUNT.cs" />
     <Compile Include="Models\Batch Computation\BatchProcess.cs" />
     <Compile Include="Models\Batch Computation\BatchRunHistory.cs" />
     <Compile Include="Models\Batch Computation\BatchSchedule.cs" />
@@ -212,6 +214,7 @@
     </Compile>
     <Compile Include="Models\Branches.cs" />
     <Compile Include="Models\ChildAccounts.cs" />
+    <Compile Include="Models\CIFDetails.cs" />
     <Compile Include="Models\CMSCode.cs" />
     <Compile Include="Models\FAQ.cs">
       <SubType>Code</SubType>
@@ -310,6 +313,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\jquery.timepicker.css" />
     <Content Include="Content\jquery.timepicker.js" />
+    <Content Include="Content\loader.css" />
     <Content Include="Content\Login.css" />
     <Content Include="Content\Main.css" />
     <Content Include="Content\Site.css" />
