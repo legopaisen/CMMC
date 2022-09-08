@@ -372,7 +372,7 @@
 
   function DescriptionFormatter(pVal, row) {
     var str = "";
-    str = "<h4>" + row.ProcessCode + " - " + row.ProcessName + "</h4>" +
+    str = "<h4>" + row.ProcessName + "</h4>" +
           "<p>" + row.Description.toString().split("\n").join("<br/>") + "</p>";
 
     return str;

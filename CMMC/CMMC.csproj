@@ -221,6 +221,7 @@
     </Compile>
     <Compile Include="Models\InvestmentTypes.cs" />
     <Compile Include="Models\MotherAccounts.cs" />
+    <Compile Include="Models\ODSADBBalance.cs" />
     <Compile Include="Models\PenaltyCharges.cs" />
     <Compile Include="Models\ProductTypes.cs" />
     <Compile Include="Models\RelatedAccounts.cs" />

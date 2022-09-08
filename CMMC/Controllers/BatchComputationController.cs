@@ -212,12 +212,12 @@ namespace CMMC.Controllers
       List<BatchProcessModel> _newOrder = new List<BatchProcessModel>();
       _newOrder.Add(processes[0]);
       _newOrder.Add(processes[1]);
-      _newOrder.Add(processes[2]);
-      _newOrder.Add(processes[7]);
-      _newOrder.Add(processes[3]);
-      _newOrder.Add(processes[4]);
-      _newOrder.Add(processes[5]);
-      _newOrder.Add(processes[6]);
+      //_newOrder.Add(processes[2]);
+      //_newOrder.Add(processes[7]);
+      //_newOrder.Add(processes[3]);
+      //_newOrder.Add(processes[4]);
+      //_newOrder.Add(processes[5]);
+      //_newOrder.Add(processes[6]);
       return Json(_newOrder, JsonRequestBehavior.AllowGet);
     }
 

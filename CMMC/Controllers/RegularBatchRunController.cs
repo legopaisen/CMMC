@@ -264,8 +264,8 @@ namespace CMMC.Controllers
         //CHECK FOR FILE LOAD PATH
         if (!Directory.Exists(FileLoadPath)) //FileLoadPath is from the declared variable which the value SOURCE_FILELOADPATH in the registry
         {
-          errors += string.Format("\n{0}", FileLoadPath);
-          _missingFilesCount++;
+          //errors += string.Format("\n{0}", FileLoadPath);
+          //_missingFilesCount++;
         }
 
         //CHECK FOR ACCOUNT/CUSTOMER/DUMPINVV FILE
@@ -304,14 +304,14 @@ namespace CMMC.Controllers
 
             if (!Directory.Exists(dumpFileLocation)) //not exist in directory
             {
-              errors += string.Format("\n{0}", dumpFileLocation);
-              _missingFilesCount++;
+              //errors += string.Format("\n{0}", dumpFileLocation);
+              //_missingFilesCount++;
             }
 
             if (!System.IO.File.Exists(dumpFileLocation + dumpFile)) //not exist
             {
-              errors += string.Format("\n{0}", dumpFileLocation + dumpFile);
-              _missingFilesCount++;
+              //errors += string.Format("\n{0}", dumpFileLocation + dumpFile);
+              //_missingFilesCount++;
             }
 
           }
@@ -338,26 +338,26 @@ namespace CMMC.Controllers
 
         if (!Directory.Exists(acctPathLocation))
         {
-          errors += string.Format("\n{0}", acctPathLocation);
-          _missingFilesCount++;
+          //errors += string.Format("\n{0}", acctPathLocation);
+          //_missingFilesCount++;
         }
 
         if (!System.IO.File.Exists(acctPathLocation + acctFile))
         {
-          errors += string.Format("\n{0}", acctPathLocation + acctFile);
-          _missingFilesCount++;
+          //errors += string.Format("\n{0}", acctPathLocation + acctFile);
+          //_missingFilesCount++;
         }
 
         if (!Directory.Exists(custFileLocation))
         {
-          errors += string.Format("\n{0}", custFileLocation);
-          _missingFilesCount++;
+          //errors += string.Format("\n{0}", custFileLocation);
+          //_missingFilesCount++;
         }
 
         if (!System.IO.File.Exists(custFileLocation + custFile))
         {
-          errors += string.Format("\n{0}", custFileLocation + custFile);
-          _missingFilesCount++;
+          //errors += string.Format("\n{0}", custFileLocation + custFile);
+          //_missingFilesCount++;
         }
         //////////////////////////////////////////////////////////
 
@@ -372,21 +372,21 @@ namespace CMMC.Controllers
           {
             if (!Directory.Exists(BackupPath))
             {
-              errors += string.Format("\n{0}", BackupPath);
-              _missingFilesCount++;
+              //errors += string.Format("\n{0}", BackupPath);
+              //_missingFilesCount++;
             }
           }
 
           if (!Directory.Exists(invvLocation)) //if the invvlocation is not exist in directory
           {
-            errors += string.Format("\n{0}", invvLocation);
-            _missingFilesCount++;
+            //errors += string.Format("\n{0}", invvLocation);
+            //_missingFilesCount++;
           }
 
           if (!System.IO.File.Exists(invvLocation + invvFile))
           {
-            errors += string.Format("\n{0}", invvLocation + invvFile);
-            _missingFilesCount++;
+            //errors += string.Format("\n{0}", invvLocation + invvFile);
+            //_missingFilesCount++;
           }
         }
         //////////////////////////////////////////////////////////
@@ -397,28 +397,28 @@ namespace CMMC.Controllers
 
         if (!Directory.Exists(ADBCASAPath)) //if the adbcasapath is not exist in the directory = true
         {
-          errors += string.Format("\n{0}", ADBCASAPath);
-          _missingFilesCount++;
+          //errors += string.Format("\n{0}", ADBCASAPath);
+          //_missingFilesCount++;
         }
 
         if (!System.IO.File.Exists(CASAADB))
         {
-          errors += string.Format("\n{0}", CASAADB);
-          _missingFilesCount++;
+          //errors += string.Format("\n{0}", CASAADB);
+          //_missingFilesCount++;
         }
 
         if (!Directory.Exists(ChargingFilePath + @"Fileload\"))
         {
-          errors += string.Format("\n{0}", ChargingFilePath + @"Fileload\");
-          _missingFilesCount++;
+          //errors += string.Format("\n{0}", ChargingFilePath + @"Fileload\");
+          //_missingFilesCount++;
         }
         //////////////////////////////////////////////////////////
 
         //CHARGING FILE
         if (!Directory.Exists(ChargingFilePath))
         {
-          errors += string.Format("\n{0}", ChargingFilePath);
-          _missingFilesCount++;
+          //errors += string.Format("\n{0}", ChargingFilePath);
+          //_missingFilesCount++;
         }
         //////////////////////////////////////////////////////////
 
