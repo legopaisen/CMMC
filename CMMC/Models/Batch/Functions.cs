@@ -217,15 +217,6 @@ namespace CMMC.Models.Batch
             }
         }
 
-        public void ComputePenaltyChargesODS()
-        {
-            string sQuery = string.Empty;
-            SqlConnection con = new SqlConnection(SharedFunctions.Connectionstring);
-            OracleConnection oracon = new OracleConnection(SharedFunctions.OracleConnection);
-
-            sQuery = $"select * from bancs_account_balance where acnt_pos_id = ''";
-        }
-
         public void ComputeRequiredADB()
         {
             //compute requiredADB
