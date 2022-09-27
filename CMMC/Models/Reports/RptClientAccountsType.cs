@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.OracleClient;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -37,15 +38,26 @@ namespace CMMC.Models.Reports
                         while (reader.Read())
                         {
                             string sAutoDebit = string.Empty;
+                            int iCMSCode = reader.GetInt32(0);
                             int iAutoDebit = Convert.ToInt32(reader.GetValue(5));
                             if (iAutoDebit == 0)
                                 sAutoDebit = "N";
                             else
                                 sAutoDebit = "Y";
 
+                            using(OracleConnection oracon = new OracleConnection(SharedFunctions.OracleConnection))
+                            {
+                                using(OracleCommand oracmd = oracon.CreateCommand())
+                                {
+                                    oracon.Open();
+                                    sQuery = $"select ACCOUNT_NUMBER from CTBC_DEPOSIT_ACCOUNTS where PAYROLL_CODE = '{iCMSCode}'";
+
+                                }
+                            }
+
                             list.Add(new RptClientAccountsTypeModel()
                             {
-                                CMSCode = reader.GetInt32(0),
+                                CMSCode = iCMSCode,
                                 CustomerName = reader.GetString(1),
                                 Branch = reader.GetString(2),
                                 AccountType = reader.GetString(3),

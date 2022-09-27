@@ -187,6 +187,7 @@
     <Compile Include="Models\AccountInformation.cs" />
     <Compile Include="Models\AccountsMasterList.cs" />
     <Compile Include="Models\AuditTrail.cs" />
+    <Compile Include="Models\ODS_Paycodes.cs" />
     <Compile Include="Models\ChildAccountsODS.cs" />
     <Compile Include="Models\BANCS_ACCOUNT.cs" />
     <Compile Include="Models\Batch Computation\BatchProcess.cs" />
