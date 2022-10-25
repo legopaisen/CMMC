@@ -11,6 +11,11 @@ html{
     background-color: #808080;
     color: white;
 }
+.nav > li > a {
+    padding-top: 10px ;
+    padding-bottom: 10px ;
+    padding: 10px 10px ;
+}
 
 /*remove spin in number input types*/
 input::-webkit-outer-spin-button,

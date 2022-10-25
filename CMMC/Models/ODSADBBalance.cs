@@ -56,10 +56,10 @@ namespace CMMC.Models
         }
         public void InsertUncollectedAmount(string sID, decimal dAmt)
         {
-            DateTime dtToday = new DateTime();
+            string dtToday = DateTime.Now.ToString("yyyy-MM-dd");
             SqlConnection con = new SqlConnection(SharedFunctions.Connectionstring);
             string sQuery = $"INSERT INTO CMMC_Uncollected_Fees (AccountPOS_ID, ChargingDate, UncollectedFees)";
-            sQuery = $" values('{sID}', '{dtToday}', '{dAmt}')";
+            sQuery += $" values('{sID}', '{dtToday}', '{dAmt}')";
             using (SqlCommand cmd = con.CreateCommand())
             {
                 cmd.CommandText = sQuery;
@@ -104,7 +104,7 @@ namespace CMMC.Models
             sQuery += $" where ACNT_POS_ID = '{sPosID}' and EXTRACT(month from MVMNT_GEN_DT) = '{sMonth}' and EXTRACT(year from MVMNT_GEN_DT) = '{DateTime.Now.Year.ToString()}'";
             sQuery += $" group by ACNT_POS_ID, OU_ID, MVMNT_CRNCY";
 
-            using (OracleConnection oracon = new OracleConnection(SharedFunctions.OracleConnection))
+            using (OracleConnection oracon = new OracleConnection(SharedFunctions.ODSConnectionString))
             {
                 using(OracleCommand cmd = oracon.CreateCommand())
                 {
@@ -118,7 +118,7 @@ namespace CMMC.Models
                             decimal dPrevUncollectedFee = GetUncollectedFees(sPosID);
                             decimal.TryParse(reader["MVMNT_AMT"].ToString(), out dBalance);
                             adbModel.MVMMNT_AMT = dBalance;
-                            adbModel.ACNT_POS_ID = reader["ACNT_POS_OD"].ToString();
+                            adbModel.ACNT_POS_ID = reader["ACNT_POS_ID"].ToString();
                             adbModel.OU_ID = reader["OU_ID"].ToString();
                             adbModel.MVMNT_CRNCY = reader["MVMNT_CRNCY"].ToString();
 

@@ -42,11 +42,11 @@ namespace CMMC.Models
             return list;
         }
 
-        public List<Details> GetList(int pCMSCode)
+        public List<Details> GetListAccount()
         {
             List<Details> list = new List<Details>();
             DateTime dtEnrolled = new DateTime();
-            string sQuery = "select ACCOUNT_NUMBER from CTBC_DEPOSIT_ACCOUNTS ";
+            string sQuery = "select ACCOUNT_NUMBER, PAYROLL_CODE from CTBC_DEPOSIT_ACCOUNTS ";
             sQuery += $"where PAYROLL_CODE is not null and ACCOUNT_NUMBER is not null ";
             try
             {
@@ -56,10 +56,18 @@ namespace CMMC.Models
                     {
                         cmd.CommandText = sQuery;
                         cn.Open();
-                        list.Add(new Details()
-                        { 
-
-                        });
+                        using(OracleDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                list.Add(new Details()
+                                {
+                                    Account_Number = reader.GetString(0),
+                                    Payroll_Code = reader.GetString(1)
+                                });
+                            }
+                        }
+                        
                     }
                 }
             }

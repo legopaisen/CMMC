@@ -21,12 +21,14 @@ namespace CMMC.Controllers
             Models.SharedFunctions.SettingsStruct conn = new Models.SharedFunctions().Connection();
             Models.SharedFunctions.Details details = new Models.SharedFunctions.Details();
             Models.SharedFunctions.ODSConnectionSetting odsconnectionsetting = new SharedFunctions().GetODSConnection();
+            Models.SharedFunctions.GBPMFTPConnectionSetting gbpmftpconnectionsetting = new SharedFunctions().GetGBPMFTPConnection();
             details.ATMSystemConnection = atmsystemconnection;
             details.FileAndBatch = filebatch;
             details.NotificationSettings = notificationsettings;
             details.ADBTransferFile = adbFile;
             details.FTPConSettings = ftpconsettings;
             details.ODSConnectionSetting = odsconnectionsetting;
+            details.GBPMFTPConnectionSetting = gbpmftpconnectionsetting;
 
             details.Settings = conn;
 
@@ -157,6 +159,26 @@ namespace CMMC.Controllers
         public JsonResult SaveODSConnectionSettings(Models.SharedFunctions.ODSConnectionSetting sett)
         {
             new Models.SharedFunctions().SaveODSConnectionSetting(sett);
+            using (CMMC.Models.AuditTrail audit = new Models.AuditTrail())
+            {
+                audit.Insert(new CMMC.Models.AuditTrailModel()
+                {
+                    UserID = Session["UserID"] == null ? "" : Session["UserID"].ToString()
+                 ,
+                    Module = "SystemSettings"
+                 ,
+                    NewValues = "Connection Setting saved successfully"
+                 ,
+                    IPAddress = SystemCore.GetIPAddress()
+                });
+            }
+            return Json("success", JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult SaveGBPMFTPConnectionSettings(Models.SharedFunctions.GBPMFTPConnectionSetting sett)
+        {
+            new Models.SharedFunctions().SaveGBPMFTPConnectionSetting(sett);
             using (CMMC.Models.AuditTrail audit = new Models.AuditTrail())
             {
                 audit.Insert(new CMMC.Models.AuditTrailModel()

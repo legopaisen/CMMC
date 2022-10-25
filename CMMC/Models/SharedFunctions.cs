@@ -19,6 +19,7 @@ namespace CMMC.Models
             public FTPConSettings FTPConSettings { get; set; }
             public NotificationSettings NotificationSettings { get; set; }
             public ODSConnectionSetting ODSConnectionSetting { get; set; }
+            public GBPMFTPConnectionSetting GBPMFTPConnectionSetting { get; set; }
         }
 
         public enum Status
@@ -133,6 +134,16 @@ namespace CMMC.Models
             public string ODSDatabase { get; set; }
         }
 
+        public struct GBPMFTPConnectionSetting
+        {
+            public string GBPMFTPIP { get; set; }
+            public string GBPMFTPPassword{ get; set; }
+            public string GBPMFTPPath { get; set; }
+            public string GBPMFTPResponsePath { get; set; }
+            public string GBPMFTPPort { get; set; }
+            public string GBPMFTPUser { get; set; }
+        }
+
         //ODS Connection string
         public static string ODSConnectionString
         {
@@ -172,6 +183,24 @@ namespace CMMC.Models
                 ODSSetting.ODSServiceName = registry.Read("ODS_SERVICENAME");
             }
             return ODSSetting;
+        }
+
+        //GBP MFTP Connection Setting
+        public GBPMFTPConnectionSetting GetGBPMFTPConnection()
+        {
+            SharedFunctions.GBPMFTPConnectionSetting GBPMFTPSetting = new SharedFunctions.GBPMFTPConnectionSetting();
+            using (CTBC.Utility.Registry registry = new CTBC.Utility.Registry(CTBC.Utility.Registry.RegistryType.LOCAL_MACHINE, @"SOFTWARE\CTBC\CMMC"))
+            {
+                CTBC.Cryptography.AES crypto = new CTBC.Cryptography.AES(registry.Read("SECURITY_Key"));
+                GBPMFTPSetting.GBPMFTPIP = registry.Read("GBP_MFTP_IP");
+                //GBPMFTPSetting.GBPMFTPPassword = crypto.Decrypt(registry.Read("GBP_MFTP_PASSWORD"));
+                GBPMFTPSetting.GBPMFTPPath = registry.Read("GBP_MFTP_PATH");
+                GBPMFTPSetting.GBPMFTPResponsePath = registry.Read("GBP_MFTP_RESPONSE_PATH");
+                GBPMFTPSetting.GBPMFTPUser = registry.Read("GBP_MFTP_USER");
+                GBPMFTPSetting.GBPMFTPPort = registry.Read("GBP_MFTP_PORT");
+                GBPMFTPSetting.GBPMFTPPassword = registry.Read("GBP_MFTP_PASSWORD");
+            }
+            return GBPMFTPSetting;
         }
 
         //Connection String Database
@@ -454,6 +483,21 @@ namespace CMMC.Models
                 registry.Write("ODS_PASSWORD", sett.ODSPassword);
                 registry.Write("ODS_PORT", sett.ODSPort);
                 registry.Write("ODS_SERVICENAME", sett.ODSServiceName);
+            }
+        }
+
+        //Save GBP MFTP Connection Settings
+        public void SaveGBPMFTPConnectionSetting(GBPMFTPConnectionSetting sett)
+        {
+            using (CTBC.Utility.Registry registry = new CTBC.Utility.Registry(CTBC.Utility.Registry.RegistryType.LOCAL_MACHINE, @"SOFTWARE\CTBC\CMMC"))
+            {
+                CTBC.Cryptography.AES crypto = new CTBC.Cryptography.AES(registry.Read("SECURITY_Key"));
+                registry.Write("GBP_MFTP_IP", sett.GBPMFTPIP);
+                registry.Write("GBP_MFTP_PASSWORD", sett.GBPMFTPPassword);
+                registry.Write("GBP_MFTP_PATH", sett.GBPMFTPPath);
+                registry.Write("GBP_MFTP_RESPONSE_PATH", sett.GBPMFTPResponsePath);
+                registry.Write("GBP_MFTP_PORT", sett.GBPMFTPPort);
+                registry.Write("GBP_MFTP_USER", sett.GBPMFTPUser);
             }
         }
     }
