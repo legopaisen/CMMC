@@ -90,10 +90,10 @@ namespace CMMC.Reports
                             {
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
-                                string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
+                                string strBranch = Request.QueryString["Branch"] != null ? Request.QueryString["Branch"] : "";
                                 rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptATMWithdrawals.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "ATM Withdrawals";
-                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptATMWithdrawalsDtSet", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
+                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptATMWithdrawalsDtSet", this.GetATMWithdrawals(strBranch, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
                             else if (strReportName.Equals("MTDADBReport"))
@@ -279,6 +279,13 @@ namespace CMMC.Reports
             return tblReturn;
         }
 
+        private DataTable GetATMWithdrawals(string pBranch, DateTime? pStartDate = null, DateTime? pEndDate = null)
+        {
+            DataTable tblReturn = new DataTable("CMMC");
+            tblReturn = new Models.Reports.RptATMWithdrawals().GetATMWithdrawalsList(pBranch, pStartDate, pEndDate).ToDataTable();
+            tblReturn.TableName = "CMMC";
+            return tblReturn; 
+        }
         private DataTable GetEnrollment(string pCreatedBy, DateTime? pStartDate = null, DateTime? pEndDate = null)
         {
             DataTable tblReturn = new DataTable("CMMC");

@@ -26,14 +26,14 @@ namespace CMMC.Models
             }
             public struct bookingMaster
             {
-                public string BookingRequestId { get; set; }
-                public int ExternalBusinessEventId { get; set; }
+                public string BookingRequestID { get; set; }
+                public string ExternalBusinessEventID { get; set; }
                 public int ForcedBookingIndicator { get; set; }
                 public int ReversalCorrectionIndicator { get; set; }
                 public string TransactionDate { get; set; }
-                public string TransactionId { get; set; }
+                public string TransactionID { get; set; }
                 public string TransactionSource { get; set; }
-                public int OrderingSystemId { get; set; }
+                public int OrderingSystemID { get; set; }
                 public string Entity { get; set; }
 
                 [XmlElement("Bookingdetailslist")]
@@ -47,11 +47,11 @@ namespace CMMC.Models
                 public int BookingType { get; set; }
                 public string BusinessTransactionDetail1 { get; set; }
                 public string BusinessTransactionDetail2 { get; set; }
-                public string CashBlockId { get; set; }
+                public string CashBlockID { get; set; }
                 public int CustomerExchangeRate { get; set; }
                 public int CashIndicator { get; set; }
-                public string ReconciliationReferenceId { get; set; }
-                public string NarrativeId { get; set; }
+                public string ReconciliationReferenceID { get; set; }
+                public string NarrativeID { get; set; }
                 public NarrativePlaceholders NarrativePlaceholders { get; set; }
                 public string BtcCode { get; set; }
                 public string EpcCode { get; set; }
@@ -59,13 +59,6 @@ namespace CMMC.Models
                 public string ValueDate { get; set; }
                 public string AccountingDate { get; set; }
                 public string Entity { get; set; }
-                public int ComponentType { get; set; }
-                public string TaxCode { get; set; }
-                public string BookingDate { get; set; }
-                public string BookingRequestID { get; set; }
-                public int BookingSuccessful { get; set; }
-                public int ErrorId { get; set; }
-                public string ErrorDescription { get; set; }
             }
             public struct AccountAmount
             {
@@ -196,6 +189,10 @@ namespace CMMC.Models
             cmscodelist = cmscode.GetListApproved();
             odspaycodeslist = odspaycodes.GetListAccount();
             string sBookingID = string.Empty;
+            string sYear = DateTime.Now.Year.ToString();
+            string sMonth = DateTime.Now.Month.ToString("d2");
+            string sDay = DateTime.Now.Day.ToString("d2");
+            string sDateToday = sYear + sMonth + sDay;
             int iCntBookingID = 0;
             var matchlist = odspaycodeslist.Where(item => !cmscodelist.Any(item2 => item2.CMSCode.ToString() == item.Payroll_Code));
 
@@ -206,10 +203,14 @@ namespace CMMC.Models
                 sBookingID = GetBookingID(iCntBookingID);
                 bookingMasterlist.Add(new CreateBookingRequest.bookingMaster()
                 {
-                    BookingRequestId = sBookingID,
-                    TransactionDate = DateTime.Now.ToString(),
-                    TransactionSource = "",
-                    OrderingSystemId = 0,
+                    BookingRequestID = sBookingID,
+                    ExternalBusinessEventID = "19001",
+                    ForcedBookingIndicator = 2,
+                    ReversalCorrectionIndicator = 3,
+                    TransactionDate = sDateToday,
+                    TransactionID = "61-15355",
+                    TransactionSource = "3777",
+                    OrderingSystemID = 19,
                     Entity = "GCTBCPH001",
                     Bookingdetailslist = FillBookingDetails(accountno.Account_Number, accountno.Payroll_Code),
                 });
@@ -232,6 +233,7 @@ namespace CMMC.Models
             string sMonth = DateTime.Now.Month.ToString("d2");
             string sDay = DateTime.Now.Day.ToString("d2");
             string sDateToday = sYear + sMonth + sDay;
+            decimal dWithdrawalFee = GetWithdrawalFees(sAccountNo, sMonth);
             int.TryParse(sCMSCode, out iCMSCode);
             adbmodel = odsadbbalance.GetADB(sAccountNo, DateTime.Now.Month.ToString("d2"), iCMSCode);
             dAmount = odsadbbalance.ComputePenalty(sAccountNo, adbmodel.MVMMNT_AMT, iCMSCode);
@@ -241,7 +243,7 @@ namespace CMMC.Models
             {
                 AccountAmount = new CreateBookingRequest.AccountAmount
                 {
-                    Amount = dAmount,
+                    Amount = dAmount + dWithdrawalFee,
                     Crncy = "PHP"
                 },
                 AccountNumber = new CreateBookingRequest.AccountNumber
@@ -251,14 +253,14 @@ namespace CMMC.Models
                 },
                 BaseCurrencyAmount = new CreateBookingRequest.BaseCurrencyAmount()
                 {
-                    Amount = dAmount,
+                    Amount = dAmount + dWithdrawalFee,
                     Crncy = "PHP"
                 },
                 BookingType = 1,
                 CashIndicator = 2,
                 TransactionAmount = new CreateBookingRequest.TransactionAmount()
                 {
-                    Amount = dAmount,
+                    Amount = dAmount + dWithdrawalFee,
                     Crncy = "PHP"
                 },
                 ValueDate = sDateToday, //yyyymmdd
@@ -270,7 +272,7 @@ namespace CMMC.Models
             {
                 AccountAmount = new CreateBookingRequest.AccountAmount
                 {
-                    Amount = dAmount,
+                    Amount = dAmount + dWithdrawalFee,
                     Crncy = "PHP"
                 },
                 AccountNumber = new CreateBookingRequest.AccountNumber
@@ -280,14 +282,14 @@ namespace CMMC.Models
                 },
                 BaseCurrencyAmount = new CreateBookingRequest.BaseCurrencyAmount()
                 {
-                    Amount = dAmount,
+                    Amount = dAmount + dWithdrawalFee,
                     Crncy = "PHP"
                 },
                 BookingType = 2,
                 CashIndicator = 2,
                 TransactionAmount = new CreateBookingRequest.TransactionAmount()
                 {
-                    Amount = dAmount,
+                    Amount = dAmount + GetWithdrawalFees(sAccountNo, sMonth),
                     Crncy = "PHP"
                 },
                 ValueDate = sDateToday, //yyyymmdd
@@ -417,7 +419,16 @@ namespace CMMC.Models
         public decimal GetWithdrawalFees(string sRefNo, string sMonth)
         {
             decimal dWithdrawalFees = 0;
-            string sQuery = "";
+            string sYear = DateTime.Now.Year.ToString();
+            string sQuery = @"SELECT *
+                            FROM V_AUTHO_ACTIVITY_VIEW
+                            WHERE ACTION_CODE = '000'
+                            AND SOURCE_ACCOUNT_TYPE = '10'
+                            AND BILLING_CURRENCY = '608'
+                            AND PROCESSING_CODE = '01' ";
+            sQuery += $"AND SOURCE_ACCOUNT_NUMBER = {sRefNo} ";
+            sQuery += $"AND EXTRACT(MONTH FROM TRANSACTION_LOCAL_DATE) = '{sMonth}' ";
+            sQuery += $"AND EXTRACT(YEAR FROM TRANSACTION_LOCAL_DATE) = '{sYear}' ";
             using (OracleConnection oracon = new OracleConnection(SharedFunctions.OracleConnection))
             {
                 using (OracleCommand oracmd = oracon.CreateCommand())

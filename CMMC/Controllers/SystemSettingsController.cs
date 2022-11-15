@@ -15,9 +15,9 @@ namespace CMMC.Controllers
         {
             Models.SharedFunctions.FileAndBatch filebatch = new Models.SharedFunctions().GetFileAndBatch();
             Models.SharedFunctions.ATMSystemConnection atmsystemconnection = new Models.SharedFunctions().GetATMDatabaseSettings();
-            Models.SharedFunctions.FTPConSettings ftpconsettings = new Models.SharedFunctions().GetFTPConSettings();
+            //Models.SharedFunctions.FTPConSettings ftpconsettings = new Models.SharedFunctions().GetFTPConSettings();
             Models.SharedFunctions.NotificationSettings notificationsettings = new SharedFunctions().GetNoticationSettings();
-            Models.SharedFunctions.ADBTransfer adbFile = new Models.SharedFunctions().GetADBTransferFile();
+            //Models.SharedFunctions.ADBTransfer adbFile = new Models.SharedFunctions().GetADBTransferFile();
             Models.SharedFunctions.SettingsStruct conn = new Models.SharedFunctions().Connection();
             Models.SharedFunctions.Details details = new Models.SharedFunctions.Details();
             Models.SharedFunctions.ODSConnectionSetting odsconnectionsetting = new SharedFunctions().GetODSConnection();
@@ -25,8 +25,8 @@ namespace CMMC.Controllers
             details.ATMSystemConnection = atmsystemconnection;
             details.FileAndBatch = filebatch;
             details.NotificationSettings = notificationsettings;
-            details.ADBTransferFile = adbFile;
-            details.FTPConSettings = ftpconsettings;
+            //details.ADBTransferFile = adbFile;
+            //details.FTPConSettings = ftpconsettings;
             details.ODSConnectionSetting = odsconnectionsetting;
             details.GBPMFTPConnectionSetting = gbpmftpconnectionsetting;
 

@@ -2664,7 +2664,8 @@ namespace CMMC.Models
                 {
                     mail.Sender = "ssdu.dev@ctbcbank.com.ph";
                     mail.CC = suser.Email;
-                    mail.Recipient = muser.Email;
+                    //mail.Recipient = muser.Email;
+                    mail.Recipient = "itp2ba3@ctbcbank.com.ph";
                     mail.Subject = "CMMC Request # " + pRequestCode.ToString() + (pIsForApprover ? " requires your attention" : (pIsStatus ? " Approved" : " Rejected"));
                     mail.Body = strMailBody;
                     mail.SMTPServer = "172.16.4.52";
@@ -2729,7 +2730,8 @@ namespace CMMC.Models
                 {
                     mail.Sender = "ssdu.dev@ctbcbank.com.ph";
                     mail.CC = suser.Email;
-                    mail.Recipient = muser.Email;
+                    //mail.Recipient = muser.Email;
+                    mail.Recipient = "itp2ba3@ctbcbank.com.ph";
                     mail.Subject = "CMMC Request # " + pRequestCode.ToString() + (pIsForApprover ? " requires your attention" : (pIsStatus ? " Approved" : " Rejected"));
                     mail.Body = strMailBody;
                     mail.SMTPServer = "172.16.4.52";
@@ -2842,7 +2844,8 @@ namespace CMMC.Models
                 ccAddress.Add("");
                 smtpClient.Host = "172.16.4.52";
                 message.From = fromAddress;
-                message.To.Add("ssdu.dev@ctbcbank.com.ph");
+                //message.To.Add("ssdu.dev@ctbcbank.com.ph");
+                message.To.Add ("itp2ba3@ctbcbank.com.ph");
                 message.Subject = "CMMC - CMS Code Account Maintenance status for " + DateTime.Now.ToString("MM/dd/yyyy");
                 message.IsBodyHtml = true;
                 message.Body = sb;

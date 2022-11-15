@@ -272,38 +272,38 @@ namespace CMMC.Models
         }
 
         //Get ADB Transfer File
-        public ADBTransfer GetADBTransferFile()
-        {
-            ADBTransfer adbtransfer = new ADBTransfer();
-            using (CTBC.Utility.Registry registry = new CTBC.Utility.Registry(CTBC.Utility.Registry.RegistryType.LOCAL_MACHINE, @"SOFTWARE\CTBC\CMMC"))
-            {
-                CTBC.Cryptography.AES crypto = new CTBC.Cryptography.AES(registry.Read("SECURITY_Key"));
+        //public ADBTransfer GetADBTransferFile()
+        //{
+        //    ADBTransfer adbtransfer = new ADBTransfer();
+        //    using (CTBC.Utility.Registry registry = new CTBC.Utility.Registry(CTBC.Utility.Registry.RegistryType.LOCAL_MACHINE, @"SOFTWARE\CTBC\CMMC"))
+        //    {
+        //        CTBC.Cryptography.AES crypto = new CTBC.Cryptography.AES(registry.Read("SECURITY_Key"));
 
-                adbtransfer.ADBDatabase = registry.Read("ADBTRANSFER_DATABASE");
-                adbtransfer.DBID = crypto.Decrypt(registry.Read("ADBTRANSFER_DBID"));
-                adbtransfer.JobName = registry.Read("ADBTRANSFER_JOBNAME");
-                adbtransfer.ADBPassword = crypto.Decrypt(registry.Read("ADBTRANSFER_PASSWORD"));
-                adbtransfer.ADBServer = registry.Read("ADBTRANSFER_SERVER");
-            }
-            return adbtransfer;
-        }
+        //        adbtransfer.ADBDatabase = registry.Read("ADBTRANSFER_DATABASE");
+        //        adbtransfer.DBID = crypto.Decrypt(registry.Read("ADBTRANSFER_DBID"));
+        //        adbtransfer.JobName = registry.Read("ADBTRANSFER_JOBNAME");
+        //        adbtransfer.ADBPassword = crypto.Decrypt(registry.Read("ADBTRANSFER_PASSWORD"));
+        //        adbtransfer.ADBServer = registry.Read("ADBTRANSFER_SERVER");
+        //    }
+        //    return adbtransfer;
+        //}
 
         //GET FTP
-        public FTPConSettings GetFTPConSettings()
-        {
-            FTPConSettings ftpsettings = new FTPConSettings();
-            using (CTBC.Utility.Registry registry = new CTBC.Utility.Registry(CTBC.Utility.Registry.RegistryType.LOCAL_MACHINE, @"SOFTWARE\CTBC\CMMC"))
-            {
-                CTBC.Cryptography.AES crypto = new CTBC.Cryptography.AES(registry.Read("SECURITY_Key"));
-                ftpsettings.FTPIPAddress = registry.Read("FTP_IPADDRESS");
-                ftpsettings.FTPTimeout = registry.Read("FTP_TIMEOUT");
-                ftpsettings.FTPDestination = registry.Read("FTP_DESTINATION");
-                ftpsettings.FTPUserID = crypto.Decrypt(registry.Read("FTP_USERID"));
-                ftpsettings.FTPPassword = crypto.Decrypt(registry.Read("FTP_PASSWORD"));
-                ftpsettings.FTPDestinationFileName = registry.Read("FTP_DESTINATIONFILENAME");
-            }
-            return ftpsettings;
-        }
+        //public FTPConSettings GetFTPConSettings()
+        //{
+        //    FTPConSettings ftpsettings = new FTPConSettings();
+        //    using (CTBC.Utility.Registry registry = new CTBC.Utility.Registry(CTBC.Utility.Registry.RegistryType.LOCAL_MACHINE, @"SOFTWARE\CTBC\CMMC"))
+        //    {
+        //        CTBC.Cryptography.AES crypto = new CTBC.Cryptography.AES(registry.Read("SECURITY_Key"));
+        //        ftpsettings.FTPIPAddress = registry.Read("FTP_IPADDRESS");
+        //        ftpsettings.FTPTimeout = registry.Read("FTP_TIMEOUT");
+        //        ftpsettings.FTPDestination = registry.Read("FTP_DESTINATION");
+        //        ftpsettings.FTPUserID = crypto.Decrypt(registry.Read("FTP_USERID"));
+        //        ftpsettings.FTPPassword = crypto.Decrypt(registry.Read("FTP_PASSWORD"));
+        //        ftpsettings.FTPDestinationFileName = registry.Read("FTP_DESTINATIONFILENAME");
+        //    }
+        //    return ftpsettings;
+        //}
 
         //GET Notification Settings
         public NotificationSettings GetNoticationSettings()

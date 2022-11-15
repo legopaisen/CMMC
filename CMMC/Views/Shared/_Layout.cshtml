@@ -93,6 +93,8 @@
                         NavBarMenu += "<li class='dropdown-submenu'>";
                         NavBarMenu += " <li><a id='idForeignCIFNumberReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> Foreign CIF Number Report</a></li>";
                         NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idAtmWithdrawalsReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> ATM Withdrawals Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
                         NavBarMenu += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><b class='caret-left'></b> Transactional Report </a>";
                          NavBarMenu += "<ul class='dropdown-menu'>";
                          NavBarMenu += "<li><a id='idViewTransactionalRM' href='javascript:void(0)' data-title='Relationship Manager' data-module='RelationshipManager' ><i class='glyphicon glyphicon-user'></i> Relationship Manager</a> </li>";
@@ -386,6 +388,25 @@
           var caption = $(this).text();
           var options = {
               url: "@Url.Action("ViewAlienSubAccounts", "Report")?pModule=" + module + "&Title=" + title,
+              title: caption,
+              size: eModal.size.lg,
+              buttons: [{
+                  text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+              }, {
+                  text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function () {
+                      $().AbortAjaxRequest();
+                  }
+              }]
+          };
+          eModal.ajax(options);
+      });
+
+      $('body').on('click', '#idAtmWithdrawalsReport', function () {
+          var title = $(this).data("title");
+          var module = $(this).data("module");
+          var caption = $(this).text();
+          var options = {
+              url: "@Url.Action("ViewAtmWithdrawals", "Report")?pModule=" + module + "&Title=" + title,
               title: caption,
               size: eModal.size.lg,
               buttons: [{

@@ -101,21 +101,20 @@ namespace CMMC.Controllers
                 {
                     using (CTBC.Utility.Registry registry = new CTBC.Utility.Registry(CTBC.Utility.Registry.RegistryType.LOCAL_MACHINE, @"SOFTWARE\CTBC\CMMC\"))
                     {
-                        //string cmmcBatchLoc = registry.Read("CMMCBATCHLOCATION");
+                        string cmmcBatchLoc = registry.Read("CMMCBATCHLOCATION");
 
                         ////Batch exe
-                        //System.Diagnostics.ProcessStartInfo p = new System.Diagnostics.ProcessStartInfo(cmmcBatchLoc);
-                        //p.Arguments = string.Format("{0} {1} {2}",
-                        //  "2",
-                        //  "\"" + id.ToString("MM/dd/yyyy") + "\"",
-                        //  "\"" + Session["UserID"].ToString()) + "\"";
+                        System.Diagnostics.ProcessStartInfo p = new System.Diagnostics.ProcessStartInfo(cmmcBatchLoc);
+                        p.Arguments = string.Format("{0} {1} {2}",
+                          "2",
+                          "\"" + id.ToString("MM/dd/yyyy") + "\"",
+                          "\"" + Session["UserID"].ToString()) + "\"";
 
-                        //System.Diagnostics.Process.Start(p);
+                        System.Diagnostics.Process.Start(p);
 
                         response.ResponseStatus = SystemCore.ResponseStatus.SUCCESS;
                         response.Description = "Manual run of CMMC batch processing has started.";
 
-                        //
                         //ODSFunctions odsfunction = new ODSFunctions();
                         //odsfunction.StartGeneration();
 

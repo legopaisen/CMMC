@@ -69,6 +69,11 @@ namespace CMMC.Controllers
             ViewBag.BranchName = new Branches().GetBranchesName();
             return PartialView();
         }
+        public ActionResult ViewAtmWithdrawals()
+        {
+            ViewBag.BranchName = new Branches().GetBranchesName();
+            return PartialView();
+        }
 
         public ActionResult ViewApprove()
         {
