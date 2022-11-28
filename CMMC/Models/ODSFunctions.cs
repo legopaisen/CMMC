@@ -36,10 +36,10 @@ namespace CMMC.Models
                 public int OrderingSystemID { get; set; }
                 public string Entity { get; set; }
 
-                [XmlElement("Bookingdetailslist")]
-                public List<bookingDetailsList> Bookingdetailslist { get; set; }
+                [XmlElement("BookingDetails")]
+                public List<bookingDetails> BookingDetails { get; set; }
             }
-            public struct bookingDetailsList
+            public struct bookingDetails
             {
                 public AccountAmount AccountAmount { get; set; }
                 public AccountNumber AccountNumber { get; set; }
@@ -48,7 +48,7 @@ namespace CMMC.Models
                 public string BusinessTransactionDetail1 { get; set; }
                 public string BusinessTransactionDetail2 { get; set; }
                 public string CashBlockID { get; set; }
-                public int CustomerExchangeRate { get; set; }
+                //public int CustomerExchangeRate { get; set; }
                 public int CashIndicator { get; set; }
                 public string ReconciliationReferenceID { get; set; }
                 public string NarrativeID { get; set; }
@@ -212,7 +212,7 @@ namespace CMMC.Models
                     TransactionSource = "3777",
                     OrderingSystemID = 19,
                     Entity = "GCTBCPH001",
-                    Bookingdetailslist = FillBookingDetails(accountno.Account_Number, accountno.Payroll_Code),
+                    BookingDetails = FillBookingDetails(accountno.Account_Number, accountno.Payroll_Code),
                 });
                 iCntBookingID++;
             }
@@ -222,11 +222,11 @@ namespace CMMC.Models
             return bookingMasterlist;
         }
 
-        public List<CreateBookingRequest.bookingDetailsList> FillBookingDetails(string sAccountNo, string sCMSCode)
+        public List<CreateBookingRequest.bookingDetails> FillBookingDetails(string sAccountNo, string sCMSCode)
         {
             ODSADBBalance odsadbbalance = new ODSADBBalance();
             ODSADBBalance.ODSADBBalanceModel adbmodel = new ODSADBBalance.ODSADBBalanceModel();
-            List<CreateBookingRequest.bookingDetailsList> bookingdetailslist = new List<CreateBookingRequest.bookingDetailsList>();
+            List<CreateBookingRequest.bookingDetails> BookingDetails = new List<CreateBookingRequest.bookingDetails>();
             int iCMSCode = 0;
             decimal dAmount = 0;
             string sYear = DateTime.Now.Year.ToString();
@@ -235,11 +235,11 @@ namespace CMMC.Models
             string sDateToday = sYear + sMonth + sDay;
             decimal dWithdrawalFee = GetWithdrawalFees(sAccountNo, sMonth);
             int.TryParse(sCMSCode, out iCMSCode);
-            adbmodel = odsadbbalance.GetADB(sAccountNo, DateTime.Now.Month.ToString("d2"), iCMSCode);
+            adbmodel = odsadbbalance.GetADB(sAccountNo, DateTime.Now.Month.ToString("d2"), iCMSCode, DateTime.Now.Year.ToString());
             dAmount = odsadbbalance.ComputePenalty(sAccountNo, adbmodel.MVMMNT_AMT, iCMSCode);
-            
+
             //debit
-            bookingdetailslist.Add(new CreateBookingRequest.bookingDetailsList()
+            BookingDetails.Add(new CreateBookingRequest.bookingDetails()
             {
                 AccountAmount = new CreateBookingRequest.AccountAmount
                 {
@@ -268,7 +268,7 @@ namespace CMMC.Models
             });
 
             //credit
-            bookingdetailslist.Add(new CreateBookingRequest.bookingDetailsList()
+            BookingDetails.Add(new CreateBookingRequest.bookingDetails()
             {
                 AccountAmount = new CreateBookingRequest.AccountAmount
                 {
@@ -296,13 +296,13 @@ namespace CMMC.Models
                 Entity = "GCTBCPH001"
             });
 
-            return bookingdetailslist;
+            return BookingDetails;
         }
 
         public void StartGeneration()
         {
             List<CreateBookingRequest.bookingMaster> bookingmasterlist = new List<CreateBookingRequest.bookingMaster>();
-            List<CreateBookingRequest.bookingDetailsList> bookingdetailslist = new List<CreateBookingRequest.bookingDetailsList>();
+            List<CreateBookingRequest.bookingDetails> bookingdetails = new List<CreateBookingRequest.bookingDetails>();
             bookingmasterlist = FillMaster();
 
             var filePath = GenerateXMLFile(bookingmasterlist);
@@ -397,7 +397,7 @@ namespace CMMC.Models
             var streamWriter = new StreamWriter(file, false);
             var xmlserializer = new XmlSerializer(typeof(CreateBookingRequest));
             var xmlnamespace = new XmlSerializerNamespaces();
-            List<CreateBookingRequest.bookingDetailsList> bookingDetailsList = new List<CreateBookingRequest.bookingDetailsList>();
+            List<CreateBookingRequest.bookingDetails> bookingDetails = new List<CreateBookingRequest.bookingDetails>();
             List<CreateBookingRequest.bookingMaster> bookingMaster = new List<CreateBookingRequest.bookingMaster>();
 
             var CreateBookingRequest = new CreateBookingRequest

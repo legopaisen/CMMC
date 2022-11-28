@@ -34,7 +34,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>ACCOUNT NUMBER</Value>
+                              <Value>BRANCH</Value>
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontWeight>Bold</FontWeight>
@@ -68,7 +68,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>REQUIRED ADB</Value>
+                              <Value>PAY CODE</Value>
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontWeight>Bold</FontWeight>
@@ -102,7 +102,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>MTD ADB</Value>
+                              <Value>CUSTOMER NAME</Value>
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontWeight>Bold</FontWeight>
@@ -136,7 +136,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>AGGREGATE ADB</Value>
+                              <Value>SUB-ACCOUNTS CASA COUNT</Value>
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontWeight>Bold</FontWeight>
@@ -170,7 +170,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>SUB ACCOUNTS</Value>
+                              <Value>SUB-ACCOUNTS CASH CARD COUNT</Value>
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <FontWeight>Bold</FontWeight>
@@ -247,7 +247,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -278,7 +278,7 @@
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Left</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>

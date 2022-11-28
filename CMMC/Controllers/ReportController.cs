@@ -14,6 +14,12 @@ namespace CMMC.Controllers
         //
         // GET: /Report/
 
+        private struct AccountStatus
+        {
+            public string StatusCode { get; set; }
+            public string StatusDesc { get; set; }
+        }
+
         public ActionResult Index()
         {
             ViewBag.ModuleList = new SYS_MATRIX.Models.SYS_MODULES().GetList();
@@ -70,6 +76,34 @@ namespace CMMC.Controllers
             return PartialView();
         }
         public ActionResult ViewAtmWithdrawals()
+        {
+            ViewBag.BranchName = new Branches().GetBranchesName();
+            return PartialView();
+        }
+        public ActionResult ViewMTDADBReport()
+        {
+            ViewBag.BranchName = new Branches().GetBranchesName();
+            return PartialView();
+        }
+        public ActionResult ViewCMSAccounts()
+        {
+            List<AccountStatus> accountstatuslist = new List<AccountStatus>();
+            accountstatuslist.Add(new AccountStatus()
+            {
+                StatusCode = "2",
+                StatusDesc = "Active"
+            });
+            accountstatuslist.Add(new AccountStatus()
+            {
+                StatusCode = "7",
+                StatusDesc = "Inactive"
+            });
+
+            ViewBag.BranchName = new Branches().GetBranchesName();
+            ViewBag.AccountStatus = accountstatuslist;
+            return PartialView();
+        }
+        public ActionResult ViewSubAccountsCount()
         {
             ViewBag.BranchName = new Branches().GetBranchesName();
             return PartialView();

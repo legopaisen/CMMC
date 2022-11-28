@@ -170,9 +170,9 @@ namespace CMMC.Models
    strSQL += "	        END ";
    strSQL += " ,Module_Code = CASE WHEN SAM.Module_Code = 'Access' THEN 'User Maintenance' ";
 			strSQL += "                   		WHEN SAM.Module_Code = 'BatchComputation' THEN 'Batch Settings' "; 
-			strSQL += "                   		WHEN SAM.Module_Code = 'CreateCmsCode' THEN 'Create CMS Code' ";
+			strSQL += "                   		WHEN SAM.Module_Code = 'CreateCmsCode' THEN 'Create Pay Code' ";
 			strSQL += "                   		WHEN SAM.Module_Code = 'Dashboard' THEN 'Dashboard' ";
-			strSQL += "                   		WHEN SAM.Module_Code = 'EditCmsCode' THEN 'Edit CMS Code' ";
+			strSQL += "                   		WHEN SAM.Module_Code = 'EditCmsCode' THEN 'Edit Pay Code' ";
 			strSQL += "                   		WHEN SAM.Module_Code = 'EditRequest'THEN 'Edit Request' ";
 			strSQL += "                   		WHEN SAM.Module_Code = 'Enrollment' THEN 'Enrollment' ";
 			strSQL += "                   		WHEN SAM.Module_Code = 'Home' THEN 'Home' ";

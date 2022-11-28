@@ -103,17 +103,17 @@ namespace CMMC.Reports
                                 string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
                                 rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptMTDADB.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "MTD ADB";
-                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptMTDADBDtSet", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
+                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptMTDADBDtSet", this.GetMTDADB(CreatedBy, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
                             else if (strReportName.Equals("ADBPerformanceReport"))
                             {
+                                string strCMSCode = Request.QueryString["PayCode"] != null ? Request.QueryString["PayCode"] : "";
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
-                                string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
                                 rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptADBPerformanceReport.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "ADB Performance";
-                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptADBPerformanceDtSet", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
+                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptADBPerformanceDtSet", this.GetADBPerformance(strCMSCode, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
                             else if (strReportName.Equals("MonthlyADBPenFee"))
@@ -158,22 +158,24 @@ namespace CMMC.Reports
                             }
                             else if (strReportName.Equals("CMSAccounts"))
                             {
+                                string strBranch = Request.QueryString["Branch"] != null ? Request.QueryString["Branch"] : "";
+                                string strCMSCode = Request.QueryString["PayCode"] != null ? Request.QueryString["PayCode"] : "";
+                                string strAcctType = Request.QueryString["AccountType"] != null ? Request.QueryString["AccountType"] : "";
+                                string strAcctStatus = Request.QueryString["AccountStatus"] != null ? Request.QueryString["AccountStatus"] : "";
                                 DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
                                 DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
-                                string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
                                 rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptCMSAccounts.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "CMS Accounts";
-                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptCMSAccountsDtSet", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
+                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptCMSAccountsDtSet", this.GetCMSAccounts(strBranch, strCMSCode, strAcctType, strAcctStatus, dtStartDate, dtEndDate)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
                             else if (strReportName.Equals("SubAccountsCount"))
                             {
-                                DateTime? dtStartDate = Request.QueryString["StartDate"].ToString().ToDateTimeParse();
-                                DateTime? dtEndDate = Request.QueryString["EndDate"].ToString().ToDateTimeParse();
-                                string CreatedBy = Request.QueryString["CreatedBy"] != null ? Request.QueryString["CreatedBy"] : "";
-                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptSubAccountsCount.rdlc";
+                                string strBranch = Request.QueryString["Branch"] != null ? Request.QueryString["Branch"] : "";
+                                string strCMSCode = Request.QueryString["PayCode"] != null ? Request.QueryString["PayCode"] : "";
+                                rptReportViewer.LocalReport.ReportPath = "Reports/Report/rptSubAccounts.rdlc";
                                 rptReportViewer.LocalReport.DisplayName = "Sub Accounts Count";
-                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptSubAccountsCountDtSet", this.GetEnrollment(CreatedBy, dtStartDate, dtEndDate)));
+                                rptReportViewer.LocalReport.DataSources.Add(new ReportDataSource("RptSubAccountsCountDtSet", this.GetSubAccountsCount(strBranch, strCMSCode)));
                                 rptReportViewer.LocalReport.Refresh();
                             }
                             else if (strReportName.Equals("CustomerProfile"))
@@ -285,6 +287,35 @@ namespace CMMC.Reports
             tblReturn = new Models.Reports.RptATMWithdrawals().GetATMWithdrawalsList(pBranch, pStartDate, pEndDate).ToDataTable();
             tblReturn.TableName = "CMMC";
             return tblReturn; 
+        }
+        private DataTable GetMTDADB(string pBranch, DateTime? pStartDate = null, DateTime? pEndDate = null)
+        {
+            DataTable tblReturn = new DataTable("CMMC");
+            tblReturn = new Models.Reports.RptMTDADB().GetMTDADBList(pBranch, pStartDate, pEndDate).ToDataTable();
+            tblReturn.TableName = "CMMC";
+            return tblReturn;
+        }
+        private DataTable GetADBPerformance(string pBranch, DateTime? pStartDate = null, DateTime? pEndDate = null)
+        {
+            DataTable tblReturn = new DataTable("CMMC");
+            tblReturn = new Models.Reports.RptADBPerformance().GetADBPerformanceList(pBranch, pStartDate, pEndDate).ToDataTable();
+            tblReturn.TableName = "CMMC";
+            return tblReturn;
+        }
+
+        private DataTable GetCMSAccounts(string pBranch, string pCmsCode, string pAcctType, string pAcctStatus, DateTime? pStartDate = null, DateTime? pEndDate = null)
+        {
+            DataTable tblReturn = new DataTable("CMMC");
+            tblReturn = new Models.Reports.RptCMSAccounts().GetCMSAccountsList(pBranch, pCmsCode, pAcctType, pAcctStatus, pStartDate, pEndDate).ToDataTable();
+            tblReturn.TableName = "CMMC";
+            return tblReturn;
+        }
+        private DataTable GetSubAccountsCount(string pBranch, string pCmsCode)
+        {
+            DataTable tblReturn = new DataTable("CMMC");
+            tblReturn = new Models.Reports.RptSubAccountsCount().GetSubAccountsList(pBranch, pCmsCode).ToDataTable();
+            tblReturn.TableName = "CMMC";
+            return tblReturn;
         }
         private DataTable GetEnrollment(string pCreatedBy, DateTime? pStartDate = null, DateTime? pEndDate = null)
         {

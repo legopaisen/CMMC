@@ -199,7 +199,7 @@ namespace CMMC.Models
                     }
                     catch (Exception e)
                     {
-                        CTBC.Logs.Write("Insert", e.Message, "CMS Code");
+                        CTBC.Logs.Write("Insert", e.Message, "Pay Code");
                     }
                 }
             }
@@ -305,7 +305,7 @@ namespace CMMC.Models
                         while (dr.Read())
                         {
                             string CMSCode = dr["CMSCode"].ToString();
-                            if (paycodeList.Any(x => x.PayrollCode != CMSCode))
+                            if (!paycodeList.Any(x => x.PayrollCode == CMSCode))
                             {
                                 list.Add(new Details()
                                 {

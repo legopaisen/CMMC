@@ -1,6 +1,6 @@
 ﻿@{
     ViewBag.Title = "Enrollment";
-    ViewBag.Message = "CMS Code Information";
+    ViewBag.Message = "Pay Code Information";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <script type="text/javascript">
@@ -501,10 +501,10 @@
         <div class="col-md-12">
             <h2 class="page-header">
                 Enrollment
-                <small>CMS Code Details</small>
+                <small>Pay Code Details</small>
             </h2>
             <div class="panel panel-primary">
-                <div class="panel-heading">CMS Code Information</div>
+                <div class="panel-heading">Pay Code Information</div>
                 <div class="panel-body">
                     <ul class="nav nav-tabs" id="myTab">
                         <li class="active" onclick="openTab(event,'approved')" data-toggle="tab" data-target="#approved"><a href="#approved">Approved</a></li>
@@ -513,7 +513,7 @@
                     <div id="approved" class="tab-content">
                         <div class="tab-pane active" id="approved">
                             <div id="toolbarCreate">
-                                <a href="Enrollment/CreateCmsCode" id="btnAdd" class="btn btn-primary" style="display:none;"><i class="glyphicon glyphicon-plus"></i> New CMS Code</a>
+                                <a href="Enrollment/CreateCmsCode" id="btnAdd" class="btn btn-primary" style="display:none;"><i class="glyphicon glyphicon-plus"></i> New Pay Code</a>
                             </div>
                             <table id="CmsCodeList" class="" cellpadding="0" style="width:100%"
                                    data-toggle="table"
@@ -530,7 +530,7 @@
                                    data-unique-id="CmsCode">
                                 <thead>
                                     <tr>
-                                        <th data-field="CMSCode" @*quirra*@ data-sortable="true">CMS Code</th>
+                                        <th data-field="CMSCode" @*quirra*@ data-sortable="true">Pay Code</th>
                                         <th data-field="Description" @*quirra*@ data-sortable="true">CMS Description</th>
                                         <th data-field="BranchName" @*quirra*@ data-sortable="true">Branch</th>
                                         <th data-field="Status" data-formatter="statusformatter">Status</th>
@@ -567,7 +567,7 @@
                                 <thead>
                                     <tr>
                                         <th data-checkbox="true"></th>
-                                        <th data-field="CMSCode" data-sortable="true">CMS Code</th>
+                                        <th data-field="CMSCode" data-sortable="true">Pay Code</th>
                                         <th data-field="Description" data-sortable="true">CMS Description</th>
                                         <th data-field="BranchName" data-sortable="true">Branch</th>
                                         <th data-field="Status" data-formatter="statusformatter">Status</th>

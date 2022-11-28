@@ -1,6 +1,4 @@
-﻿
-
-<link href="~/Scripts/bootstrap/datepicker/bootstrap-datepicker.css" rel="stylesheet" />
+﻿<link href="~/Scripts/bootstrap/datepicker/bootstrap-datepicker.css" rel="stylesheet" />
 <script src="~/Scripts/bootstrap/datepicker/bootstrap-datepicker.js"></script>
 <script src="~/Scripts/bootstrap/emodal/eModal.js"></script>
 
@@ -10,17 +8,11 @@
 
 
         var branches = JSON.parse('@Html.Raw(Json.Encode(ViewBag.BranchName))');
-        $(function () {
-            $("#txtStartDate").datepicker({ format: 'MM yyyy', autoclose: true }).css("background-color", "aliceblue").css("cursor", "pointer");
-            $("#txtEndDate").datepicker({ format: 'MM yyyy', autoclose: true }).css("background-color", "aliceblue").css("cursor", "pointer");
-        });
 
-        $("#txtModule").val();
 
         $("#btnFilter").on('click', function () {
-            var strUrl = "@Url.Content("~/Reports/Reportviewer.aspx")?ReportName=ForeignCIFNumber&Branch=" +  $("#BranchTagging").val()
-                      + "&StartDate=" + $("#txtStartDate").val()
-                      + "&EndDate=" + $("#txtEndDate").val() + "";
+            var strUrl = "@Url.Content("~/Reports/Reportviewer.aspx")?ReportName=SubAccountsCount&Branch=" + $("#BranchTagging").val()
+                      + "&PayCode=" + $("#CmsCode").val() + "";
             window.open(strUrl, "_blank");
         });
 
@@ -42,7 +34,7 @@
 <div class="form-group" id="Branchgroup">
     <div class="input-group">
         <span class="input-group-addon">Branch</span>
-        <select class="form-control" id="BranchTagging" name="branch"  onchange="branchOnChange();">
+        <select class="form-control" id="BranchTagging" name="branch" onchange="branchOnChange();">
             <option disabled selected value> -- select a value -- </option>
         </select>
     </div>

@@ -47,9 +47,8 @@ namespace CMMC.Models.Reports
                                 AND AV.SOURCE_ACCOUNT_TYPE = '10'
                                 AND AV.BILLING_CURRENCY    = '608'
                                 AND AV.PROCESSING_CODE = '01' ";
-            sQuery += $"AND TO_DATE(AV.TRANSACTION_LOCAL_DATE, 'DD-MON-RR') BETWEEN '{pStartDate.Value.ToShortDateString()}' AND '{pEndDate.Value.ToShortDateString()}' ";
+            sQuery += $"AND TO_CHAR(AV.TRANSACTION_LOCAL_DATE, 'DD-MON-RR') BETWEEN '{pStartDate.Value.ToShortDateString()}' AND '{pEndDate.Value.ToShortDateString()}' ";
             sQuery += $"AND DA.BRANCH_NAME =  '{pBranch}' ";
-
 
             using (OracleConnection con = new OracleConnection(SharedFunctions.ODSConnectionString))
             {
@@ -61,9 +60,10 @@ namespace CMMC.Models.Reports
                     {
                         while (reader.Read())
                         {
+                            string s = reader.GetString(0);
                             using(SqlConnection sqlcon = new SqlConnection(SharedFunctions.Connectionstring))
                             {
-                                string s = reader.GetString(0);
+                                string w = reader.GetString(0);
                                 using(SqlCommand sqlcmd = sqlcon.CreateCommand())
                                 {
                                     sqlcon.Open();

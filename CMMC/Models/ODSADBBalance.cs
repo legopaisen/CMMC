@@ -93,7 +93,7 @@ namespace CMMC.Models
             return dBalance;
         }
 
-        public ODSADBBalanceModel GetADB(string sPosID, string sMonth, int iCMSCode)
+        public ODSADBBalanceModel GetADB(string sPosID, string sMonth, int iCMSCode, string sYear)
         {
             CMSCode.Details cmsdetails = new CMSCode.Details();
             CMSCode cmsmodel = new CMSCode();
@@ -101,7 +101,7 @@ namespace CMMC.Models
 
             ODSADBBalanceModel adbModel = new ODSADBBalanceModel();
             string sQuery = "select ACNT_POS_ID, OU_ID, SUM(MVMNT_AMT)/COUNT(MVMNT_AMT) as MVMNT_AMT, MVMNT_CRNCY FROM BANCS_ACCOUNT_BALANCE";
-            sQuery += $" where ACNT_POS_ID = '{sPosID}' and EXTRACT(month from MVMNT_GEN_DT) = '{sMonth}' and EXTRACT(year from MVMNT_GEN_DT) = '{DateTime.Now.Year.ToString()}'";
+            sQuery += $" where ACNT_POS_ID = '{sPosID}' and EXTRACT(month from MVMNT_GEN_DT) = '{sMonth}' and EXTRACT(year from MVMNT_GEN_DT) = '{sYear}'";
             sQuery += $" group by ACNT_POS_ID, OU_ID, MVMNT_CRNCY";
 
             using (OracleConnection oracon = new OracleConnection(SharedFunctions.ODSConnectionString))

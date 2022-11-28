@@ -66,7 +66,7 @@
                     NavBarMenu += "<li class=dropdown'>";
                     NavBarMenu += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><i class='glyphicon glyphicon-credit-card'></i> Customer Profile Management<b class='caret'></b> </a>";
                     NavBarMenu += "<ul class='dropdown-menu'>";
-                    NavBarMenu += "<li><a href='@Url.Action("Index","Enrollment")'><i class='glyphicon glyphicon-education'></i> CMS Code Maintenance</a></li>";
+                    NavBarMenu += "<li><a href='@Url.Action("Index","Enrollment")'><i class='glyphicon glyphicon-education'></i> Pay Code Maintenance</a></li>";
                     NavBarMenu += "<li><a href='@Url.Action("Index","RelationshipManager")'><i class='glyphicon glyphicon-tag'></i> Relationship Manager Maintenance</a></li>";
                     NavBarMenu += "</ul>";
                     NavBarMenu += "</li>";
@@ -95,10 +95,28 @@
                         NavBarMenu += "<li class='dropdown-submenu'>";
                         NavBarMenu += " <li><a id='idAtmWithdrawalsReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> ATM Withdrawals Report</a></li>";
                         NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idMTDADBReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> MTD ADB Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idADBPerformanceReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> ADB Performance Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idCMSAccountsReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> CMS Accounts Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idSubAccountsReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> Sub Accounts Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idCustomerProfileReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> Customer Profile Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idCMSDealsReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> CMS Deals Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idClosureReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> Closure-Accumulated Charges Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idUncollectedPenFeeReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> Uncollected CMS ADB Penalty Fee Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
+                        NavBarMenu += " <li><a id='idInsufficientFundReport' href='javascript:void(0)' ><i class='glyphicon glyphicon-th-list'></i> Uncollected Insufficient Fund CMS ADB Penalty Fee Report</a></li>";
+                        NavBarMenu += "<li class='dropdown-submenu'>";
                         NavBarMenu += "<a href='#' class='dropdown-toggle' data-toggle='dropdown'><b class='caret-left'></b> Transactional Report </a>";
                          NavBarMenu += "<ul class='dropdown-menu'>";
                          NavBarMenu += "<li><a id='idViewTransactionalRM' href='javascript:void(0)' data-title='Relationship Manager' data-module='RelationshipManager' ><i class='glyphicon glyphicon-user'></i> Relationship Manager</a> </li>";
-                         NavBarMenu += "<li><a id='idViewEnrollment' href='javascript:void(0)' data-title='Enrollment' data-module='Enrollment'><i class='glyphicon glyphicon-wrench'></i> CMS Code Enrollment</a> </li>";
+                        NavBarMenu += "<li><a id='idViewEnrollment' href='javascript:void(0)' data-title='Enrollment' data-module='Enrollment'><i class='glyphicon glyphicon-wrench'></i> Pay Code Enrollment</a> </li>";
                          NavBarMenu += "</ul>";
                          NavBarMenu += "</li>";
                      }
@@ -134,7 +152,7 @@
 
                   if ('@Session["UserType"]' == '2' || '@Session["UserType"]' == '3') { // 2 - User Administrator
                    NavBarMenu += "<li><a id='idViewTransactionalRM' href='javascript:void(0)' data-title='Relationship Manager' data-module='RelationshipManager' ><i class='glyphicon glyphicon-user'></i> Relationship Manager</a> </li>";
-                   NavBarMenu += "<li><a id='idViewEnrollment' href='javascript:void(0)' data-title='Enrollment' data-module='Enrollment'><i class='glyphicon glyphicon-wrench'></i> CMS Code Enrollment</a> </li>";
+                      NavBarMenu += "<li><a id='idViewEnrollment' href='javascript:void(0)' data-title='Enrollment' data-module='Enrollment'><i class='glyphicon glyphicon-wrench'></i> Pay Code Enrollment</a> </li>";
                   }
 
                   NavBarMenu += "</ul>";
@@ -162,8 +180,8 @@
                     NavBarMenu += "<ul class='dropdown-menu'>";
                     NavBarMenu += "<li><a href='@Url.Action("Index","ParameterMaintenance")'><i class='glyphicon glyphicon-map-marker'></i> CTBC Branches</a></li>";
                     NavBarMenu += "<li><a href='@Url.Action("Services", "ParameterMaintenance")'><i class='glyphicon glyphicon-wrench'></i> Service Types</a></li>";
-                    NavBarMenu += "<li><a href='@Url.Action("ProductType", "ParameterMaintenance")'><i class='glyphicon glyphicon-usd'></i> Product Types</a></li>";
-                    NavBarMenu += "<li><a href='@Url.Action("InvestmentType", "ParameterMaintenance")'><i class='glyphicon glyphicon-credit-card'></i> Investment Types</a></li>";
+                    //NavBarMenu += "<li><a href='@Url.Action("ProductType", "ParameterMaintenance")'><i class='glyphicon glyphicon-usd'></i> Product Types</a></li>";
+                    //NavBarMenu += "<li><a href='@Url.Action("InvestmentType", "ParameterMaintenance")'><i class='glyphicon glyphicon-credit-card'></i> Investment Types</a></li>";
                     NavBarMenu += "<li><a href='@Url.Action("Holidays", "ParameterMaintenance")'><i class='glyphicon glyphicon-calendar'></i> Holidays</a></li>";
                     NavBarMenu += "</ul>";
                     NavBarMenu += "</li>";
@@ -388,6 +406,63 @@
           var caption = $(this).text();
           var options = {
               url: "@Url.Action("ViewAlienSubAccounts", "Report")?pModule=" + module + "&Title=" + title,
+              title: caption,
+              size: eModal.size.lg,
+              buttons: [{
+                  text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+              }, {
+                  text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function () {
+                      $().AbortAjaxRequest();
+                  }
+              }]
+          };
+          eModal.ajax(options);
+      });
+
+      $('body').on('click', '#idSubAccountsReport', function () {
+          var title = $(this).data("title");
+          var module = $(this).data("module");
+          var caption = $(this).text();
+          var options = {
+              url: "@Url.Action("ViewSubAccountsCount", "Report")?pModule=" + module + "&Title=" + title,
+              title: caption,
+              size: eModal.size.lg,
+              buttons: [{
+                  text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+              }, {
+                  text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function () {
+                      $().AbortAjaxRequest();
+                  }
+              }]
+          };
+          eModal.ajax(options);
+      });
+
+      $('body').on('click', '#idCMSAccountsReport', function () {
+          var title = $(this).data("title");
+          var module = $(this).data("module");
+          var caption = $(this).text();
+          var options = {
+              url: "@Url.Action("ViewCMSAccounts", "Report")?pModule=" + module + "&Title=" + title,
+              title: caption,
+              size: eModal.size.lg,
+              buttons: [{
+                  text: "<i class='glyphicon glyphicon-search'></i> Filter", close: false, id: 'btnFilter'
+              }, {
+                  text: "<i class='glyphicon glyphicon-remove'></i> Cancel", style: 'danger', close: true, click: function () {
+                      $().AbortAjaxRequest();
+                  }
+              }]
+          };
+          eModal.ajax(options);
+      });
+
+      $('body').on('click', '#idMTDADBReport', function () {
+          var title = $(this).data("title");
+          var module = $(this).data("module");
+          var caption = $(this).text();
+          var options = {
+              url: "@Url.Action("ViewMTDADBReport", "Report")?pModule=" + module + "&Title=" + title,
               title: caption,
               size: eModal.size.lg,
               buttons: [{

@@ -1023,7 +1023,7 @@ namespace CMMC.Models
             }
             catch (Exception e)
             {
-                CTBC.Logs.Write("Get CMS Code", e.Message, "Request List");
+                CTBC.Logs.Write("Get Pay Code", e.Message, "Request List");
             }
             return strReturn;
         }
@@ -2547,7 +2547,7 @@ namespace CMMC.Models
             strMailBody += "\r\n";
             strMailBody += "\r\n";
             strMailBody += "This is to request the following:" + "\r\n";
-            strMailBody += "1) Please assign CMS Code " + pCMSCode + " to the mother/child accounts under the subject account." + "\r\n";
+            strMailBody += "1) Please assign Pay Code " + pCMSCode + " to the mother/child accounts under the subject account." + "\r\n";
             strMailBody += "2) Please change the investor type of the known MOTHER ACCOUNT to 0701." + "\r\n";
             strMailBody += "3) Please change the investor type of the known CHILD ACCOUNTS to 0702." + "\r\n" + "\r\n";
             strMailBody += "Please comply immediately." + "\r\n" + "\r\n";
@@ -2699,7 +2699,7 @@ namespace CMMC.Models
                 {
                     cmscode = item.Action == "2" ? "New" : GetCMSCodebyRequestCode(pRequestCode).ToString();
                     strMailBody += "Request ID: " + pRequestCode + "@";
-                    strMailBody += "CMS Code: " + cmscode + "@";
+                    strMailBody += "Pay Code: " + cmscode + "@";
                     strMailBody += "Request Details: " + "@";
                 }
                 strMailBody += "\t" + item.Remarks + "@";
@@ -2764,7 +2764,7 @@ namespace CMMC.Models
                     sb += "@" + "@";
                     sb += "Follow up on Accounts that are not yet managed with the following respective CMS Code(s).";
                     sb += "@" + "@";
-                    sb += "CMS Codes: " + "@";
+                    sb += "Pay Codes: " + "@";
 
                     foreach (var s in result)
                     {
@@ -2788,7 +2788,7 @@ namespace CMMC.Models
                     //message.To.Add("itp2dev4@ctbcbank.com.ph"); //test email
                     message.To.Add("itp2ba3@ctbcbank.com.ph");
                     //message.To.Add(ReturnBranchEmail((distinctbranch[iCnt] == "") ? "-No Value-" : distinctbranch[iCnt]));
-                    message.Subject = "CMMC - CMS Code Unmaintained accounts for " + DateTime.Now.ToString("MM/dd/yyyy");
+                    message.Subject = "CMMC - Pay Code Unmaintained accounts for " + DateTime.Now.ToString("MM/dd/yyyy");
                     message.IsBodyHtml = true;
                     message.Body = sb;
 
@@ -2824,7 +2824,7 @@ namespace CMMC.Models
                 string sb = "";
                 sb += "Dear All:";
                 sb += "@" + "@";
-                sb += "Please refer to generated CMS Codes and status of branch account maintenance as of " + DateTime.Now.ToString("MM/dd/yyyy, hh:ss tt.");
+                sb += "Please refer to generated Pay Codes and status of branch account maintenance as of " + DateTime.Now.ToString("MM/dd/yyyy, hh:ss tt.");
                 sb += "@" + "@";
                 //sb += getHTML(dtWith, true);
                 sb += "@" + "@";

@@ -51,10 +51,10 @@
   <FAQModel>
    <TagIndex>3</TagIndex>
    <ItemIndex>1</ItemIndex> 
-    <Question>How to Approve the CMS Code Request? </Question> 
+    <Question>How to Approve the Pay Code Request? </Question> 
     <Module>Home</Module> 
     <Answers>
-      <string>In navigation bar, click the Home to view all the CMS Code request.  </string> 
+      <string>In navigation bar, click the Home to view all the Pay Code request.  </string> 
       <string>Click the Approve button in the Action column or check the checkbox of the Request then click the Approve button. </string>
       <string>NOTE:The E-Channels Supervisor has an access to approve the pending requests. </string>
        </Answers>
@@ -63,10 +63,10 @@
   <FAQModel>
    <TagIndex>3</TagIndex>
    <ItemIndex>2</ItemIndex> 
-    <Question>How to Reject the CMS Code Request? </Question> 
+    <Question>How to Reject the Pay Code Request? </Question> 
     <Module>Home</Module> 
     <Answers>
-      <string>In navigation bar, click the Home to view all the CMS Code request.  </string> 
+      <string>In navigation bar, click the Home to view all the Pay Code request.  </string> 
       <string>Click the Reject button in the Action column or check the checkbox of the Request then click the Reject button. </string>
       <string>NOTE:The E-Channels Supervisor has an access to reject the pending requests. </string>
        </Answers>
@@ -87,7 +87,7 @@
   <FAQModel>
    <TagIndex>3</TagIndex>
    <ItemIndex>4</ItemIndex> 
-    <Question>How to Edit the CMS Code request? </Question> 
+    <Question>How to Edit the Pay Code request? </Question> 
     <Module>Home</Module> 
     <Answers>
       <string>In the home page, click the Edit button in the Action column.  </string> 
@@ -100,7 +100,7 @@
   <FAQModel>
    <TagIndex>3</TagIndex>
    <ItemIndex>5</ItemIndex> 
-    <Question>It is possible to Add services in request CMS Code? </Question> 
+    <Question>It is possible to Add services in request Pay Code? </Question> 
     <Module>Home</Module> 
     <Answers>
      <string>Yes. </string>
@@ -114,10 +114,10 @@
   <FAQModel>
    <TagIndex>3</TagIndex>
    <ItemIndex>6</ItemIndex> 
-    <Question>How to View the details of CMS Code Request? </Question> 
+    <Question>How to View the details of Pay Code Request? </Question> 
     <Module>Home</Module> 
     <Answers>
-      <string>In navigation bar, click the Home to view all the CMS Code request.  </string> 
+      <string>In navigation bar, click the Home to view all the Pay Code request.  </string> 
       <string>Click the View button beside of the Request description. </string>
        </Answers>
   </FAQModel>
@@ -126,25 +126,25 @@
   <FAQModel>
     <TagIndex>5</TagIndex>
     <ItemIndex>1</ItemIndex>
-    <Question>How to create CMS Code? </Question>
+    <Question>How to create Pay Code? </Question>
     <Module>Customer Profile Management</Module>
     <Answers>
-      <string>In navigation bar, click the Customer Profile Management > CMS Code Maintenance. </string>
-      <string>In CMS Code Maintenance page, click the New CMS Code button. </string>
-      <string>In Create CMS Code page, input the required values.</string>
+      <string>In navigation bar, click the Customer Profile Management > Pay Code Maintenance. </string>
+      <string>In Pay Code Maintenance page, click the New Pay Code button. </string>
+      <string>In Create Pay Code page, input the required values.</string>
       <string>Click the Save button.</string>
-     <string>NOTE: The E-Channels - Maker has an access to create CMS Code.</string>
+     <string>NOTE: The E-Channels - Maker has an access to create Pay Code.</string>
     </Answers>
   </FAQModel>   
   
    <FAQModel>
     <TagIndex>5</TagIndex>
     <ItemIndex>2</ItemIndex>
-    <Question>How to edit CMS Code Request? </Question>
+    <Question>How to edit Pay Code Request? </Question>
     <Module>Customer Profile Management</Module>
     <Answers>
-      <string>In CMS Code Maintenance page, click the Edit button in Action column. </string>
-      <string>In Edit CMS Code page, edit the values that need to be update.</string>
+      <string>In Pay Code Maintenance page, click the Edit button in Action column. </string>
+      <string>In Edit Pay Code page, edit the values that need to be update.</string>
       <string>Click Save button.</string>
     </Answers>
   </FAQModel>   
@@ -152,31 +152,31 @@
   <FAQModel>
     <TagIndex>5</TagIndex>
     <ItemIndex>3</ItemIndex>
-    <Question>How to view CMS Code Information? </Question>
+    <Question>How to view Pay Code Information? </Question>
     <Module>Customer Profile Management</Module>
     <Answers>
-      <string>In CMS Code Maintenance page, click the View button in Action column. </string>
+      <string>In Pay Code Maintenance page, click the View button in Action column. </string>
     </Answers>
   </FAQModel>  
   
    <FAQModel>
     <TagIndex>5</TagIndex>
     <ItemIndex>4</ItemIndex>
-    <Question>How to view CMS Code Information? </Question>
+    <Question>How to view Pay Code Information? </Question>
     <Module>Customer Profile Management</Module>
     <Answers>
-      <string>In CMS Code Maintenance page, click the View button in Action column. </string>
+      <string>In Pay Code Maintenance page, click the View button in Action column. </string>
     </Answers>
   </FAQModel>  
   
    <FAQModel>
     <TagIndex>5</TagIndex>
     <ItemIndex>5</ItemIndex>
-    <Question>How to terminate or delete CMS Code? </Question>
+    <Question>How to terminate or delete Pay Code? </Question>
     <Module>Customer Profile Management</Module>
     <Answers>
-      <string>In CMS Code Maintenance page, click the Terminate button in Action column. </string>
-      <string>Confirmation box will apppear, click OK button to request the CMS Code to terminate. </string>
+      <string>In Pay Code Maintenance page, click the Terminate button in Action column. </string>
+      <string>Confirmation box will apppear, click OK button to request the Pay Code to terminate. </string>
     </Answers>
   </FAQModel>  
    

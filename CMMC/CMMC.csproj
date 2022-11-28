@@ -24,6 +24,8 @@
     <TargetFrameworkProfile />
     <Use64BitIISExpress />
     <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1057,6 +1059,10 @@
     <Content Include="Views\Report\ViewAlienSubAccounts.cshtml" />
     <Content Include="Views\Report\ViewAtmWithdrawals.cshtml" />
     <Content Include="Views\Report\ViewForeignCIFNumber.cshtml" />
+    <Content Include="Views\Report\ViewMTDADBReport.cshtml" />
+    <Content Include="Views\Report\ViewADBPerformanceReport.cshtml" />
+    <Content Include="Views\Report\ViewCMSAccounts.cshtml" />
+    <Content Include="Views\Report\ViewSubAccountsCount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
