@@ -144,9 +144,10 @@
     <small></small>
 </h2>
 <div id="toolbar">
-    <button class="btn btn-success" id="btnAdd" onclick="window.location = '@Url.Action("AddBranches", "ParameterMaintenance")'" title="Add New Record"><i class="glyphicon glyphicon-plus-sign"></i> Add Branches</button>
-    <button class="btn btn-success" id="btnActivate" title="Activate Selected Item(s)"><i class="glyphicon glyphicon-ok"></i> Activate Branch</button>
-    <button class="btn btn-danger" id="btnDeactivate" title="Deactivate Selected Item(s)"><i class="glyphicon glyphicon-remove"></i> Deactivate Branch </button>
+    <button class="btn btn-warning" id="btnLoadBranch" onclick="location.href='@Url.Action("LoadBranchFromODS", "ParameterMaintenance")'" title="Load Branches from ODS"><i class="glyphicon glyphicon-refresh"></i> Load Branch from ODS</button>
+    @*<button class="btn btn-success" id="btnAdd" onclick="window.location = '@Url.Action("AddBranches", "ParameterMaintenance")'" title="Add New Record"><i class="glyphicon glyphicon-plus-sign"></i> Add Branches</button>*@
+    @*<button class="btn btn-success" id="btnActivate" title="Activate Selected Item(s)"><i class="glyphicon glyphicon-ok"></i> Activate Branch</button>*@
+    @*<button class="btn btn-danger" id="btnDeactivate" title="Deactivate Selected Item(s)"><i class="glyphicon glyphicon-remove"></i> Deactivate Branch </button>*@
 </div>
 <div class="panel panel-primary">
     <div class="panel-heading">CTBC Branches</div>

@@ -31,5 +31,31 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyVersion("2.10.*")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+
+/*
+Patch Notes:
+2.0
+- New enhanced application
+2.1
+- Changes to CMS Code Enrollment in getting CIF
+2.2
+- ODS Connectivity Feature
+2.3
+- Unamanaged Accounts Module
+2.4
+- Email notification for Unmanaged Accounts
+2.5
+- Acquire account details in CMS View module from ODS
+2.6
+- Internal Reports
+2.7
+- Batch processing
+2.8
+- XML File generation
+2.9
+- GBP SFTP Connectivity
+2.10
+- XML File encryption
+ */

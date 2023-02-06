@@ -23,6 +23,12 @@ namespace CMMC.Controllers
          return View();
         }
 
+        public JsonResult LoadBranchesFromODS()
+        {
+            SystemCore.SystemResponse response = new SystemCore.SystemResponse();
+            
+            return Json(response);
+        }
         public ActionResult Holidays()
         {
          return View(new YearHolidays().GetList());

@@ -1,53 +1,55 @@
-﻿
+﻿@using System.Reflection;
+@using CMMC.Controllers;
 @{
- ViewBag.Title = "Login Page";
- Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewBag.Title = "Login Page";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
 }
 @*<div class="jumbotron">
- <div>
-  <h1><font color="#12397">C  M  M  C</font></h1>
- 
-  <p><font color="#12397">Cash Management Monitoring and Charging System</font></p>
-  <div class="form-group text-center" id="myForm">
-   <form method="post" action="@Url.Action("SignOn", "Login")">
-    <input id="hdnUserIDEncrypted" name="hdnUserIDEncrypted" value="" type="hidden" />
-    <input id="hdnPasswordEncrypted" name="hdnPasswordEncrypted" value="" type="hidden" />
-    <input type="hidden" value="@ViewBag.CryptoHashCode" id="HashCode" name="HashCode" />
-    <div class="form-group">
-     
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <h3 class="panel-title">Login </h3>
-            </div>
-         
-            <div class="panel-body">
-                <label>ID Number:</label>
-                <div class="input-group">
-                    <input id="loginid" type="text" class="form-control" placeholder="LogIn ID" onblur="caps(this.id)" name="loginid" maxlength="10" autocomplete="off" autofocus required />
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+     <div>
+      <h1><font color="#12397">C  M  M  C</font></h1>
+
+      <p><font color="#12397">Cash Management Monitoring and Charging System</font></p>
+      <div class="form-group text-center" id="myForm">
+       <form method="post" action="@Url.Action("SignOn", "Login")">
+        <input id="hdnUserIDEncrypted" name="hdnUserIDEncrypted" value="" type="hidden" />
+        <input id="hdnPasswordEncrypted" name="hdnPasswordEncrypted" value="" type="hidden" />
+        <input type="hidden" value="@ViewBag.CryptoHashCode" id="HashCode" name="HashCode" />
+        <div class="form-group">
+
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Login </h3>
                 </div>
-                <label>Password:</label>
-                <div class="input-group">
-                    <input id="password" type="password" name="password" class="form-control" placeholder="Password" maxlength="20" autocomplete="off" required />
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                </div><br />
-                <div class="btn-group" id="btnLogin">
-                    <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-log-in"></i> Login    </button>
+
+                <div class="panel-body">
+                    <label>ID Number:</label>
+                    <div class="input-group">
+                        <input id="loginid" type="text" class="form-control" placeholder="LogIn ID" onblur="caps(this.id)" name="loginid" maxlength="10" autocomplete="off" autofocus required />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                    </div>
+                    <label>Password:</label>
+                    <div class="input-group">
+                        <input id="password" type="password" name="password" class="form-control" placeholder="Password" maxlength="20" autocomplete="off" required />
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                    </div><br />
+                    <div class="btn-group" id="btnLogin">
+                        <button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-log-in"></i> Login    </button>
+                    </div>
+                </div>
                 </div>
             </div>
-            </div>
-        </div>
-   </form>
-  </div>
- </div>
-</div>*@
+       </form>
+      </div>
+     </div>
+    </div>*@
 
 <section class="vh-100">
     <div class="container-fluid h-custom">
         <div class="row d-flex justify-content-center align-items-center h-50">
-            <div class="col-md-9 col-lg-6 col-xl-5" style="text-align:center">
+            <div class="col-md-9 col-lg-6 col-xl-5" style="text-align: center">
                 <h1><font color="#12397">C  M  M  C</font></h1>
                 <p><font color="#12397">Cash Management Monitoring and Charging System</font></p>
+                <p><font color="#12397">v@(Assembly.GetAssembly(typeof(HomeController)).GetName().Version.ToString())</font></p>
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
                 <form method="post" action="@Url.Action("SignOn", "Login")">
@@ -79,11 +81,11 @@
         </div>
     </div>
     <!--<div class="d-flex flex-column flex-md-row text-center text-md-start justify-content-between py-4 px-4 px-xl-5" style="background-color: #094a4a">-->
-        <!-- Copyright -->
-        <!--<div class="text-white mb-3 mb-md-0">
-            &copy; @DateTime.Now.Year - CTBC BANK (PHILIPPINES) CORP.
-        </div>-->
-        <!-- Copyright -->
+    <!-- Copyright -->
+    <!--<div class="text-white mb-3 mb-md-0">
+        &copy; @DateTime.Now.Year - CTBC BANK (PHILIPPINES) CORP.
+    </div>-->
+    <!-- Copyright -->
     <!--</div>-->
 </section>
 
@@ -111,7 +113,7 @@
    if (response.ResponseStatus == 0) {
     toastr.error(response.Description, "Information");
    }
-  }  
+  }
 
   $("#HashCode").val("@ViewBag.CryptoHashCode");
   $("#loginid").val("");
@@ -142,7 +144,7 @@
    var sId = $("#loginid").val()
    writeCookie("loginid", sId, 10);
    $("#loginid").val("");
-   $("#password").val("");   
+   $("#password").val("");
   });
  });
 </script>

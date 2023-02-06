@@ -389,6 +389,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Ghost-Default-Error-Screen.png" />
     <Content Include="Global.asax" />
+    <Content Include="Images\city.jpg" />
     <Content Include="Images\generate.jpg" />
     <Content Include="Images\images.jpg" />
     <Content Include="Images\login.jpg" />

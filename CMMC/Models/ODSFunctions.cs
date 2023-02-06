@@ -48,11 +48,20 @@ namespace CMMC.Models
                 public string BusinessTransactionDetail1 { get; set; }
                 public string BusinessTransactionDetail2 { get; set; }
                 public string CashBlockID { get; set; }
-                //public int CustomerExchangeRate { get; set; }
-                public int CashIndicator { get; set; }
+                public int CustomerExchangeRate { get; set; }
+                public string CashIndicator { get; set; }
                 public string ReconciliationReferenceID { get; set; }
                 public string NarrativeID { get; set; }
-                public NarrativePlaceholders NarrativePlaceholders { get; set; }
+                NarrativePlaceholders? _narrativePlaceholders;
+                public NarrativePlaceholders NarrativePlaceholders
+                {
+                    get { return (NarrativePlaceholders)_narrativePlaceholders; }
+                    set { _narrativePlaceholders = value; }
+                }
+                public bool NarrativePlaceholdersSpecified
+                {
+                    get { return _narrativePlaceholders != null; }
+                }
                 public string BtcCode { get; set; }
                 public string EpcCode { get; set; }
                 public TransactionAmount TransactionAmount { get; set; }
@@ -248,7 +257,7 @@ namespace CMMC.Models
                 },
                 AccountNumber = new CreateBookingRequest.AccountNumber
                 {
-                    AcntFrmt = 2,
+                    AcntFrmt = 1,
                     AcntNumber = sAccountNo
                 },
                 BaseCurrencyAmount = new CreateBookingRequest.BaseCurrencyAmount()
@@ -257,7 +266,16 @@ namespace CMMC.Models
                     Crncy = "PHP"
                 },
                 BookingType = 1,
-                CashIndicator = 2,
+                CustomerExchangeRate = 1,
+                CashIndicator = "NO",
+                NarrativeID = "20577",
+                NarrativePlaceholders = new CreateBookingRequest.NarrativePlaceholders()
+                {
+                    PLHName = "REMITTANCEINFORMATION_LINE1",
+                    PLHValue = "ABC"
+                },
+                BtcCode = "125",
+                EpcCode = "8011",
                 TransactionAmount = new CreateBookingRequest.TransactionAmount()
                 {
                     Amount = dAmount + dWithdrawalFee,
@@ -278,7 +296,7 @@ namespace CMMC.Models
                 AccountNumber = new CreateBookingRequest.AccountNumber
                 {
                     AcntFrmt = 2,
-                    AcntNumber = "660187" // sample gl code
+                    AcntNumber = "001010000161" // sample gl codes - 660187, 001010000158
                 },
                 BaseCurrencyAmount = new CreateBookingRequest.BaseCurrencyAmount()
                 {
@@ -286,7 +304,8 @@ namespace CMMC.Models
                     Crncy = "PHP"
                 },
                 BookingType = 2,
-                CashIndicator = 2,
+                CustomerExchangeRate = 1,
+                CashIndicator = "NO",
                 TransactionAmount = new CreateBookingRequest.TransactionAmount()
                 {
                     Amount = dAmount + GetWithdrawalFees(sAccountNo, sMonth),
@@ -476,6 +495,21 @@ namespace CMMC.Models
                     
                 }
             }
+        }
+
+        public int LoadBranches()
+        {
+            int iReturn = 0;
+            string sQuery = "select MU_ID, MU_NAME from MANAGEMENT_UNIT";
+            using(OracleConnection con = new OracleConnection())
+            {
+                using (OracleCommand cmd = new OracleCommand())
+                {
+
+                }
+            }
+
+            return iReturn;
         }
 
     }
