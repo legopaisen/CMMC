@@ -150,20 +150,25 @@
      'pIsStatus': false,
      'pMPersonId': '@Session["UserID"]'
     }
+       bootbox.confirm("Are you sure you want to reject the request?", function (result) {
+        if (result == true) {
+            $.ajax({
+                cache: false,
+                type: 'POST',
+                data: JSON.stringify(model),
+                contentType: 'application/json',
+                url: '@Url.Action("RejectAllRequestByRequestCode", "Home")',
+                success: function (data) {
+                    localStorage.setItem("rejectrequest", "rejected")
+                    Command: toastr["success"]("Select atleast one to reject!")
+                    window.location = '@Url.Action("Index","Home")';
+                },
+                error: function (e) {
+                }
+            });
+        }
+    })
 
-    $.ajax({
-     cache: false,
-     type: 'POST',
-     data: JSON.stringify(model),
-     contentType: 'application/json',
-     url: '@Url.Action("RejectAllRequestByRequestCode", "Home")',
-     success: function (data) {
-      localStorage.setItem("rejectrequest", "rejected")
-      window.location = '@Url.Action("Index","Home")';
-     },
-     error: function (e) {
-     }
-    });
    } else {
     Command: toastr["info"]("Select atleast one to reject!")
    }
@@ -176,7 +181,7 @@
      'RequestCode': row.RequestCode,
      'CMSCode': row.ConcernedCMSCode
     });
-   
+
    });
    if (details != "") {
     var model = {
@@ -219,7 +224,7 @@
   }
  });
 
- function ActionFormatter(value, row, index) {  
+ function ActionFormatter(value, row, index) {
     if ('@Session["UserType"]' == "1") {
    return [
    '<a id="approve" class="approve" href="#" title="Approve" >',
@@ -288,7 +293,7 @@
     window.location.reload()
     toastr.success("Successfully deleted!")
    })
-  
+
   },
   'click .edit': function (e, value, row, index) {
    editRequest(row.RequestCode);
@@ -298,7 +303,7 @@
  window.infoEvents = {
   'click .info': function (e) {
    showDetailsByRequestListCode($(this).attr('value'));
-   $("#RequestList li").unbind('click').bind('click', function () {    
+   $("#RequestList li").unbind('click').bind('click', function () {
     showDetailsByRequestListCode($(this).attr('value'));
     $(this).unbind();
    });
@@ -361,7 +366,7 @@
           $('#detailsofRequest').append($('<li class="list-group-item" ><strong>Servicing Branch: </strong><span>' + item.BranchName + '</span></li>'));
          }
         });
-       } else if (p.FieldName == "IsActive") {        
+       } else if (p.FieldName == "IsActive") {
         var val = "";
         if (p.Value == "True") {
          val = "Yes";
@@ -379,7 +384,7 @@
         $('#detailsofRequest').append($('<li class="list-group-item" ><strong>Active(Yes/No): </strong><span>' + p.Value + '</span></li>'));
        } else if (p.FieldName == "MotherRequiredADB" || p.FieldName == "SubRequiredADB") {
         $('#detailsofRequest').append($('<li class="list-group-item" ><strong>' + p.FieldName + ': </strong><span>' + Number(p.Value).formatMoney(2, ".", ",").toString() + '</span></li>'));
-       } else if (p.FieldName == "MaxFreeTransaction") {        
+       } else if (p.FieldName == "MaxFreeTransaction") {
         $('#detailsofRequest').append($('<li class="list-group-item" ><strong>' + p.FieldName + ': </strong><span>' + (p.Value == "-1" ? "Unlimited" : p.Value) + '</span></li>'));
        }
        else {
@@ -472,7 +477,7 @@
    if (pCMSCode == "New") {
     IsNew = true;
    } else {
-    IsNew = false; 
+    IsNew = false;
    }
    $.ajax({
     cache: false,

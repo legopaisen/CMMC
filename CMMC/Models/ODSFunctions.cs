@@ -1,18 +1,24 @@
 ﻿using Renci.SshNet;
 using System;
 using System.Collections.Generic;
-using System.Data.OracleClient;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Xml.Serialization;
+using Oracle.ManagedDataAccess.Client;
 
 namespace CMMC.Models
 {
     public class ODSFunctions : IDisposable
     {
         public void Dispose() { GC.SuppressFinalize(this); }
+
+        public struct Branches
+        {
+            public string MU_ID { get; set; }
+            public string MU_NAME { get; set; }
+        }
 
         [XmlRoot("CreateBookingRequest")]
         public class CreateBookingRequest
@@ -432,6 +438,17 @@ namespace CMMC.Models
             xmlserializer.Serialize(streamWriter, CreateBookingRequest, xmlnamespace);
             streamWriter.Close();
             XMLFilePath = file;
+
+            //AES ENCRYPTION output to file
+            //string sOutput = "path here";
+            //File.Delete("C:\\Payroll Files\\temp\\decrypted.txt");
+            //string sContent = File.ReadAllText(XMLFilePath);
+            //byte[] encryptedContent = AES_Encryption.AES.Encrypt(sContent, "5D019DABC2701C5810FD98087A7FD6640B20756B");
+            //using (FileStream filestream = new FileStream(sOutput, FileMode.Create, FileAccess.Write))
+            //{
+            //    filestream.Write(encryptedContent, 0, encryptedContent.Length);
+            //}
+
             return XMLFilePath;
         }
 
@@ -497,16 +514,79 @@ namespace CMMC.Models
             }
         }
 
+        public string GetBranchLatestLoad()
+        {
+            string sDate = string.Empty;
+            using (SqlConnection con = new SqlConnection(SharedFunctions.Connectionstring))
+            {
+                using (SqlCommand cmd = con.CreateCommand())
+                {
+                    con.Open();
+                    cmd.CommandText = "select MAX(CreatedOn) AS Date from Branches";
+                    using(SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            sDate = reader["Date"].ToString();
+                        }
+                    }
+                }
+            }
+
+            return sDate;
+        }
+
         public int LoadBranches()
         {
+            List<Branches> branches = new List<Branches>();
             int iReturn = 0;
             string sQuery = "select MU_ID, MU_NAME from MANAGEMENT_UNIT";
-            using(OracleConnection con = new OracleConnection())
+            try
             {
-                using (OracleCommand cmd = new OracleCommand())
+                using (OracleConnection con = new OracleConnection(SharedFunctions.ODSConnectionString))
                 {
-
+                    using (OracleCommand cmd = con.CreateCommand())
+                    {
+                        con.Open();
+                        cmd.CommandText = sQuery;
+                        using (OracleDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                branches.Add(new Branches()
+                                {
+                                    MU_ID = reader["MU_ID"].ToString(),
+                                    MU_NAME = reader["MU_NAME"].ToString()
+                                });
+                            }
+                        }
+                    }
                 }
+
+                //insert to cmmc db
+                using (SqlConnection con = new SqlConnection(SharedFunctions.Connectionstring))
+                {
+                    using (SqlCommand cmd = con.CreateCommand())
+                    {
+                        con.Open();
+                        sQuery = "DELETE FROM Branches";
+                        cmd.CommandText = sQuery;
+                        if (cmd.ExecuteNonQuery() == 0) { }
+
+                        foreach (var branch in branches)
+                        {
+                            sQuery = "INSERT INTO Branches(BranchCode, BranchName, isActive, CreatedOn)";
+                            sQuery += $"VALUES('{branch.MU_ID}', '{branch.MU_NAME}', '1', '{DateTime.Now}')";
+                            cmd.CommandText = sQuery;
+                            if (cmd.ExecuteNonQuery() == 0) { }
+                        }
+                    }
+                }
+                iReturn = 1;
+            }
+            catch (Exception ex)
+            {
+                iReturn = 0;
             }
 
             return iReturn;

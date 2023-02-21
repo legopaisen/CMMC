@@ -72,12 +72,12 @@
 
                         <div class="form-group">
                             <label>Branch Code: </label>
-                            <input type="text" class="form-control" id="txtBranchCode" value="@Model.BranchCode" name="txtBranchCode" autocomplete="off" placeholder="Access Group Code" maxlength="3" />
+                            <input type="text" class="form-control" id="txtBranchCode" value="@Model.BranchCode" name="txtBranchCode" autocomplete="off" placeholder="Access Group Code" maxlength="3" disabled />
                         </div>
 
                         <div class="form-group">
                             <label>Branch Name: </label>
-                            <input type="text" class="form-control TextRequiredFieldAcceptAll" id="txtBranchName" value="@Model.BranchName" name="txtBranchName" autocomplete="off" placeholder="Access Group Name" />
+                            <input type="text" class="form-control TextRequiredFieldAcceptAll" id="txtBranchName" value="@Model.BranchName" name="txtBranchName" autocomplete="off" placeholder="Access Group Name" disabled />
                         </div>
 
                         <div class="form-group">
@@ -95,7 +95,7 @@
                             <input type="text" class="form-control" id="txtBhossEmail" value="@Model.BhossEmail" data-fv-notempty="true" name="Email" data-fv-emailaddress="true" data-fv-emailaddress-message="The value is not a valid email address" autocomplete="off" />
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" hidden>
                             <label class="checkbox-inline">
                                 <input type="checkbox" id="chkIsActive" name="chkIsActive" @(Model.IsActive ? "checked" : "") /> Is Active?
                             </label>

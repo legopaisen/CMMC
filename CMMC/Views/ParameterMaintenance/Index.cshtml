@@ -24,6 +24,53 @@
    $("#btnActivate").click(function () {
     ProcessAction(true);
    });
+
+      $("#btnLoadBranch").on("click", function () {
+          $.ajax({
+              cache: false,
+              url: '@Url.Action("GetBranchLatestLoad", "ParameterMaintenance")',
+              contentType: 'application/json',
+              type: 'GET',
+              success: function (data) {
+                  swal({
+                      title: "Warning!",
+                      text: "This will reload ALL branches. All branch information will be reset. Are you sure you want to proceed? \nLatest load of branches: " + data,
+                      icon: "warning",
+                      buttons: true,
+                  }).then(function (isConfirm) {
+                      if (isConfirm) {
+                            $.ajax({
+                            cache: false,
+                            url: '@Url.Action("LoadBranchesFromODS", "ParameterMaintenance")',
+                            contentType: 'application/json',
+                            type: 'GET',
+                            success: function (data) {
+                            if (data.ResponseStatus == 1) {
+                                swal("Success!", data.Description, "success").then((value) => {
+                                    window.location = '@Url.Action("Index", "ParameterMaintenance")';
+                                });
+                            }
+                            else {
+                                swal("Error!", data.Description, "error").then((value) => {
+                                    window.location = '@Url.Action("Index", "ParameterMaintenance")';
+                                });
+                            }
+
+                            },
+                            error: function (response) {
+
+                            }
+                        });
+                      }
+
+                  })
+
+              },
+              error: function (response) {
+
+              }
+          });
+      });
   });
 
   function removeBranch(paramID) {
@@ -56,10 +103,10 @@
       '<i class="glyphicon glyphicon-edit"></i>',
       '</a> ', '<a class="view" href="javascript:void(0)" id="view" title="View">',
       '<i class="glyphicon glyphicon-info-sign"></i>',
-      '</a> ',
-      '<a class="remove" href="javascript:void(0)" id="remove" title="Remove">',
-      '<i class="glyphicon glyphicon-trash"></i>',
       '</a> '
+      //'<a class="remove" href="javascript:void(0)" id="remove" title="Remove">',
+      //'<i class="glyphicon glyphicon-trash"></i>',
+      //'</a> '
    ].join('');
   }
 
@@ -144,7 +191,7 @@
     <small></small>
 </h2>
 <div id="toolbar">
-    <button class="btn btn-warning" id="btnLoadBranch" onclick="location.href='@Url.Action("LoadBranchFromODS", "ParameterMaintenance")'" title="Load Branches from ODS"><i class="glyphicon glyphicon-refresh"></i> Load Branch from ODS</button>
+    <button class="btn btn-warning" id="btnLoadBranch" title="Load Branches from ODS"><i class="glyphicon glyphicon-refresh"></i> Load Branch from ODS</button>
     @*<button class="btn btn-success" id="btnAdd" onclick="window.location = '@Url.Action("AddBranches", "ParameterMaintenance")'" title="Add New Record"><i class="glyphicon glyphicon-plus-sign"></i> Add Branches</button>*@
     @*<button class="btn btn-success" id="btnActivate" title="Activate Selected Item(s)"><i class="glyphicon glyphicon-ok"></i> Activate Branch</button>*@
     @*<button class="btn btn-danger" id="btnDeactivate" title="Deactivate Selected Item(s)"><i class="glyphicon glyphicon-remove"></i> Deactivate Branch </button>*@
@@ -167,7 +214,7 @@
                data-page-list="[5, 10, 20]">
             <thead>
                 <tr>
-                    <th data-field="state" data-checkbox="true"></th>
+                    @*<th data-field="state" data-checkbox="true"></th>*@
                     <th class="BranchCode" data-field="BranchCode" data-width="100">Branch Code</th>
                     <th data-field="BranchName" data-sortable="true">Branch Name</th>
                     <th data-field="Cluster" data-sortable="true">Cluster</th>
